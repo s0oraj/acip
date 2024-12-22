@@ -26,6 +26,18 @@ export const multiCounterPattern: SubPattern = {
         commonError: "Modifying array while counting",
         optimization: "Use frequency division by 2"
       }
+    },
+      {
+      id: 10,
+      title: "Count Good Triplets",
+      difficulty: "easy",
+      link: "https://leetcode.com/problems/count-good-triplets/",
+      description: "Builds on #9: Triple condition checking",
+      details: {
+        keyDifference: "Three-level validation",
+        commonError: "Unnecessary nested loops",
+        optimization: "Early pruning of invalid cases"
+      }
     }
   ]
 };
