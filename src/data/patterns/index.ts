@@ -1,9 +1,9 @@
 import { Pattern } from '../types';
-import { countingPattern } from './counting';
-import { monotonicQueuePattern } from './monotonic-queue';
-import { simulationPattern } from './simulation';
-import { linearSortingPattern } from './linear-sorting';
-import { meetInMiddlePattern } from './meet-in-middle';
+import { countingPattern } from './counting-pattern';
+import { monotonicQueuePattern } from './monotonic-queue-pattern';
+import { simulationPattern } from './simulation-pattern';
+import { linearSortingPattern } from './linear-sorting-pattern';
+import { meetInMiddlePattern } from './meet-in-middle-pattern';
 import { moAlgorithmPattern } from './mo-algorithm-pattern';
 import { serializeDeserializePattern } from './serialize-deserialize-pattern';
 import { clonePattern } from './clone-pattern';
