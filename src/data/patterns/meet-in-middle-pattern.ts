@@ -1,264 +1,289 @@
-import { Pattern } from '../types';
+import { Pattern } from '../types'
 
 export const meetInMiddlePattern: Pattern = {
   id: 5,
-  title: "Meet in Middle Pattern",
-  description: "Learn to solve complex problems by dividing the search space and meeting in the middle.",
-  questions: [
+  title: "Meet in the Middle Pattern",
+  description: "Master the meet-in-the-middle technique for efficient problem-solving across multiple complexity levels",
+  subpatterns: [
     {
-      id: 1,
-      title: "Partition Equal Subset Sum",
-      difficulty: "medium",
-      link: "https://leetcode.com/problems/partition-equal-subset-sum/",
-      description: "Base Pattern: Single split meet-in-middle. Key Operation: subsets1[sum1] = True",
-      details: {
-        keyDifference: "Single split meet-in-middle",
-        commonError: "Not handling empty subset",
-        optimization: "Early termination checks"
-      }
+      title: "Basic Subset Division",
+      questions: [
+        {
+          id: 1,
+          title: "Partition Equal Subset Sum",
+          difficulty: "medium",
+          link: "https://leetcode.com/problems/partition-equal-subset-sum/",
+          description: "Base Pattern: Single split meet-in-middle",
+          details: {
+            keyDifference: "subsets1[sum1] = True",
+            commonError: "Not handling empty subset",
+            optimization: "Early termination checks"
+          }
+        },
+        {
+          id: 2,
+          title: "Split Array With Same Average",
+          difficulty: "hard",
+          link: "https://leetcode.com/problems/split-array-with-same-average/",
+          description: "Builds on #1: Adding average constraint",
+          details: {
+            keyDifference: "subsets1[sum1].add(size1)",
+            commonError: "Floating point comparison",
+            optimization: "Size-based pruning"
+          }
+        },
+        {
+          id: 3,
+          title: "Fair Distribution of Cookies",
+          difficulty: "medium",
+          link: "https://leetcode.com/problems/fair-distribution-of-cookies/",
+          description: "Builds on #2: K-way partitioning",
+          details: {
+            keyDifference: "distribute(i, curr_sums)",
+            commonError: "Backtracking state",
+            optimization: "Sort cookies descending"
+          }
+        },
+        {
+          id: 4,
+          title: "Tallest Billboard",
+          difficulty: "hard",
+          link: "https://leetcode.com/problems/tallest-billboard/",
+          description: "Builds on #3: Difference based splitting",
+          details: {
+            keyDifference: "dp[diff] = max(curr_sum)",
+            commonError: "Negative differences",
+            optimization: "Hash map states"
+          }
+        }
+      ]
     },
     {
-      id: 2,
-      title: "Partition Array Into Two Arrays",
-      difficulty: "hard",
-      link: "https://leetcode.com/problems/partition-array-into-two-arrays-to-minimize-sum-difference/",
-      description: "Builds on #1: Size-constrained splits. Key Difference: Equal size requirement",
-      details: {
-        keyDifference: "Size-constrained splits",
-        commonError: "Missing size validation",
-        optimization: "Binary search on sorted halves"
-      }
+      title: "Sum-based Division",
+      questions: [
+        {
+          id: 5,
+          title: "Closest Subsequence Sum",
+          difficulty: "hard",
+          link: "https://leetcode.com/problems/closest-subsequence-sum/",
+          description: "Base Pattern: Two-way subset generation",
+          details: {
+            keyDifference: "binary_search(sums2, target - sum1)",
+            commonError: "Duplicate sums",
+            optimization: "Sort and search"
+          }
+        },
+        {
+          id: 6,
+          title: "Sum of Mutated Array Closest to Target",
+          difficulty: "medium",
+          link: "https://leetcode.com/problems/sum-of-mutated-array-closest-to-target/",
+          description: "Builds on #5: Value modification",
+          details: {
+            keyDifference: "findBestValue(arr, target)",
+            commonError: "Rounding values",
+            optimization: "Binary search"
+          }
+        },
+        {
+          id: 7,
+          title: "Count Subarrays With Score Less Than K",
+          difficulty: "hard",
+          link: "https://leetcode.com/problems/count-subarrays-with-score-less-than-k/",
+          description: "Builds on #6: Score-based splitting",
+          details: {
+            keyDifference: "score = sum * len",
+            commonError: "Long integer overflow",
+            optimization: "Sliding window"
+          }
+        },
+        {
+          id: 8,
+          title: "Ways to Split Array Into Three Subarrays",
+          difficulty: "hard",
+          link: "https://leetcode.com/problems/ways-to-split-array-into-three-subarrays/",
+          description: "Builds on #7: Three-way splitting",
+          details: {
+            keyDifference: "count += right - left + 1",
+            commonError: "Boundary cases",
+            optimization: "Two pointers"
+          }
+        }
+      ]
     },
     {
-      id: 3,
-      title: "Partition to K Equal Sum Subsets",
-      difficulty: "medium",
-      link: "https://leetcode.com/problems/partition-to-k-equal-sum-subsets/",
-      description: "Builds on #2: Multi-way partitioning",
-      details: {
-        keyDifference: "K-way split tracking",
-        commonError: "Wrong backtracking state",
-        optimization: "Sort elements descending"
-      }
+      title: "Product Division",
+      questions: [
+        {
+          id: 9,
+          title: "Numbers With Repeated Digits",
+          difficulty: "hard",
+          link: "https://leetcode.com/problems/numbers-with-repeated-digits/",
+          description: "Base Pattern: Digit state splitting",
+          details: {
+            keyDifference: "count_repeated = total - unique",
+            commonError: "Leading zeros",
+            optimization: "Digit DP"
+          }
+        },
+        {
+          id: 10,
+          title: "Find the K-Sum of an Array",
+          difficulty: "hard",
+          link: "https://leetcode.com/problems/find-the-k-sum-of-an-array/",
+          description: "Builds on #9: K-selection tracking",
+          details: {
+            keyDifference: "heap.push((sum + diff, i + 1))",
+            commonError: "Sum overflow",
+            optimization: "Priority queue"
+          }
+        },
+        {
+          id: 11,
+          title: "Count Array Pairs Divisible by K",
+          difficulty: "hard",
+          link: "https://leetcode.com/problems/count-array-pairs-divisible-by-k/",
+          description: "Builds on #10: GCD properties",
+          details: {
+            keyDifference: "count += gcd_map[k//curr_gcd]",
+            commonError: "Factor counting",
+            optimization: "Prime factorization"
+          }
+        },
+        {
+          id: 12,
+          title: "Maximum XOR With an Element From Array",
+          difficulty: "hard",
+          link: "https://leetcode.com/problems/maximum-xor-with-an-element-from-array/",
+          description: "Builds on #11: XOR optimization",
+          details: {
+            keyDifference: "max_xor = curr | (1 << bit)",
+            commonError: "Bit ordering",
+            optimization: "Trie structure"
+          }
+        }
+      ]
     },
     {
-      id: 4,
-      title: "Split Array With Same Average",
-      difficulty: "hard",
-      link: "https://leetcode.com/problems/split-array-with-same-average/",
-      description: "Builds on #3: Average-based splitting",
-      details: {
-        keyDifference: "Floating point comparison",
-        commonError: "Precision errors",
-        optimization: "Use scaled integers"
-      }
+      title: "Advanced Reconstruction",
+      questions: [
+        {
+          id: 13,
+          title: "Minimize XOR",
+          difficulty: "medium",
+          link: "https://leetcode.com/problems/minimize-xor/",
+          description: "Base Pattern: Bit manipulation",
+          details: {
+            keyDifference: "result |= (1 << i)",
+            commonError: "Bit counting",
+            optimization: "Greedy selection"
+          }
+        },
+        {
+          id: 14,
+          title: "Maximum Genetic Difference Query",
+          difficulty: "hard",
+          link: "https://leetcode.com/problems/maximum-genetic-difference-query/",
+          description: "Builds on #13: Tree traversal",
+          details: {
+            keyDifference: "maxXor = getMax(trie, val)",
+            commonError: "Trie update",
+            optimization: "Online queries"
+          }
+        },
+        {
+          id: 15,
+          title: "Find XOR Sum of All Pairs Bitwise AND",
+          difficulty: "hard",
+          link: "https://leetcode.com/problems/find-xor-sum-of-all-pairs-bitwise-and/",
+          description: "Builds on #14: Pair operations",
+          details: {
+            keyDifference: "result ^= (a & b)",
+            commonError: "Order of operations",
+            optimization: "Bit manipulation"
+          }
+        },
+        {
+          id: 16,
+          title: "Maximum AND Sum of Array",
+          difficulty: "hard",
+          link: "https://leetcode.com/problems/maximum-and-sum-of-array/",
+          description: "Builds on #15: AND optimization",
+          details: {
+            keyDifference: "dp[mask] = max(score)",
+            commonError: "State encoding",
+            optimization: "State compression"
+          }
+        }
+      ]
     },
     {
-      id: 5,
-      title: "Closest Subsequence Sum",
-      difficulty: "hard",
-      link: "https://leetcode.com/problems/closest-subsequence-sum/",
-      description: "Base Pattern: Two-way subset sums",
-      details: {
-        keyDifference: "Two-way subset sums",
-        commonError: "Not handling duplicates",
-        optimization: "Sort and binary search"
-      }
-    },
-    {
-      id: 6,
-      title: "Find Minimum Time to Finish All Jobs",
-      difficulty: "hard",
-      link: "https://leetcode.com/problems/find-minimum-time-to-finish-all-jobs/",
-      description: "Builds on #5: Worker assignment",
-      details: {
-        keyDifference: "Load balancing",
-        commonError: "Inefficient pruning",
-        optimization: "State compression"
-      }
-    },
-    {
-      id: 7,
-      title: "Ways to Split Array Into Three Subarrays",
-      difficulty: "hard",
-      link: "https://leetcode.com/problems/ways-to-split-array-into-three-subarrays/",
-      description: "Builds on #6: Three-way splitting",
-      details: {
-        keyDifference: "Prefix sum usage",
-        commonError: "Boundary conditions",
-        optimization: "Two pointers approach"
-      }
-    },
-    {
-      id: 8,
-      title: "Find Array Given Subset Sums",
-      difficulty: "hard",
-      link: "https://leetcode.com/problems/find-array-given-subset-sums/",
-      description: "Builds on #7: Reconstruction problem",
-      details: {
-        keyDifference: "Backward building",
-        commonError: "Wrong subset ordering",
-        optimization: "Sort and deduce"
-      }
-    },
-    {
-      id: 9,
-      title: "Maximum Product of the Length of Two Palindromic Subsequences",
-      difficulty: "medium",
-      link: "https://leetcode.com/problems/maximum-product-of-the-length-of-two-palindromic-subsequences/",
-      description: "Base Pattern: Product optimization",
-      details: {
-        keyDifference: "Product optimization",
-        commonError: "Overlapping elements",
-        optimization: "Precompute palindromes"
-      }
-    },
-    {
-      id: 10,
-      title: "Maximum Score Words Formed by Letters",
-      difficulty: "hard",
-      link: "https://leetcode.com/problems/maximum-score-words-formed-by-letters/",
-      description: "Builds on #9: Resource constrained",
-      details: {
-        keyDifference: "Letter frequency limit",
-        commonError: "Resource counting",
-        optimization: "Precompute word scores"
-      }
-    },
-    {
-      id: 11,
-      title: "Find the K-Sum of an Array",
-      difficulty: "hard",
-      link: "https://leetcode.com/problems/find-the-k-sum-of-an-array/",
-      description: "Builds on #10: K-based optimization",
-      details: {
-        keyDifference: "Heap-based tracking",
-        commonError: "Sum overflow",
-        optimization: "Priority queue"
-      }
-    },
-    {
-      id: 12,
-      title: "Maximize Score After N Operations",
-      difficulty: "hard",
-      link: "https://leetcode.com/problems/maximize-score-after-n-operations/",
-      description: "Builds on #11: Pair-based operations",
-      details: {
-        keyDifference: "GCD calculations",
-        commonError: "State representation",
-        optimization: "Precompute GCD"
-      }
-    },
-    {
-      id: 13,
-      title: "Find XOR Sum of All Pairs Bitwise AND",
-      difficulty: "hard",
-      link: "https://leetcode.com/problems/find-xor-sum-of-all-pairs-bitwise-and/",
-      description: "Base Pattern: Bit manipulation splitting",
-      details: {
-        keyDifference: "Bit manipulation splitting",
-        commonError: "Order of operations",
-        optimization: "Bit-by-bit processing"
-      }
-    },
-    {
-      id: 14,
-      title: "Count of Sub-Multisets With Bounded Sum",
-      difficulty: "hard",
-      link: "https://leetcode.com/problems/count-of-sub-multisets-with-bounded-sum/",
-      description: "Builds on #13: Multi-occurrence elements",
-      details: {
-        keyDifference: "Frequency handling",
-        commonError: "Modulo arithmetic",
-        optimization: "Rolling DP array"
-      }
-    },
-    {
-      id: 15,
-      title: "Minimum Cost to Change Final Value of Expression",
-      difficulty: "hard",
-      link: "https://leetcode.com/problems/minimum-cost-to-change-final-value-of-expression/",
-      description: "Builds on #14: Expression evaluation",
-      details: {
-        keyDifference: "Cost calculation",
-        commonError: "Parentheses matching",
-        optimization: "Stack-based parsing"
-      }
-    },
-    {
-      id: 16,
-      title: "Count Array Pairs Divisible by K",
-      difficulty: "hard",
-      link: "https://leetcode.com/problems/count-array-pairs-divisible-by-k/",
-      description: "Builds on #15: GCD properties",
-      details: {
-        keyDifference: "Divisibility check",
-        commonError: "GCD calculation",
-        optimization: "Factor map"
-      }
-    },
-    {
-      id: 17,
-      title: "Check if String Can Break Another String",
-      difficulty: "medium",
-      link: "https://leetcode.com/problems/check-if-string-can-break-another-string/",
-      description: "Base Pattern: Character rearrangement",
-      details: {
-        keyDifference: "Character rearrangement",
-        commonError: "Wrong comparison order",
-        optimization: "Count sort"
-      }
-    },
-    {
-      id: 18,
-      title: "Maximum Number of Eaten Apples",
-      difficulty: "medium",
-      link: "https://leetcode.com/problems/maximum-number-of-eaten-apples/",
-      description: "Builds on #17: Timeline reconstruction",
-      details: {
-        keyDifference: "Expiration tracking",
-        commonError: "Priority management",
-        optimization: "Heap cleanup"
-      }
-    },
-    {
-      id: 19,
-      title: "Maximum Value After Insertion",
-      difficulty: "medium",
-      link: "https://leetcode.com/problems/maximum-value-after-insertion/",
-      description: "Builds on #18: Optimal insertion",
-      details: {
-        keyDifference: "Sign handling",
-        commonError: "Leading zeros",
-        optimization: "Early termination"
-      }
-    },
-    {
-      id: 20,
-      title: "Maximum Number of Groups Getting Fresh Donuts",
-      difficulty: "hard",
-      link: "https://leetcode.com/problems/maximum-number-of-groups-getting-fresh-donuts/",
-      description: "Builds on #19: Group optimization",
-      details: {
-        keyDifference: "Modulo grouping",
-        commonError: "State encoding",
-        optimization: "State compression"
-      }
-    },
+      title: "State Reconstruction",
+      questions: [
+        {
+          id: 17,
+          title: "Maximum Score Words Formed by Letters",
+          difficulty: "hard",
+          link: "https://leetcode.com/problems/maximum-score-words-formed-by-letters/",
+          description: "Base Pattern: State reconstruction",
+          details: {
+            keyDifference: "max_score = backtrack(used)",
+            commonError: "Letter counting",
+            optimization: "Bit masking"
+          }
+        },
+        {
+          id: 18,
+          title: "Number of Ways to Wear Different Hats to Each Other",
+          difficulty: "hard",
+          link: "https://leetcode.com/problems/number-of-ways-to-wear-different-hats-to-each-other/",
+          description: "Builds on #17: Assignment problem",
+          details: {
+            keyDifference: "dp[mask][i] += dp[prev][i-1]",
+            commonError: "State transition",
+            optimization: "State compression"
+          }
+        },
+        {
+          id: 19,
+          title: "Maximum Number of Groups Getting Fresh Donuts",
+          difficulty: "hard",
+          link: "https://leetcode.com/problems/maximum-number-of-groups-getting-fresh-donuts/",
+          description: "Builds on #18: Group optimization",
+          details: {
+            keyDifference: "dp[mask][rem] = max_groups",
+            commonError: "State encoding",
+            optimization: "State compression"
+          }
+        },
+        {
+          id: 20,
+          title: "Minimum Cost to Change Final Value of Expression",
+          difficulty: "hard",
+          link: "https://leetcode.com/problems/minimum-cost-to-change-final-value-of-expression/",
+          description: "Builds on #19: Expression evaluation",
+          details: {
+            keyDifference: "min_cost[expr] = min(costs)",
+            commonError: "Parentheses handling",
+            optimization: "Stack-based parsing"
+          }
+        }
+      ]
+    }
   ],
   summary: {
     progressionElements: [
-      "Single split → Multi-way partitioning",
-      "Sum-based division → Product-based division",
-      "Basic subset generation → Advanced reconstruction",
-      "Simple constraints → Complex optimization criteria"
+      "Basic subset division → Complex state reconstruction",
+      "Single-split problems → Multi-way partitioning",
+      "Sum-based operations → Product and XOR-based operations",
+      "Simple bit manipulation → Advanced state compression"
     ],
     coreTechniques: [
       "Meet-in-the-middle algorithm",
-      "Subset generation and combination",
-      "Binary search on sorted halves",
-      "Dynamic programming with bitmasks",
-      "GCD and modular arithmetic"
+      "Dynamic programming",
+      "Bit manipulation",
+      "State compression",
+      "Binary search optimization"
     ],
     implementationGuidelines: [
       {
@@ -296,15 +321,73 @@ def process_combinations(left, right):
             result = min(result, abs(target - (sum1 + right[idx])))
     return result
         `
+      },
+      {
+        title: "K-Way Split Template",
+        code: `
+def k_way_split(arr, k):
+    def can_split(target):
+        groups = 0
+        curr_sum = 0
+        for num in arr:
+            curr_sum += num
+            if curr_sum > target:
+                return False
+            if curr_sum == target:
+                groups += 1
+                curr_sum = 0
+        return groups >= k
+
+    left = max(arr)
+    right = sum(arr)
+    while left < right:
+        mid = (left + right) // 2
+        if can_split(mid):
+            right = mid
+        else:
+            left = mid + 1
+    return left
+        `
+      },
+      {
+        title: "Product-based Division Template",
+        code: `
+def max_product_division(arr):
+    n = len(arr)
+    best = 0
+    
+    # Try all possible divisions
+    for mask in range(1 << n):
+        set1 = []
+        set2 = []
+        for i in range(n):
+            if mask & (1 << i):
+                set1.append(arr[i])
+            else:
+                set2.append(arr[i])
+        
+        # Check validity and update result
+        if is_valid(set1) and is_valid(set2):
+            best = max(best, calculate_score(set1) * calculate_score(set2))
+    
+    return best
+        `
       }
     ],
     testingStrategy: [
       "Test with various input sizes and distributions",
-      "Check edge cases (empty input, single element, all same elements)",
-      "Verify correctness of subset generation and combination",
+      "Include edge cases (empty sets, single elements)",
+      "Verify correctness for all possible partitions",
       "Test performance with large inputs",
-      "Validate handling of constraints and optimization criteria"
+      "Check for integer overflow in sum and product operations"
+    ],
+    commonPitfalls: [
+      "Not handling edge cases (empty sets, single element)",
+      "Integer overflow in calculations",
+      "Wrong binary search implementation",
+      "Memory limit exceeded in subset generation",
+      "Incorrect pruning conditions"
     ]
   }
-};
+}
 
