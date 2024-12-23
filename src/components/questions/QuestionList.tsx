@@ -1,20 +1,14 @@
-import React from 'react';
-import { Question } from '@/types';
+// components/questions/QuestionList.tsx
+import { Question } from '@/data/types';
 import { QuestionCard } from './QuestionCard';
 
 interface QuestionListProps {
   questions: Question[];
-  subpatternIndex?: number;
+  onToggleComplete: (id: number) => void;
   completedQuestions: number[];
-  onToggleQuestion: (questionId: number) => void;
 }
 
-export const QuestionList: React.FC<QuestionListProps> = ({
-  questions,
-  subpatternIndex,
-  completedQuestions,
-  onToggleQuestion,
-}) => {
+export const QuestionList = ({ questions, onToggleComplete, completedQuestions }: QuestionListProps) => {
   return (
     <div className="space-y-6">
       {questions.map((question, index) => (
@@ -22,9 +16,8 @@ export const QuestionList: React.FC<QuestionListProps> = ({
           key={question.id}
           question={question}
           index={index}
-          subpatternIndex={subpatternIndex}
           isCompleted={completedQuestions.includes(question.id)}
-          onToggle={() => onToggleQuestion(question.id)}
+          onToggleComplete={() => onToggleComplete(question.id)}
         />
       ))}
     </div>
