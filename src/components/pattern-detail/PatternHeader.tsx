@@ -1,22 +1,36 @@
-// src/components/layout/Header.tsx
-import { Brain } from 'lucide-react';
+// src/components/pattern-detail/PatternHeader.tsx
+import { Pattern } from "@/types";
+import { Link } from "react-router-dom";
+import { Button } from "@/components/ui/button";
+import { ArrowLeft } from "lucide-react";
 
-export const Header = () => {
+interface PatternHeaderProps {
+  pattern: Pattern;
+}
+
+export const PatternHeader = ({ pattern }: PatternHeaderProps) => {
   return (
-    <div className="text-center mb-20">
-      <div className="inline-block mb-6 relative">
-        <div className="absolute inset-0 bg-gradient-to-r from-blue-600 to-indigo-600 blur-xl opacity-30 animate-pulse" />
-        <div className="relative bg-gradient-to-r from-blue-600 to-indigo-600 p-4 rounded-2xl shadow-lg">
-          <Brain className="w-14 h-14 text-white animate-bounce-slow" />
+    <>
+      <Link to="/">
+        <Button
+          variant="ghost"
+          className="mb-6 hover:bg-purple-100 hover:text-purple-700 dark:hover:bg-purple-900 dark:hover:text-purple-300"
+        >
+          <ArrowLeft className="mr-2 h-4 w-4" />
+          Back to Patterns
+        </Button>
+      </Link>
+
+      <div className="flex items-center mb-8">
+        <div>
+          <h1 className="text-4xl font-bold text-gray-800 dark:text-gray-100">
+            {pattern.title}
+          </h1>
+          <p className="text-lg text-gray-600 dark:text-gray-300 mt-2">
+            {pattern.description}
+          </p>
         </div>
       </div>
-      <h1 className="text-6xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-blue-600 via-indigo-600 to-blue-600 dark:from-blue-400 dark:via-indigo-400 dark:to-blue-400">
-        Advanced Coding Interview Patterns
-      </h1>
-      <p className="text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto mb-8">
-        Master 220 coding interview questions organized in 11 essential patterns
-      </p>
-    </div>
+    </>
   );
 };
-
