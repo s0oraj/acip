@@ -3,7 +3,7 @@ import { useState, useRef, useEffect } from "react";
 import { ChevronDown, ChevronUp } from 'lucide-react';
 import { Subpattern } from "@/types";
 import { QuestionComponent } from "./Question";
-import { AnimationDialog } from "./AnimationDialog";
+import AnimationDialog from "./AnimationDialog";
 import { countingAnimations } from "@/data/patterns/counting/animations";
 
 interface SubpatternProps {
