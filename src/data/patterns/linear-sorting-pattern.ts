@@ -1,264 +1,294 @@
-import { Pattern } from '../types';
+import { Pattern } from '../types'
 
 export const linearSortingPattern: Pattern = {
   id: 4,
   title: "Linear Sorting Pattern",
-  description: "Master linear-time sorting techniques and their applications in solving complex problems.",
-  questions: [
+  description: "Master linear sorting techniques including counting sort, bucket sort, and radix sort across multiple complexity levels",
+  subpatterns: [
     {
-      id: 1,
-      title: "Height Checker",
-      difficulty: "easy",
-      link: "https://leetcode.com/problems/height-checker/",
-      description: "Base Pattern: Fixed-range counting. Key Operation: count[height] += 1",
-      details: {
-        keyDifference: "Fixed-range counting",
-        commonError: "Not handling input range",
-        optimization: "Use array vs map based on range"
-      }
+      title: "Counting Sort with Modified Rules",
+      questions: [
+        {
+          id: 1,
+          title: "Basic Counting Sort",
+          difficulty: "easy",
+          link: "https://leetcode.com/problems/sort-an-array/",
+          description: "Base Pattern: Pure counting sort",
+          details: {
+            keyDifference: "Array counting",
+            commonError: "Range estimation",
+            optimization: "In-place counting"
+          }
+        },
+        {
+          id: 2,
+          title: "Sort Array By Parity (Counting Approach)",
+          difficulty: "easy",
+          link: "https://leetcode.com/problems/sort-array-by-parity/",
+          description: "Builds on #1: Two-bucket counting",
+          details: {
+            keyDifference: "Even/odd partitioning",
+            commonError: "Order preservation",
+            optimization: "Single pass counting"
+          }
+        },
+        {
+          id: 3,
+          title: "Sort Array by Parity II",
+          difficulty: "easy",
+          link: "https://leetcode.com/problems/sort-array-by-parity-ii/",
+          description: "Builds on #2: Alternating placement",
+          details: {
+            keyDifference: "Index alternation",
+            commonError: "Array indexing",
+            optimization: "Two-pointer traversal"
+          }
+        },
+        {
+          id: 4,
+          title: "Wiggle Sort",
+          difficulty: "medium",
+          link: "https://leetcode.com/problems/wiggle-sort/",
+          description: "Builds on #3: Wave pattern sorting",
+          details: {
+            keyDifference: "Adjacent comparison",
+            commonError: "Pattern violation",
+            optimization: "In-place swapping"
+          }
+        },
+        {
+          id: 5,
+          title: "Custom Sort String",
+          difficulty: "medium",
+          link: "https://leetcode.com/problems/custom-sort-string/",
+          description: "Builds on #4: Custom ordering",
+          details: {
+            keyDifference: "Order mapping",
+            commonError: "Missing characters",
+            optimization: "Frequency table"
+          }
+        }
+      ]
     },
     {
-      id: 2,
-      title: "Sort Colors",
-      difficulty: "medium",
-      link: "https://leetcode.com/problems/sort-colors/",
-      description: "Builds on #1: Three-pointer technique. Key Difference: One-pass partitioning",
-      details: {
-        keyDifference: "One-pass partitioning",
-        commonError: "Wrong pointer movement",
-        optimization: "In-place swaps"
-      }
+      title: "Advanced Counting Sort Applications",
+      questions: [
+        {
+          id: 6,
+          title: "Range Addition",
+          difficulty: "medium",
+          link: "https://leetcode.com/problems/range-addition/",
+          description: "Builds on #5: Range updates",
+          details: {
+            keyDifference: "Boundary marking",
+            commonError: "End point handling",
+            optimization: "Prefix sum array"
+          }
+        },
+        {
+          id: 7,
+          title: "Car Fleet (Counting Approach)",
+          difficulty: "medium",
+          link: "https://leetcode.com/problems/car-fleet/",
+          description: "Builds on #6: Position tracking",
+          details: {
+            keyDifference: "Speed comparison",
+            commonError: "Float precision",
+            optimization: "Reverse iteration"
+          }
+        },
+        {
+          id: 8,
+          title: "Maximum Height Cuboids",
+          difficulty: "hard",
+          link: "https://leetcode.com/problems/maximum-height-by-stacking-cuboids/",
+          description: "Builds on #7: Multi-criteria sorting",
+          details: {
+            keyDifference: "3D constraints",
+            commonError: "Invalid rotation checks",
+            optimization: "Pre-sort dimensions"
+          }
+        }
+      ]
     },
     {
-      id: 3,
-      title: "Relative Sort Array",
-      difficulty: "easy",
-      link: "https://leetcode.com/problems/relative-sort-array/",
-      description: "Builds on #2: Custom order counting",
-      details: {
-        keyDifference: "Reference array ordering",
-        commonError: "Missing elements handling",
-        optimization: "Use map for large ranges"
-      }
+      title: "Bucket Sort Foundations",
+      questions: [
+        {
+          id: 9,
+          title: "Basic Bucket Sort",
+          difficulty: "easy",
+          link: "https://leetcode.com/problems/sort-an-array/",
+          description: "Base Pattern: Range partitioning",
+          details: {
+            keyDifference: "Bucket distribution",
+            commonError: "Bucket sizing",
+            optimization: "Dynamic ranges"
+          }
+        },
+        {
+          id: 10,
+          title: "Sort Array By Parity (Bucket Approach)",
+          difficulty: "easy",
+          link: "https://leetcode.com/problems/sort-array-by-parity/",
+          description: "Builds on #9: Two-bucket system",
+          details: {
+            keyDifference: "Parity buckets",
+            commonError: "Memory allocation",
+            optimization: "Direct placement"
+          }
+        },
+        {
+          id: 11,
+          title: "Frequency Sort",
+          difficulty: "easy",
+          link: "https://leetcode.com/problems/sort-array-by-increasing-frequency/",
+          description: "Builds on #10: Frequency buckets",
+          details: {
+            keyDifference: "Count sorting",
+            commonError: "Equal frequencies",
+            optimization: "Map reuse"
+          }
+        }
+      ]
     },
     {
-      id: 4,
-      title: "Sort Array by Increasing Frequency",
-      difficulty: "easy",
-      link: "https://leetcode.com/problems/sort-array-by-increasing-frequency/",
-      description: "Builds on #3: Two-level sorting",
-      details: {
-        keyDifference: "Frequency as primary key",
-        commonError: "Tiebreaker handling",
-        optimization: "Bucket sort frequencies"
-      }
+      title: "Advanced Bucket Applications",
+      questions: [
+        {
+          id: 12,
+          title: "Maximum Gap",
+          difficulty: "hard",
+          link: "https://leetcode.com/problems/maximum-gap/",
+          description: "Builds on #11: Gap analysis",
+          details: {
+            keyDifference: "Bucket gaps",
+            commonError: "Empty buckets",
+            optimization: "Pigeonhole principle"
+          }
+        },
+        {
+          id: 13,
+          title: "Contains Duplicate III",
+          difficulty: "medium",
+          link: "https://leetcode.com/problems/contains-duplicate-iii/",
+          description: "Builds on #12: Sliding window buckets",
+          details: {
+            keyDifference: "Value range checks",
+            commonError: "Bucket overflow",
+            optimization: "Rolling window updates"
+          }
+        },
+        {
+          id: 14,
+          title: "Find Median from Data Stream",
+          difficulty: "hard",
+          link: "https://leetcode.com/problems/find-median-from-data-stream/",
+          description: "Builds on #13: Dynamic medians",
+          details: {
+            keyDifference: "Heap balancing",
+            commonError: "Size tracking",
+            optimization: "Lazy deletion"
+          }
+        }
+      ]
     },
     {
-      id: 5,
-      title: "H-Index",
-      difficulty: "medium",
-      link: "https://leetcode.com/problems/h-index/",
-      description: "Builds on #4: Citation grouping",
-      details: {
-        keyDifference: "Cumulative counting",
-        commonError: "Off-by-one in counting",
-        optimization: "Binary search possible"
-      }
+      title: "Radix Sort Implementations",
+      questions: [
+        {
+          id: 15,
+          title: "Basic Radix Sort",
+          difficulty: "easy",
+          link: "https://leetcode.com/problems/sort-an-array/",
+          description: "Base Pattern: Digit sorting",
+          details: {
+            keyDifference: "Place values",
+            commonError: "Negative handling",
+            optimization: "Bit operations"
+          }
+        },
+        {
+          id: 16,
+          title: "Largest Number",
+          difficulty: "medium",
+          link: "https://leetcode.com/problems/largest-number/",
+          description: "Builds on #15: String comparison",
+          details: {
+            keyDifference: "Custom ordering",
+            commonError: "Leading zeros",
+            optimization: "String concatenation"
+          }
+        },
+        {
+          id: 17,
+          title: "IP Address Sorting",
+          difficulty: "medium",
+          link: "https://www.spoj.com/problems/IPADDR/",
+          description: "Builds on #16: Octet parsing",
+          details: {
+            keyDifference: "Multi-segment",
+            commonError: "Format validation",
+            optimization: "Byte comparison"
+          }
+        }
+      ]
     },
     {
-      id: 6,
-      title: "Contains Duplicate III",
-      difficulty: "hard",
-      link: "https://leetcode.com/problems/contains-duplicate-iii/",
-      description: "Base Pattern: Value-based buckets",
-      details: {
-        keyDifference: "Value-based buckets",
-        commonError: "Bucket size calculation",
-        optimization: "Sliding window of buckets"
-      }
-    },
-    {
-      id: 7,
-      title: "Top K Frequent Elements",
-      difficulty: "medium",
-      link: "https://leetcode.com/problems/top-k-frequent-elements/",
-      description: "Builds on #6: Frequency bucketing",
-      details: {
-        keyDifference: "Reverse mapping counts",
-        commonError: "Not handling equal frequencies",
-        optimization: "No need to sort all frequencies"
-      }
-    },
-    {
-      id: 8,
-      title: "Sort Characters By Frequency",
-      difficulty: "medium",
-      link: "https://leetcode.com/problems/sort-characters-by-frequency/",
-      description: "Builds on #7: Character buckets",
-      details: {
-        keyDifference: "String reconstruction",
-        commonError: "Character ordering within frequency",
-        optimization: "Use StringBuilder"
-      }
-    },
-    {
-      id: 9,
-      title: "Maximum Gap",
-      difficulty: "hard",
-      link: "https://leetcode.com/problems/maximum-gap/",
-      description: "Builds on #8: Pigeonhole principle",
-      details: {
-        keyDifference: "Bucket size optimization",
-        commonError: "Empty bucket handling",
-        optimization: "Only track min/max per bucket"
-      }
-    },
-    {
-      id: 10,
-      title: "Find Median from Data Stream",
-      difficulty: "hard",
-      link: "https://leetcode.com/problems/find-median-from-data-stream/",
-      description: "Builds on #9: Dynamic bucket management",
-      details: {
-        keyDifference: "Continuous rebalancing",
-        commonError: "Median position tracking",
-        optimization: "Two heap approach"
-      }
-    },
-    {
-      id: 11,
-      title: "Sort Array By Parity",
-      difficulty: "easy",
-      link: "https://leetcode.com/problems/sort-array-by-parity/",
-      description: "Base Pattern: Two-way partition",
-      details: {
-        keyDifference: "Two-way partition",
-        commonError: "Unnecessary swaps",
-        optimization: "Two-pointer approach"
-      }
-    },
-    {
-      id: 12,
-      title: "Sort Array by Parity II",
-      difficulty: "easy",
-      link: "https://leetcode.com/problems/sort-array-by-parity-ii/",
-      description: "Builds on #11: Alternating placement",
-      details: {
-        keyDifference: "Fixed position constraints",
-        commonError: "Index synchronization",
-        optimization: "Two independent pointers"
-      }
-    },
-    {
-      id: 13,
-      title: "Array With Elements Not Equal to Average of Neighbors",
-      difficulty: "medium",
-      link: "https://leetcode.com/problems/array-with-elements-not-equal-to-average-of-neighbors/",
-      description: "Builds on #12: Three-element comparison",
-      details: {
-        keyDifference: "Wiggle sort principle",
-        commonError: "Not handling duplicates",
-        optimization: "Sort once, then interleave"
-      }
-    },
-    {
-      id: 14,
-      title: "Custom Sort String",
-      difficulty: "medium",
-      link: "https://leetcode.com/problems/custom-sort-string/",
-      description: "Builds on #13: Priority mapping",
-      details: {
-        keyDifference: "Character order dictionary",
-        commonError: "Missing characters",
-        optimization: "Count array vs sort"
-      }
-    },
-    {
-      id: 15,
-      title: "Largest Number",
-      difficulty: "medium",
-      link: "https://leetcode.com/problems/largest-number/",
-      description: "Builds on #14: String comparison",
-      details: {
-        keyDifference: "Custom concatenation comparison",
-        commonError: "Leading zeros",
-        optimization: "Cache string conversions"
-      }
-    },
-    {
-      id: 16,
-      title: "Range Addition",
-      difficulty: "medium",
-      link: "https://leetcode.com/problems/range-addition/",
-      description: "Base Pattern: Difference array",
-      details: {
-        keyDifference: "Boundary marking",
-        commonError: "Range boundary updates",
-        optimization: "Update endpoints only"
-      }
-    },
-    {
-      id: 17,
-      title: "Car Fleet",
-      difficulty: "medium",
-      link: "https://leetcode.com/problems/car-fleet/",
-      description: "Builds on #16: Time-based sorting",
-      details: {
-        keyDifference: "Collision detection",
-        commonError: "Float comparison",
-        optimization: "Stack-based approach"
-      }
-    },
-    {
-      id: 18,
-      title: "Maximum Height by Stacking Cuboids",
-      difficulty: "hard",
-      link: "https://leetcode.com/problems/maximum-height-by-stacking-cuboids/",
-      description: "Builds on #17: Multi-criteria sorting",
-      details: {
-        keyDifference: "3D constraints",
-        commonError: "Invalid rotation checks",
-        optimization: "Pre-sort dimensions"
-      }
-    },
-    {
-      id: 19,
-      title: "Count of Range Sum",
-      difficulty: "hard",
-      link: "https://leetcode.com/problems/count-of-range-sum/",
-      description: "Builds on #18: Prefix sum ordering",
-      details: {
-        keyDifference: "Range counting",
-        commonError: "Sum overflow",
-        optimization: "Merge sort approach"
-      }
-    },
-    {
-      id: 20,
-      title: "Longest Consecutive Sequence",
-      difficulty: "medium",
-      link: "https://leetcode.com/problems/longest-consecutive-sequence/",
-      description: "Builds on #19: Set-based sorting",
-      details: {
-        keyDifference: "Sequence detection",
-        commonError: "Duplicate handling",
-        optimization: "Skip checked numbers"
-      }
-    },
+      title: "Advanced Radix Applications",
+      questions: [
+        {
+          id: 18,
+          title: "Sort Array by Power Value",
+          difficulty: "medium",
+          link: "https://leetcode.com/problems/sort-integers-by-the-power-value/",
+          description: "Builds on #17: Custom key sorting",
+          details: {
+            keyDifference: "Power calculation",
+            commonError: "Recursion depth",
+            optimization: "Memoization table"
+          }
+        },
+        {
+          id: 19,
+          title: "Numbers With Same Consecutive Differences",
+          difficulty: "medium",
+          link: "https://leetcode.com/problems/numbers-with-same-consecutive-differences/",
+          description: "Builds on #18: Digit construction",
+          details: {
+            keyDifference: "Difference check",
+            commonError: "Leading zeros",
+            optimization: "BFS traversal"
+          }
+        },
+        {
+          id: 20,
+          title: "Maximum Binary String",
+          difficulty: "medium",
+          link: "https://leetcode.com/problems/maximum-binary-string-after-change/",
+          description: "Builds on #19: Binary operations",
+          details: {
+            keyDifference: "Pattern matching",
+            commonError: "Zero handling",
+            optimization: "Greedy tracking"
+          }
+        }
+      ]
+    }
   ],
   summary: {
     progressionElements: [
-      "Fixed-range counting → Variable-range bucketing",
-      "Single-pass partitioning → Multi-criteria sorting",
-      "In-place modifications → Auxiliary data structures",
-      "Simple frequency counting → Complex ordering rules"
+      "Basic counting → Advanced counting applications",
+      "Simple bucket sort → Complex bucket strategies",
+      "Digit-based sorting → Custom radix applications",
+      "Single-criteria sorting → Multi-dimensional sorting"
     ],
     coreTechniques: [
-      "Counting sort",
-      "Bucket sort",
-      "Modified sorting rules",
-      "Difference arrays",
-      "Custom comparison functions"
+      "Counting sort algorithm",
+      "Bucket sort variations",
+      "Radix sort implementations",
+      "Custom comparison functions",
+      "Range and prefix sum techniques"
     ],
     implementationGuidelines: [
       {
@@ -304,14 +334,38 @@ def bucket_sort(arr, bucket_size=5):
         result.extend(bucket)
     return result
         `
+      },
+      {
+        title: "Modified Rules Template",
+        code: `
+def custom_sort(arr, rule_func):
+    n = len(arr)
+    for i in range(n):
+        for j in range(n-1):
+            if not rule_func(arr[j], arr[j+1]):
+                arr[j], arr[j+1] = arr[j+1], arr[j]
+    return arr
+
+# Example rule function
+def compare_by_parity(a, b):
+    return a % 2 <= b % 2  # Even numbers before odd
+        `
       }
     ],
     testingStrategy: [
-      "Test with various input ranges and distributions",
-      "Check edge cases (empty array, single element, all same elements)",
-      "Verify stability requirements",
-      "Test performance with large inputs",
-      "Validate custom sorting rules and constraints"
+      "Test with various input sizes",
+      "Include edge cases (empty arrays, single elements)",
+      "Test with different value ranges",
+      "Verify stability in relevant cases",
+      "Check performance with large inputs"
+    ],
+    commonPitfalls: [
+      "Integer overflow in bucket calculations",
+      "Not handling duplicate elements correctly",
+      "Wrong bucket size leading to O(n²) behavior",
+      "Memory leaks in dynamic bucket allocation",
+      "Unstable sorting when order matters"
     ]
   }
-};
+}
+
