@@ -16,22 +16,24 @@ const AnimationStep = ({ step }) => (
       <code className="text-sm text-gray-800 dark:text-gray-200">{step.code}</code>
     </pre>
     <div className="p-4 bg-gray-100 dark:bg-gray-800 rounded-lg">
-      {step.visualization.elements.map((el, idx) => (
-        <span 
-          key={idx}
-          className={`inline-block px-3 py-1 m-1 rounded ${
-            step.visualization.highlightIndices.includes(idx) 
-              ? 'bg-purple-200 dark:bg-purple-800' 
-              : 'bg-white dark:bg-gray-700'
-          }`}
-        >
-          {el}
-        </span>
-      ))}
+      <div className="flex flex-wrap gap-2">
+        {step.visualization.elements.map((el, idx) => (
+          <span 
+            key={idx}
+            className={`px-3 py-1 rounded ${
+              step.visualization.highlightIndices.includes(idx) 
+                ? 'bg-purple-200 dark:bg-purple-800' 
+                : 'bg-white dark:bg-gray-700'
+            }`}
+          >
+            {el}
+          </span>
+        ))}
+      </div>
       {step.visualization.counter && (
-        <div className="mt-4 p-2 bg-white dark:bg-gray-700 rounded">
+        <div className="mt-4 p-2 bg-white dark:bg-gray-700 rounded flex flex-wrap gap-3">
           {Object.entries(step.visualization.counter).map(([key, value]) => (
-            <span key={key} className="mr-3">
+            <span key={key} className="text-sm">
               {key}: {value}
             </span>
           ))}
@@ -50,7 +52,7 @@ export const AnimationDialog = ({ animation }) => {
           View Animation
         </Button>
       </DialogTrigger>
-      <DialogContent className="max-w-3xl">
+      <DialogContent className="max-w-3xl max-h-[80vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle>{animation.title}</DialogTitle>
         </DialogHeader>
