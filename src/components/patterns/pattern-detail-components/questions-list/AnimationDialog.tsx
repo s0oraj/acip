@@ -21,8 +21,9 @@ const AnimationDialog: React.FC<AnimationDialogProps> = ({ isOpen, onClose, anim
           <DialogTitle>{animation.title}</DialogTitle>
           <DialogDescription>{animation.description}</DialogDescription>
         </DialogHeader>
-        <div className="mt-4">
-          <div className="flex justify-center space-x-4 mb-4">
+
+        <div className="flex flex-col gap-4">
+          <div className="flex gap-2">
             {animation.counters.map((counter, index) => (
               <Button
                 key={index}
@@ -33,6 +34,7 @@ const AnimationDialog: React.FC<AnimationDialogProps> = ({ isOpen, onClose, anim
               </Button>
             ))}
           </div>
+
           <FrequencyVisualizer counter={activeCounter} />
         </div>
       </DialogContent>
@@ -41,4 +43,3 @@ const AnimationDialog: React.FC<AnimationDialogProps> = ({ isOpen, onClose, anim
 };
 
 export default AnimationDialog;
-
