@@ -108,4 +108,3 @@ const FrequencyVisualizer: React.FC<FrequencyVisualizerProps> = ({ counter }) =>
 };
 
 export default FrequencyVisualizer;
-
