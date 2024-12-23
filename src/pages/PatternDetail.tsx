@@ -1,6 +1,6 @@
 import { useParams, Link } from "react-router-dom";
 import { patterns } from "@/data/patterns";
-import { ArrowLeft, ChevronRight, Info } from 'lucide-react';
+import { ArrowLeft, ChevronRight, Info, ChevronDown, ChevronUp } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useEffect, useState } from "react";
@@ -12,12 +12,13 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Pattern, Question } from "@/types";
+import { Pattern, Question, Subpattern } from "@/types";
 
 const PatternDetail = () => {
   const { id } = useParams();
   const pattern = patterns.find((p) => p.id === Number(id));
   const [completedQuestions, setCompletedQuestions] = useState<number[]>([]);
+  const [expandedSubpatterns, setExpandedSubpatterns] = useState<number[]>([]);
 
   useEffect(() => {
     const stored = localStorage.getItem(`pattern-${id}-completed`);
@@ -35,6 +36,14 @@ const PatternDetail = () => {
       localStorage.setItem(`pattern-${id}-completed`, JSON.stringify(newCompleted));
       return newCompleted;
     });
+  };
+
+  const toggleSubpattern = (subpatternIndex: number) => {
+    setExpandedSubpatterns((prev) =>
+      prev.includes(subpatternIndex)
+        ? prev.filter((index) => index !== subpatternIndex)
+        : [...prev, subpatternIndex]
+    );
   };
 
   if (!pattern) {
@@ -97,84 +106,98 @@ const PatternDetail = () => {
 
         <div className="space-y-12">
           {pattern.subpatterns && pattern.subpatterns.length > 0 ? (
-            pattern.subpatterns.map((subpattern, subpatternIndex) => (
+            pattern.subpatterns.map((subpattern: Subpattern, subpatternIndex: number) => (
               <div key={subpatternIndex} className="space-y-6">
-                <h2 className="text-2xl font-bold text-gray-800 dark:text-gray-100 border-b border-purple-200 dark:border-purple-800 pb-2">
-                  {subpattern.title}
-                </h2>
+                <div
+                  className="subpattern-header bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg border border-purple-100 dark:border-purple-900 transition-all duration-300 hover:shadow-xl cursor-pointer"
+                  onClick={() => toggleSubpattern(subpatternIndex)}
+                >
+                  <div className="flex items-center justify-between">
+                    <h2 className="text-2xl font-bold text-gray-800 dark:text-gray-100">
+                      {subpattern.title}
+                    </h2>
+                    {expandedSubpatterns.includes(subpatternIndex) ? (
+                      <ChevronUp className="w-6 h-6 text-gray-600 dark:text-gray-400" />
+                    ) : (
+                      <ChevronDown className="w-6 h-6 text-gray-600 dark:text-gray-400" />
+                    )}
+                  </div>
+                </div>
                 
-                <div className="space-y-6">
-                  {subpattern.questions.map((question, index) => (
-                    <div
-                      key={question.id}
-                      className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg border border-purple-100 dark:border-purple-900 transition-all duration-300 hover:shadow-xl"
-                    >
-                      <div className="flex items-center justify-between mb-4">
-                        <h3 className="text-xl font-semibold text-gray-800 dark:text-gray-100">
-                          {subpatternIndex + 1}.{index + 1}. {question.title}
-                        </h3>
-                        <div className="flex items-center gap-4">
-                          {question.details && (
-                            <Dialog>
-                              <DialogTrigger asChild>
-                                <Button variant="outline" size="sm" className="gap-2">
-                                  <Info className="w-4 h-4" />
-                                  Details
-                                </Button>
-                              </DialogTrigger>
-                              <DialogContent className="max-w-2xl">
-                                <DialogHeader>
-                                  <DialogTitle>{question.title}</DialogTitle>
-                                  <DialogDescription>{question.description}</DialogDescription>
-                                </DialogHeader>
-                                <div className="space-y-4">
-                                  <div>
-                                    <h4 className="font-semibold text-purple-700 dark:text-purple-300">Key Difference</h4>
-                                    <p className="text-gray-600 dark:text-gray-300">{question.details.keyDifference}</p>
+                {expandedSubpatterns.includes(subpatternIndex) && (
+                  <div className="expand-animation space-y-6">
+                    {subpattern.questions.map((question, index) => (
+                      <div
+                        key={question.id}
+                        className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg border border-purple-100 dark:border-purple-900 transition-all duration-300 hover:shadow-xl"
+                      >
+                        <div className="flex items-center justify-between mb-4">
+                          <h3 className="text-xl font-semibold text-gray-800 dark:text-gray-100">
+                            {subpatternIndex + 1}.{index + 1}. {question.title}
+                          </h3>
+                          <div className="flex items-center gap-4">
+                            {question.details && (
+                              <Dialog>
+                                <DialogTrigger asChild>
+                                  <Button variant="outline" size="sm" className="gap-2">
+                                    <Info className="w-4 h-4" />
+                                    Details
+                                  </Button>
+                                </DialogTrigger>
+                                <DialogContent className="max-w-2xl">
+                                  <DialogHeader>
+                                    <DialogTitle>{question.title}</DialogTitle>
+                                    <DialogDescription>{question.description}</DialogDescription>
+                                  </DialogHeader>
+                                  <div className="space-y-4">
+                                    <div>
+                                      <h4 className="font-semibold text-purple-700 dark:text-purple-300">Key Difference</h4>
+                                      <p className="text-gray-600 dark:text-gray-300">{question.details.keyDifference}</p>
+                                    </div>
+                                    <div>
+                                      <h4 className="font-semibold text-red-700 dark:text-red-300">Common Error</h4>
+                                      <p className="text-gray-600 dark:text-gray-300">{question.details.commonError}</p>
+                                    </div>
+                                    <div>
+                                      <h4 className="font-semibold text-green-700 dark:text-green-300">Optimization</h4>
+                                      <p className="text-gray-600 dark:text-gray-300">{question.details.optimization}</p>
+                                    </div>
                                   </div>
-                                  <div>
-                                    <h4 className="font-semibold text-red-700 dark:text-red-300">Common Error</h4>
-                                    <p className="text-gray-600 dark:text-gray-300">{question.details.commonError}</p>
-                                  </div>
-                                  <div>
-                                    <h4 className="font-semibold text-green-700 dark:text-green-300">Optimization</h4>
-                                    <p className="text-gray-600 dark:text-gray-300">{question.details.optimization}</p>
-                                  </div>
-                                </div>
-                              </DialogContent>
-                            </Dialog>
-                          )}
-                          <span
-                            className={`px-3 py-1 rounded-full text-sm font-medium ${getDifficultyColor(
-                              question.difficulty
-                            )}`}
+                                </DialogContent>
+                              </Dialog>
+                            )}
+                            <span
+                              className={`px-3 py-1 rounded-full text-sm font-medium ${getDifficultyColor(
+                                question.difficulty
+                              )}`}
+                            >
+                              {question.difficulty.charAt(0).toUpperCase() +
+                                question.difficulty.slice(1)}
+                            </span>
+                            <Checkbox
+                              id={`question-${question.id}`}
+                              checked={completedQuestions.includes(question.id)}
+                              onCheckedChange={() => toggleQuestion(question.id)}
+                              className="h-5 w-5"
+                            />
+                          </div>
+                        </div>
+                        <p className="text-gray-600 dark:text-gray-300 mb-4">{question.description}</p>
+                        <div>
+                          <a
+                            href={question.link}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center text-purple-600 dark:text-purple-400 hover:text-purple-700 dark:hover:text-purple-300 font-medium transition-colors"
                           >
-                            {question.difficulty.charAt(0).toUpperCase() +
-                              question.difficulty.slice(1)}
-                          </span>
-                          <Checkbox
-                            id={`question-${question.id}`}
-                            checked={completedQuestions.includes(question.id)}
-                            onCheckedChange={() => toggleQuestion(question.id)}
-                            className="h-5 w-5"
-                          />
+                            Solve on LeetCode
+                            <ChevronRight className="ml-1 w-4 h-4" />
+                          </a>
                         </div>
                       </div>
-                      <p className="text-gray-600 dark:text-gray-300 mb-4">{question.description}</p>
-                      <div>
-                        <a
-                          href={question.link}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="inline-flex items-center text-purple-600 dark:text-purple-400 hover:text-purple-700 dark:hover:text-purple-300 font-medium transition-colors"
-                        >
-                          Solve on LeetCode
-                          <ChevronRight className="ml-1 w-4 h-4" />
-                        </a>
-                      </div>
-                    </div>
-                  ))}
-                </div>
+                    ))}
+                  </div>
+                )}
               </div>
             ))
           ) : (
