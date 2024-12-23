@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import { patterns } from "@/data/patterns";
 import { useEffect, useState } from "react";
 import { PatternHeader } from "@/components/patterns/pattern-detail-components/PatternHeader";
-import { QuestionsList } from "@/components/patterns/pattern-detail-components/QuestionsList";
+import { QuestionsList } from "@/components/patterns/pattern-detail-components/questions-list/QuestionsList";
 
 const PatternDetail = () => {
   const { id } = useParams();
