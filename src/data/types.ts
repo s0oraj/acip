@@ -36,3 +36,25 @@ export interface Pattern {
   questions: Question[];
   summary?: PatternSummary;
 }
+export interface AnimationPhase {
+  description: string;
+  activeIndex?: number;
+  highlightIndices?: number[];
+  counter?: Record<string, number>;
+  code?: string;
+}
+
+export interface AnimationStep {
+  title: string;
+  description: string;
+  code?: string;
+  array: number[];
+  phases: AnimationPhase[];
+}
+
+export interface Animation {
+  id: string;
+  title: string;
+  description: string;
+  steps: AnimationStep[];
+}
