@@ -59,15 +59,11 @@ export const basicCounterAnimation = {
         {
           description: "Final frequency distribution",
           counter: {
-            "1": 2,
-            "2": 1,
-            "3": 1,
-            "4": 1,
-            "5": 1,
-            "6": 1,
-            "9": 1
+            "1": 2, "2": 1, "3": 1, "4": 1,
+            "5": 1, "6": 1, "9": 1
           },
-          code: "# Final counter state\nprint(counter)"
+          code: `# Final counter state
+print(counter)  # {1: 2, 2: 1, 3: 1, 4: 1, 5: 1, 6: 1, 9: 1}`
         }
       ]
     }
