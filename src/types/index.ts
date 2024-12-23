@@ -13,6 +13,11 @@ export interface Question {
   details?: QuestionDetails;
 }
 
+export interface Subpattern {
+  title: string;
+  questions: Question[];
+}
+
 export interface PatternSummary {
   progressionElements: string[];
   coreTechniques: string[];
@@ -27,6 +32,7 @@ export interface Pattern {
   id: number;
   title: string;
   description: string;
-  questions: Question[];
+  questions?: Question[];
+  subpatterns?: Subpattern[];
   summary?: PatternSummary;
 }
