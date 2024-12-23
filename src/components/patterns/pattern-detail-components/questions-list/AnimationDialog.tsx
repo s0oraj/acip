@@ -1,15 +1,26 @@
+// src/components/patterns/pattern-detail-components/questions-list/AnimationDialog.tsx
 import React, { useState, useEffect } from 'react';
 import { Play, Pause, SkipBack, SkipForward } from 'lucide-react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
+import { Animation, AnimationStep as AnimationStepType, AnimationPhase } from '@/data/types';
 
 const ARRAY_CELL_SIZE = 40;
 const ARRAY_CELL_GAP = 10;
 const COUNTER_BAR_WIDTH = 30;
 const COUNTER_BAR_GAP = 15;
 
-const AnimatedCell = ({ value, x, y, isActive, isHighlighted, onComplete }) => {
-  const [position, setPosition] = useState({ x, y });
+interface AnimatedCellProps {
+  value: number;
+  x: number;
+  y: number;
+  isActive?: boolean;
+  isHighlighted?: boolean;
+  onComplete?: () => void;
+}
+
+const AnimatedCell: React.FC<AnimatedCellProps> = ({ value, x, y, isActive, isHighlighted, onComplete }) => {
+  const [position] = useState({ x, y });
   const [scale, setScale] = useState(1);
 
   useEffect(() => {
@@ -20,7 +31,7 @@ const AnimatedCell = ({ value, x, y, isActive, isHighlighted, onComplete }) => {
         onComplete?.();
       }, 500);
     }
-  }, [isActive]);
+  }, [isActive, onComplete]);
 
   return (
     <g
@@ -47,7 +58,15 @@ const AnimatedCell = ({ value, x, y, isActive, isHighlighted, onComplete }) => {
   );
 };
 
-const CounterBar = ({ value, label, x, height, isActive }) => {
+interface CounterBarProps {
+  value: number;
+  label: string;
+  x: number;
+  height: number;
+  isActive: boolean;
+}
+
+const CounterBar: React.FC<CounterBarProps> = ({ value, label, x, height, isActive }) => {
   const [currentHeight, setCurrentHeight] = useState(0);
 
   useEffect(() => {
@@ -79,8 +98,12 @@ const CounterBar = ({ value, label, x, height, isActive }) => {
   );
 };
 
-const AnimationStep = ({ step, isActive }) => {
-  const [currentElement, setCurrentElement] = useState(0);
+interface AnimationStepProps {
+  step: AnimationStepType;
+  isActive: boolean;
+}
+
+const AnimationStep: React.FC<AnimationStepProps> = ({ step, isActive }) => {
   const [animationPhase, setAnimationPhase] = useState(0);
 
   useEffect(() => {
@@ -90,7 +113,7 @@ const AnimationStep = ({ step, isActive }) => {
       }, 1000);
       return () => clearTimeout(timer);
     }
-  }, [isActive, animationPhase]);
+  }, [isActive, animationPhase, step.phases.length]);
 
   const phase = step.phases[Math.min(animationPhase, step.phases.length - 1)];
 
@@ -101,7 +124,6 @@ const AnimationStep = ({ step, isActive }) => {
 
       <div className="bg-gray-50 dark:bg-gray-800 rounded-lg p-6 mb-6">
         <svg viewBox="0 0 600 200" className="w-full">
-          {/* Input Array */}
           {step.array.map((num, idx) => (
             <AnimatedCell
               key={idx}
@@ -113,7 +135,6 @@ const AnimationStep = ({ step, isActive }) => {
             />
           ))}
 
-          {/* Counter Visualization */}
           {Object.entries(phase?.counter || {}).map(([key, value], idx) => (
             <CounterBar
               key={key}
@@ -125,7 +146,6 @@ const AnimationStep = ({ step, isActive }) => {
             />
           ))}
 
-          {/* Arrow indicating current element */}
           {phase?.activeIndex !== undefined && (
             <path
               d={`M${50 + phase.activeIndex * (ARRAY_CELL_SIZE + ARRAY_CELL_GAP) + ARRAY_CELL_SIZE/2},70 V90`}
@@ -156,7 +176,11 @@ const AnimationStep = ({ step, isActive }) => {
   );
 };
 
-export const AnimationDialog = ({ animation }) => {
+interface AnimationDialogProps {
+  animation: Animation;
+}
+
+export const AnimationDialog: React.FC<AnimationDialogProps> = ({ animation }) => {
   const [currentStep, setCurrentStep] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
   const totalSteps = animation?.steps?.length || 0;
