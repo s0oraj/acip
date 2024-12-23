@@ -1,264 +1,289 @@
-import { Pattern } from '../types';
+import { Pattern } from '../types'
 
 export const moAlgorithmPattern: Pattern = {
   id: 6,
-  title: "MO's Algorithm Pattern",
-  description: "Master MO's algorithm for efficient offline query processing and range-based problems.",
-  questions: [
+  title: "Mo's Algorithm Pattern",
+  description: "Master Mo's Algorithm for efficient range query processing across multiple complexity levels",
+  subpatterns: [
     {
-      id: 1,
-      title: "Range Sum Query - Mutable",
-      difficulty: "medium",
-      link: "https://leetcode.com/problems/range-sum-query-mutable/",
-      description: "Base Pattern: Square root decomposition. Key Operation: blocks[block_id] += diff",
-      details: {
-        keyDifference: "Square root decomposition",
-        commonError: "Block size calculation",
-        optimization: "Lazy propagation"
-      }
+      title: "Basic Range Query Operations",
+      questions: [
+        {
+          id: 1,
+          title: "Range Sum Query - Mutable",
+          difficulty: "medium",
+          link: "https://leetcode.com/problems/range-sum-query-mutable/",
+          description: "Base Pattern: Square root decomposition with offline queries",
+          details: {
+            keyDifference: "sortQueries() by block_id and right endpoint",
+            commonError: "Block size calculation",
+            optimization: "Query ordering"
+          }
+        },
+        {
+          id: 2,
+          title: "XOR Queries of a Subarray",
+          difficulty: "medium",
+          link: "https://leetcode.com/problems/xor-queries-of-a-subarray/",
+          description: "Builds on #1: Adding/removing elements while moving pointers",
+          details: {
+            keyDifference: "curr_xor ^= arr[pos] for both add/remove",
+            commonError: "XOR property application",
+            optimization: "Two-pointer technique"
+          }
+        },
+        {
+          id: 3,
+          title: "Count of Unique Elements in Subarray",
+          difficulty: "medium",
+          link: "https://leetcode.com/problems/k-divisible-elements-subarrays/",
+          description: "Builds on #2: Frequency array for tracking",
+          details: {
+            keyDifference: "if(++freq[arr[pos]] == 1) distinct_count++",
+            commonError: "Decrement handling",
+            optimization: "Hash table for sparse arrays"
+          }
+        },
+        {
+          id: 4,
+          title: "Count Nice Pairs in Array",
+          difficulty: "medium",
+          link: "https://leetcode.com/problems/count-nice-pairs-in-an-array/",
+          description: "Builds on #3: Two-pointer with frequency",
+          details: {
+            keyDifference: "pairs += freq[target - curr]",
+            commonError: "Self-pairs handling",
+            optimization: "Hash map"
+          }
+        }
+      ]
     },
     {
-      id: 2,
-      title: "XOR Queries of a Subarray",
-      difficulty: "medium",
-      link: "https://leetcode.com/problems/xor-queries-of-a-subarray/",
-      description: "Builds on #1: XOR property usage. Key Difference: XOR instead of sum",
-      details: {
-        keyDifference: "XOR instead of sum",
-        commonError: "Prefix XOR handling",
-        optimization: "Pre-compute prefix XORs"
-      }
+      title: "Frequency-Based Queries",
+      questions: [
+        {
+          id: 5,
+          title: "Most Frequent Element in Range",
+          difficulty: "medium",
+          link: "https://codeforces.com/problemset/problem/220/B",
+          description: "Base Pattern: Frequency tracking with Mo's",
+          details: {
+            keyDifference: "updateMaxFreq(freq[arr[pos]])",
+            commonError: "Maximum frequency maintenance",
+            optimization: "Bucket array"
+          }
+        },
+        {
+          id: 6,
+          title: "K-Most Frequent in Range",
+          difficulty: "hard",
+          link: "https://codeforces.com/problemset/problem/86/D",
+          description: "Builds on #5: Track top-K elements",
+          details: {
+            keyDifference: "priority_queue for K elements",
+            commonError: "Frequency updates",
+            optimization: "Count array"
+          }
+        },
+        {
+          id: 7,
+          title: "Count Pairs with Sum in Range",
+          difficulty: "hard",
+          link: "https://codeforces.com/problemset/problem/375/D",
+          description: "Builds on #6: Two-pointer with frequency",
+          details: {
+            keyDifference: "pairs += freq[target - curr]",
+            commonError: "Self-pairs handling",
+            optimization: "Hash map"
+          }
+        },
+        {
+          id: 8,
+          title: "Range Mode Query with Updates",
+          difficulty: "hard",
+          link: "https://codeforces.com/problemset/problem/617/E",
+          description: "Builds on #7: Handle updates between queries",
+          details: {
+            keyDifference: "time parameter in query sorting",
+            commonError: "Update ordering",
+            optimization: "Time-based blocks"
+          }
+        }
+      ]
     },
     {
-      id: 3,
-      title: "Range GCD Queries",
-      difficulty: "hard",
-      link: "https://practice.geeksforgeeks.org/problems/range-gcd-queries/1",
-      description: "Builds on #2: GCD property",
-      details: {
-        keyDifference: "Segment merging logic",
-        commonError: "Empty range GCD",
-        optimization: "Sparse table possible"
-      }
+      title: "Advanced Range Operations",
+      questions: [
+        {
+          id: 9,
+          title: "Number of Different Integers in a String",
+          difficulty: "easy",
+          link: "https://leetcode.com/problems/number-of-different-integers-in-a-string/",
+          description: "Base Pattern: Distinct counting with Mo's",
+          details: {
+            keyDifference: "updateCount(window, num)",
+            commonError: "String to integer conversion",
+            optimization: "Hash set"
+          }
+        },
+        {
+          id: 10,
+          title: "GCD of an Array",
+          difficulty: "easy",
+          link: "https://leetcode.com/problems/find-greatest-common-divisor-of-array/",
+          description: "Builds on #9: GCD computation",
+          details: {
+            keyDifference: "curr_gcd = gcd(curr_gcd, arr[pos])",
+            commonError: "Remove operation",
+            optimization: "Prime factorization"
+          }
+        },
+        {
+          id: 11,
+          title: "Product of Array Except Self",
+          difficulty: "medium",
+          link: "https://leetcode.com/problems/product-of-array-except-self/",
+          description: "Builds on #10: Product with division handling",
+          details: {
+            keyDifference: "curr_prod = (curr_prod * arr[pos]) % MOD",
+            commonError: "Division for removal",
+            optimization: "Logarithmic exponentiation"
+          }
+        },
+        {
+          id: 12,
+          title: "Count Number of Nice Subarrays",
+          difficulty: "medium",
+          link: "https://leetcode.com/problems/count-number-of-nice-subarrays/",
+          description: "Builds on #11: Count tracking",
+          details: {
+            keyDifference: "if(isNice(arr[pos])) count++",
+            commonError: "Window updates",
+            optimization: "Two pointers"
+          }
+        }
+      ]
     },
     {
-      id: 4,
-      title: "Range LCM Queries",
-      difficulty: "hard",
-      link: "https://practice.geeksforgeeks.org/problems/range-lcm-queries/1",
-      description: "Builds on #3: LCM computation",
-      details: {
-        keyDifference: "Overflow handling",
-        commonError: "GCD-LCM relationship",
-        optimization: "Prime factorization"
-      }
+      title: "Special Range Operations",
+      questions: [
+        {
+          id: 13,
+          title: "Range Median Query",
+          difficulty: "hard",
+          link: "https://codeforces.com/problemset/problem/840/D",
+          description: "Base Pattern: Order statistics with Mo's",
+          details: {
+            keyDifference: "freq[] array for position tracking",
+            commonError: "Median calculation",
+            optimization: "Binary search"
+          }
+        },
+        {
+          id: 14,
+          title: "Range Mode with Duplicates",
+          difficulty: "hard",
+          link: "https://codeforces.com/problemset/problem/940/F",
+          description: "Builds on #13: Frequency of frequencies",
+          details: {
+            keyDifference: "freq_of_freq[] array",
+            commonError: "Mode updates",
+            optimization: "Bucket array"
+          }
+        },
+        {
+          id: 15,
+          title: "Range AND Query",
+          difficulty: "hard",
+          link: "https://codeforces.com/problemset/problem/242/E",
+          description: "Builds on #14: Bitwise AND",
+          details: {
+            keyDifference: "curr_and &= arr[pos]",
+            commonError: "Remove operation",
+            optimization: "Bit manipulation"
+          }
+        },
+        {
+          id: 16,
+          title: "Range OR Query",
+          difficulty: "hard",
+          link: "https://codeforces.com/problemset/problem/620/E",
+          description: "Builds on #15: Bitwise OR",
+          details: {
+            keyDifference: "curr_or |= arr[pos]",
+            commonError: "Bit tracking",
+            optimization: "Bit parallelism"
+          }
+        }
+      ]
     },
     {
-      id: 5,
-      title: "Number of Distinct Elements",
-      difficulty: "medium",
-      link: "https://leetcode.com/problems/count-number-of-distinct-integers-after-reverse-operations/",
-      description: "Base Pattern: Window distinct counting",
-      details: {
-        keyDifference: "Window distinct counting",
-        commonError: "Add/remove window updates",
-        optimization: "Rolling hash"
-      }
-    },
-    {
-      id: 6,
-      title: "Range Mode Query",
-      difficulty: "medium",
-      link: "https://practice.geeksforgeeks.org/problems/mode-in-range/1",
-      description: "Builds on #5: Frequency tracking",
-      details: {
-        keyDifference: "Maximum frequency maintenance",
-        commonError: "Multiple modes",
-        optimization: "Frequency table reuse"
-      }
-    },
-    {
-      id: 7,
-      title: "K-Frequent Elements Query",
-      difficulty: "medium",
-      link: "https://leetcode.com/problems/top-k-frequent-elements/",
-      description: "Builds on #6: K-elements extension",
-      details: {
-        keyDifference: "Priority queue usage",
-        commonError: "Frequency collisions",
-        optimization: "Bucket sort approach"
-      }
-    },
-    {
-      id: 8,
-      title: "Range Distinct Pairs",
-      difficulty: "hard",
-      link: "https://practice.geeksforgeeks.org/problems/count-distinct-pairs/1",
-      description: "Builds on #7: Pair counting",
-      details: {
-        keyDifference: "Two-element combinations",
-        commonError: "Double counting",
-        optimization: "Hash table for pairs"
-      }
-    },
-    {
-      id: 9,
-      title: "Range Product Updates",
-      difficulty: "medium",
-      link: "https://practice.geeksforgeeks.org/problems/product-array-puzzle4525/1",
-      description: "Base Pattern: Range multiplication",
-      details: {
-        keyDifference: "Range multiplication",
-        commonError: "Overflow in products",
-        optimization: "Logarithmic space"
-      }
-    },
-    {
-      id: 10,
-      title: "Range XOR Updates",
-      difficulty: "medium",
-      link: "https://practice.geeksforgeeks.org/problems/xor-operation/1",
-      description: "Builds on #9: XOR update rules",
-      details: {
-        keyDifference: "XOR properties",
-        commonError: "Multiple XOR applications",
-        optimization: "Bit manipulation"
-      }
-    },
-    {
-      id: 11,
-      title: "Range AND Updates",
-      difficulty: "hard",
-      link: "https://www.hackerearth.com/practice/data-structures/advanced-data-structures/segment-trees/practice-problems/algorithm/and-queries-3/",
-      description: "Builds on #10: AND operation rules",
-      details: {
-        keyDifference: "Bit masking",
-        commonError: "Lazy propagation",
-        optimization: "Bit-level updates"
-      }
-    },
-    {
-      id: 12,
-      title: "Range OR Updates",
-      difficulty: "hard",
-      link: "https://www.hackerearth.com/practice/data-structures/advanced-data-structures/segment-trees/practice-problems/algorithm/or-queries/",
-      description: "Builds on #11: OR operation rules",
-      details: {
-        keyDifference: "Bit merging",
-        commonError: "Update order",
-        optimization: "Segment merging"
-      }
-    },
-    {
-      id: 13,
-      title: "Count of Range Sum",
-      difficulty: "hard",
-      link: "https://leetcode.com/problems/count-of-range-sum/",
-      description: "Base Pattern: Prefix sum ranges",
-      details: {
-        keyDifference: "Prefix sum ranges",
-        commonError: "Overflow in sums",
-        optimization: "Merge sort approach"
-      }
-    },
-    {
-      id: 14,
-      title: "Range Sum Frequency",
-      difficulty: "easy",
-      link: "https://practice.geeksforgeeks.org/problems/frequency-of-array-elements-1587115620/1",
-      description: "Builds on #13: Frequency counting",
-      details: {
-        keyDifference: "Range-based frequency",
-        commonError: "Index mapping",
-        optimization: "Block compression"
-      }
-    },
-    {
-      id: 15,
-      title: "Range Product Count",
-      difficulty: "hard",
-      link: "https://www.hackerearth.com/practice/data-structures/advanced-data-structures/segment-trees/practice-problems/algorithm/product-in-range-7/",
-      description: "Builds on #14: Product tracking",
-      details: {
-        keyDifference: "Modular arithmetic",
-        commonError: "Zero handling",
-        optimization: "Prime factorization"
-      }
-    },
-    {
-      id: 16,
-      title: "Range GCD Count",
-      difficulty: "hard",
-      link: "https://practice.geeksforgeeks.org/problems/gcd-in-range/1",
-      description: "Builds on #15: GCD frequency",
-      details: {
-        keyDifference: "Factor counting",
-        commonError: "Prime factorization",
-        optimization: "Sieve preprocessing"
-      }
-    },
-    {
-      id: 17,
-      title: "Range Median Query",
-      difficulty: "medium",
-      link: "https://practice.geeksforgeeks.org/problems/find-the-median0527/1",
-      description: "Base Pattern: Order statistics",
-      details: {
-        keyDifference: "Order statistics",
-        commonError: "Partition strategy",
-        optimization: "Weighted medians"
-      }
-    },
-    {
-      id: 18,
-      title: "Range OR Queries",
-      difficulty: "medium",
-      link: "https://practice.geeksforgeeks.org/problems/range-or-queries/1",
-      description: "Builds on #17: Bitwise operations",
-      details: {
-        keyDifference: "OR optimizations",
-        commonError: "Bit propagation",
-        optimization: "Bit parallelism"
-      }
-    },
-    {
-      id: 19,
-      title: "Range AND Queries",
-      difficulty: "medium",
-      link: "https://practice.geeksforgeeks.org/problems/range-and-queries/1",
-      description: "Builds on #18: AND properties",
-      details: {
-        keyDifference: "AND optimizations",
-        commonError: "Neutral elements",
-        optimization: "Sparse table"
-      }
-    },
-    {
-      id: 20,
-      title: "Range LCM Count",
-      difficulty: "hard",
-      link: "https://practice.geeksforgeeks.org/problems/lcm-in-range/1",
-      description: "Builds on #19: LCM properties",
-      details: {
-        keyDifference: "Prime power counting",
-        commonError: "GCD relationship",
-        optimization: "Factor memoization"
-      }
-    },
+      title: "Update Operations",
+      questions: [
+        {
+          id: 17,
+          title: "Range Sum Query 2D - Mutable",
+          difficulty: "hard",
+          link: "https://leetcode.com/problems/range-sum-query-2d-mutable/",
+          description: "Base Pattern: Mo's with updates",
+          details: {
+            keyDifference: "time parameter in sorting",
+            commonError: "Update timing",
+            optimization: "Block size adjustment"
+          }
+        },
+        {
+          id: 18,
+          title: "Number of Submatrices That Sum to Target",
+          difficulty: "hard",
+          link: "https://leetcode.com/problems/number-of-submatrices-that-sum-to-target/",
+          description: "Builds on #17: Value updates",
+          details: {
+            keyDifference: "curr_sum += new_val - old_val",
+            commonError: "Update application",
+            optimization: "Lazy updates"
+          }
+        },
+        {
+          id: 19,
+          title: "Range XOR Queries",
+          difficulty: "hard",
+          link: "https://codeforces.com/problemset/problem/940/F",
+          description: "Builds on #18: XOR updates",
+          details: {
+            keyDifference: "curr_xor ^= new_val ^ old_val",
+            commonError: "XOR property",
+            optimization: "Bit operations"
+          }
+        },
+        {
+          id: 20,
+          title: "Count Distinct Elements in Range",
+          difficulty: "hard",
+          link: "https://codeforces.com/problemset/problem/786/C",
+          description: "Builds on #19: Frequency updates",
+          details: {
+            keyDifference: "updateFreq(old_val, new_val)",
+            commonError: "Count maintenance",
+            optimization: "Delta tracking"
+          }
+        }
+      ]
+    }
   ],
   summary: {
     progressionElements: [
       "Basic range queries → Complex range operations",
-      "Single operation queries → Multi-operation updates",
-      "Numeric operations → Bitwise manipulations",
-      "Static arrays → Dynamic updates"
+      "Static arrays → Mutable arrays with updates",
+      "Single element operations → Frequency-based queries",
+      "Simple data types → Bitwise operations"
     ],
     coreTechniques: [
       "Square root decomposition",
-      "Offline query processing",
-      "Block-based updates",
-      "Lazy propagation",
-      "Bit manipulation for range operations"
+      "Query sorting and processing",
+      "Two-pointer technique",
+      "Frequency tracking",
+      "Bitwise operations"
     ],
     implementationGuidelines: [
       {
@@ -308,15 +333,49 @@ class MOSolver:
         
         return results
         `
+      },
+      {
+        title: "Range Update Template",
+        code: `
+class RangeUpdateSolver:
+    def __init__(self, arr):
+        self.arr = arr
+        self.n = len(arr)
+        self.block_size = int(math.sqrt(self.n))
+        self.blocks = [0] * ((self.n + self.block_size - 1) // self.block_size)
+        self.lazy = [0] * len(self.blocks)
+        
+    def update_range(self, left, right, val):
+        left_block = left // self.block_size
+        right_block = right // self.block_size
+        
+        if left_block == right_block:
+            self.update_single_block(left, right, val)
+        else:
+            # Update partial blocks
+            self.update_single_block(left, (left_block + 1) * self.block_size - 1, val)
+            self.update_single_block(right_block * self.block_size, right, val)
+            
+            # Update complete blocks
+            for block in range(left_block + 1, right_block):
+                self.lazy[block] += val
+        `
       }
     ],
     testingStrategy: [
-      "Test with various array sizes and query distributions",
-      "Check edge cases (empty array, single element, all queries on same range)",
-      "Verify correctness for different types of range operations",
-      "Test performance with large inputs and many queries",
-      "Validate handling of updates in dynamic scenarios"
+      "Test with various array sizes and query counts",
+      "Include edge cases (empty arrays, single-element queries)",
+      "Test with different types of operations (sum, XOR, AND, OR)",
+      "Verify correctness with updates between queries",
+      "Benchmark performance with large inputs"
+    ],
+    commonPitfalls: [
+      "Not handling corner cases in block boundaries",
+      "Incorrect order of add/remove operations",
+      "Integer overflow in cumulative operations",
+      "Inefficient data structure choices for specific operations",
+      "Not considering query order optimization"
     ]
   }
-};
+}
 
