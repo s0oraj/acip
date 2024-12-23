@@ -75,7 +75,7 @@ import {
 import { Button } from "@/components/ui/button";
 
 const AnimationStep = ({ step, isActive }) => {
-  const { visualization } = step;
+  if (!step?.visualization) return null;
   
   return (
     <div className={`transition-opacity duration-300 ${isActive ? 'opacity-100' : 'opacity-0 hidden'}`}>
@@ -86,14 +86,14 @@ const AnimationStep = ({ step, isActive }) => {
         <div className="flex-1 bg-gray-50 dark:bg-gray-800 rounded-lg p-4">
           <h4 className="text-sm font-medium mb-2">Array</h4>
           <div className="flex flex-wrap gap-2">
-            {visualization.array.map((num, idx) => (
+            {step.visualization.array?.map((num, idx) => (
               <div
                 key={idx}
                 className={`
                   w-10 h-10 flex items-center justify-center rounded-lg
                   transition-all duration-300
-                  ${idx === visualization.current ? 'bg-purple-500 text-white transform scale-110' : 
-                    visualization.highlight.includes(idx) ? 'bg-purple-200 dark:bg-purple-800' :
+                  ${idx === step.visualization.current ? 'bg-purple-500 text-white transform scale-110' : 
+                    step.visualization.highlight?.includes(idx) ? 'bg-purple-200 dark:bg-purple-800' :
                     'bg-white dark:bg-gray-700'}
                 `}
               >
@@ -106,7 +106,7 @@ const AnimationStep = ({ step, isActive }) => {
         <div className="flex-1 bg-gray-50 dark:bg-gray-800 rounded-lg p-4">
           <h4 className="text-sm font-medium mb-2">Counter</h4>
           <div className="grid grid-cols-2 gap-2">
-            {Object.entries(visualization.counter).map(([key, value]) => (
+            {Object.entries(step.visualization.counter || {}).map(([key, value]) => (
               <div
                 key={key}
                 className="flex items-center justify-between bg-white dark:bg-gray-700 p-2 rounded"
@@ -129,7 +129,7 @@ const AnimationStep = ({ step, isActive }) => {
 export const AnimationDialog = ({ animation }) => {
   const [currentStep, setCurrentStep] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
-  const totalSteps = animation.steps.length;
+  const totalSteps = animation?.steps?.length || 0;
 
   const nextStep = () => setCurrentStep(prev => Math.min(prev + 1, totalSteps - 1));
   const prevStep = () => setCurrentStep(prev => Math.max(prev - 1, 0));
@@ -150,6 +150,10 @@ export const AnimationDialog = ({ animation }) => {
     }
     return () => clearInterval(interval);
   }, [isPlaying, totalSteps]);
+
+  if (!animation?.steps) {
+    return null;
+  }
 
   return (
     <Dialog>
