@@ -1,263 +1,289 @@
-import { Pattern } from '../types';
+import { Pattern } from '../types'
 
 export const binaryIndexedTreePattern: Pattern = {
   id: 11,
-  title: "Binary Indexed Tree (Fenwick Tree) Pattern",
-  description: "Master the Binary Indexed Tree (Fenwick Tree) data structure for efficient prefix sum calculations, range queries, and updates in various problem scenarios.",
-  questions: [
+  title: "Binary Indexed Tree Pattern",
+  description: "Master techniques for efficient range queries and updates using Binary Indexed Trees across multiple complexity levels",
+  subpatterns: [
     {
-      id: 1,
-      title: "Range Sum Query - Mutable",
-      difficulty: "medium",
-      link: "https://leetcode.com/problems/range-sum-query-mutable/",
-      description: "Implement efficient range sum queries with point updates using a Binary Indexed Tree",
-      details: {
-        keyDifference: "Efficient prefix sum structure",
-        commonError: "Using 0-based indexing instead of 1-based",
-        optimization: "Use delta encoding for range updates"
-      }
+      title: "Basic Range Operations",
+      questions: [
+        {
+          id: 1,
+          title: "Range Sum Query",
+          difficulty: "medium",
+          link: "https://leetcode.com/problems/range-sum-query-mutable/",
+          description: "Base Pattern: Basic BIT",
+          details: {
+            keyDifference: "update() - Foundation for BIT operations",
+            commonError: "Index offset",
+            optimization: "Path compression"
+          }
+        },
+        {
+          id: 2,
+          title: "Count of Smaller Numbers",
+          difficulty: "hard",
+          link: "https://leetcode.com/problems/count-of-smaller-numbers-after-self/",
+          description: "Builds on #1: Order statistics",
+          details: {
+            keyDifference: "count_smaller() - Relative ordering",
+            commonError: "Coordinate compression",
+            optimization: "Value mapping"
+          }
+        },
+        {
+          id: 3,
+          title: "Create Sorted Array",
+          difficulty: "hard",
+          link: "https://leetcode.com/problems/create-sorted-array-through-instructions/",
+          description: "Builds on #2: Dynamic ordering",
+          details: {
+            keyDifference: "insert() - Cost calculation for dynamic insertion",
+            commonError: "Modulo arithmetic",
+            optimization: "Value compression"
+          }
+        },
+        {
+          id: 4,
+          title: "Range Frequency Query",
+          difficulty: "medium",
+          link: "https://leetcode.com/problems/range-frequency-queries/",
+          description: "Builds on #3: Frequency counting",
+          details: {
+            keyDifference: "query() - Element counting in ranges",
+            commonError: "Range boundaries",
+            optimization: "Multiple BITs"
+          }
+        }
+      ]
     },
     {
-      id: 2,
-      title: "Number of Longest Increasing Subsequence",
-      difficulty: "medium",
-      link: "https://leetcode.com/problems/number-of-longest-increasing-subsequence/",
-      description: "Count the number of longest increasing subsequences using BIT",
-      details: {
-        keyDifference: "Applying BIT to sequence problems",
-        commonError: "Incorrect handling of equal-length LIS",
-        optimization: "Combine with dynamic programming"
-      }
+      title: "Order Statistics",
+      questions: [
+        {
+          id: 5,
+          title: "Kth Smallest Element",
+          difficulty: "hard",
+          link: "https://codeforces.com/problemset/problem/1354/D",
+          description: "Base Pattern: Order tracking",
+          details: {
+            keyDifference: "find_kth() - Selection using BIT",
+            commonError: "Empty sets",
+            optimization: "Binary search"
+          }
+        },
+        {
+          id: 6,
+          title: "Counting Inversions",
+          difficulty: "hard",
+          link: "https://leetcode.com/problems/reverse-pairs/",
+          description: "Builds on #5: Inversion pairs",
+          details: {
+            keyDifference: "reversePairs() - Pair condition checking",
+            commonError: "Count update timing",
+            optimization: "Merge sort approach"
+          }
+        },
+        {
+          id: 7,
+          title: "Previous Smaller Element",
+          difficulty: "hard",
+          link: "https://leetcode.com/problems/count-good-triplets-in-an-array/",
+          description: "Builds on #6: Element relations",
+          details: {
+            keyDifference: "prev_smaller() - Position tracking for smaller elements",
+            commonError: "Boundary elements",
+            optimization: "Stack combination"
+          }
+        },
+        {
+          id: 8,
+          title: "Next Greater Element",
+          difficulty: "hard",
+          link: "https://codeforces.com/problemset/problem/61/E",
+          description: "Builds on #7: Forward relations",
+          details: {
+            keyDifference: "next_greater() - Direction change for greater elements",
+            commonError: "Update order",
+            optimization: "Queue combination"
+          }
+        }
+      ]
     },
     {
-      id: 3,
-      title: "Count Inversions in an Array",
-      difficulty: "hard",
-      link: "https://www.geeksforgeeks.org/counting-inversions/",
-      description: "Efficiently count the number of inversions in an array using BIT",
-      details: {
-        keyDifference: "Applying BIT to element ordering problems",
-        commonError: "Incorrect order of updates and queries",
-        optimization: "Use coordinate compression for large values"
-      }
+      title: "2D Operations",
+      questions: [
+        {
+          id: 9,
+          title: "2D Range Sum",
+          difficulty: "hard",
+          link: "https://leetcode.com/problems/range-sum-query-2d-mutable/",
+          description: "Base Pattern: 2D BIT",
+          details: {
+            keyDifference: "update_2d() - Area handling in 2D",
+            commonError: "Corner updates",
+            optimization: "Block updates"
+          }
+        },
+        {
+          id: 10,
+          title: "Count Points in Rectangles",
+          difficulty: "medium",
+          link: "https://leetcode.com/problems/count-number-of-rectangles-containing-each-point/",
+          description: "Builds on #9: Point counting",
+          details: {
+            keyDifference: "count_points() - Containment check for points",
+            commonError: "Rectangle boundaries",
+            optimization: "Line sweep"
+          }
+        },
+        {
+          id: 11,
+          title: "2D Range Updates",
+          difficulty: "hard",
+          link: "https://leetcode.com/problems/range-sum-query-2d-mutable/",
+          description: "Builds on #10: Area updates",
+          details: {
+            keyDifference: "update(), sumRegion() - 2D handling for updates and queries",
+            commonError: "Index management",
+            optimization: "Caching partial sums"
+          }
+        },
+        {
+          id: 12,
+          title: "2D Order Statistics",
+          difficulty: "hard",
+          link: "https://codeforces.com/problemset/problem/785/E",
+          description: "Builds on #11: 2D ordering",
+          details: {
+            keyDifference: "kth_2d() - Area ordering in 2D",
+            commonError: "Coordinate mapping",
+            optimization: "Tree compression"
+          }
+        }
+      ]
     },
     {
-      id: 4,
-      title: "Count of Smaller Numbers After Self",
-      difficulty: "hard",
-      link: "https://leetcode.com/problems/count-of-smaller-numbers-after-self/",
-      description: "Count smaller elements after each element in an array using BIT",
-      details: {
-        keyDifference: "Combining sorting with range counting",
-        commonError: "Incorrect processing order",
-        optimization: "Use value compression for large ranges"
-      }
+      title: "Multiple BITs",
+      questions: [
+        {
+          id: 13,
+          title: "Multiple Range Sums",
+          difficulty: "hard",
+          link: "https://leetcode.com/problems/widest-pair-of-indices-with-equal-range-sum/",
+          description: "Base Pattern: Multiple trees",
+          details: {
+            keyDifference: "multi_sum() - Tree coordination for multiple sums",
+            commonError: "Tree sync",
+            optimization: "Tree sharing"
+          }
+        },
+        {
+          id: 14,
+          title: "Range Color Queries",
+          difficulty: "hard",
+          link: "https://codeforces.com/problemset/problem/707/D",
+          description: "Builds on #13: Color tracking",
+          details: {
+            keyDifference: "color_query() - Color counts management",
+            commonError: "Color updates",
+            optimization: "Color compression"
+          }
+        },
+        {
+          id: 15,
+          title: "Multiple Statistics Tracking",
+          difficulty: "medium",
+          link: "https://leetcode.com/problems/number-of-longest-increasing-subsequence/",
+          description: "Builds on #14: Multi-stat",
+          details: {
+            keyDifference: "findNumberOfLIS() - Length and count tracking",
+            commonError: "Update order",
+            optimization: "Dynamic programming approach"
+          }
+        },
+        {
+          id: 16,
+          title: "Multiple Update Types",
+          difficulty: "hard",
+          link: "https://leetcode.com/problems/stamping-the-grid/",
+          description: "Builds on #15: Update types",
+          details: {
+            keyDifference: "multi_update() - Type handling for updates",
+            commonError: "Type conflicts",
+            optimization: "Type batching"
+          }
+        }
+      ]
     },
     {
-      id: 5,
-      title: "Create Sorted Array through Instructions",
-      difficulty: "hard",
-      link: "https://leetcode.com/problems/create-sorted-array-through-instructions/",
-      description: "Construct a sorted array efficiently using BIT",
-      details: {
-        keyDifference: "Efficiently maintaining sorted order during insertions",
-        commonError: "Incorrect handling of duplicate elements",
-        optimization: "Use coordinate compression for large value ranges"
-      }
-    },
-    {
-      id: 6,
-      title: "Maximum Profitable Triplets",
-      difficulty: "hard",
-      link: "https://example.com/max-profitable-triplets",
-      description: "Find maximum profitable triplets using BIT for range queries",
-      details: {
-        keyDifference: "Applying BIT to multi-element relationship problems",
-        commonError: "Overlooking the order of element processing",
-        optimization: "Use three separate BITs for efficient querying"
-      }
-    },
-    {
-      id: 7,
-      title: "Count Good Triplets",
-      difficulty: "easy",
-      link: "https://leetcode.com/problems/count-good-triplets/",
-      description: "Optimize triplet counting using BIT",
-      details: {
-        keyDifference: "Applying BIT to optimize brute force approaches",
-        commonError: "Inefficient range checking",
-        optimization: "Use multiple BITs for different conditions"
-      }
-    },
-    {
-      id: 8,
-      title: "Range Frequency Queries",
-      difficulty: "medium",
-      link: "https://leetcode.com/problems/range-frequency-queries/",
-      description: "Perform range frequency queries efficiently using BIT",
-      details: {
-        keyDifference: "Combining frequency counting with range queries",
-        commonError: "Inefficient handling of multiple elements",
-        optimization: "Use separate BITs for each unique element"
-      }
-    },
-    {
-      id: 9,
-      title: "Range Sum Query 2D - Mutable",
-      difficulty: "hard",
-      link: "https://leetcode.com/problems/range-sum-query-2d-mutable/",
-      description: "Implement 2D range sum queries with updates using BIT",
-      details: {
-        keyDifference: "Extending 1D BIT concept to 2D",
-        commonError: "Incorrect update propagation in 2D",
-        optimization: "Use row-wise BITs for better cache performance"
-      }
-    },
-    {
-      id: 10,
-      title: "Rectangle Area Sum",
-      difficulty: "hard",
-      link: "https://example.com/rectangle-area-sum",
-      description: "Calculate the sum of rectangular areas efficiently using 2D BIT",
-      details: {
-        keyDifference: "Efficient 2D range sum calculations",
-        commonError: "Incorrect handling of overlapping areas",
-        optimization: "Use difference array technique in 2D"
-      }
-    },
-    {
-      id: 11,
-      title: "Count Number of Rectangles Containing Each Point",
-      difficulty: "medium",
-      link: "https://leetcode.com/problems/count-number-of-rectangles-containing-each-point/",
-      description: "Count points in rectangles using 2D BIT",
-      details: {
-        keyDifference: "Applying 2D BIT to geometric problems",
-        commonError: "Inefficient handling of multiple rectangles",
-        optimization: "Use coordinate compression for large coordinate ranges"
-      }
-    },
-    {
-      id: 12,
-      title: "Maximum Points in Rectangle",
-      difficulty: "hard",
-      link: "https://example.com/max-points-rectangle",
-      description: "Find the maximum number of points in a rectangle using 2D BIT",
-      details: {
-        keyDifference: "Combining maximum queries with 2D BIT",
-        commonError: "Incorrect update order for maximum maintenance",
-        optimization: "Use a segment tree within each BIT node for range maximum"
-      }
-    },
-    {
-      id: 13,
-      title: "Range Update Point Query using BIT",
-      difficulty: "hard",
-      link: "https://www.geeksforgeeks.org/range-update-point-query-using-bit/",
-      description: "Implement range updates and point queries using BIT",
-      details: {
-        keyDifference: "Adapting BIT for range updates",
-        commonError: "Incorrect handling of cumulative effects",
-        optimization: "Use difference array technique with BIT"
-      }
-    },
-    {
-      id: 14,
-      title: "Range Sum Query - Mutable (Revisited)",
-      difficulty: "medium",
-      link: "https://leetcode.com/problems/range-sum-query-mutable/",
-      description: "Optimize point updates and range queries using BIT",
-      details: {
-        keyDifference: "Balancing update and query efficiency",
-        commonError: "Inefficient handling of frequent updates",
-        optimization: "Use lazy propagation techniques with BIT"
-      }
-    },
-    {
-      id: 15,
-      title: "Range Update Range Query using BIT",
-      difficulty: "hard",
-      link: "https://www.geeksforgeeks.org/range-update-range-query-using-bit/",
-      description: "Implement both range updates and range queries using BIT",
-      details: {
-        keyDifference: "Extending BIT for both range updates and queries",
-        commonError: "Incorrect handling of nested updates",
-        optimization: "Use two BITs for efficient range operations"
-      }
-    },
-    {
-      id: 16,
-      title: "Dynamic Range Minimum Query",
-      difficulty: "hard",
-      link: "https://example.com/dynamic-range-min-query",
-      description: "Perform dynamic range minimum queries using modified BIT",
-      details: {
-        keyDifference: "Adapting BIT for non-sum range problems",
-        commonError: "Incorrect minimum propagation",
-        optimization: "Combine BIT with sparse table for RMQ"
-      }
-    },
-    {
-      id: 17,
-      title: "Sliding Window Median",
-      difficulty: "hard",
-      link: "https://leetcode.com/problems/sliding-window-median/",
-      description: "Find median in sliding windows efficiently using BIT",
-      details: {
-        keyDifference: "Applying BIT to sliding window problems",
-        commonError: "Inefficient window updates",
-        optimization: "Use two BITs for lower and upper halves"
-      }
-    },
-    {
-      id: 18,
-      title: "Count of Range Sum",
-      difficulty: "hard",
-      link: "https://leetcode.com/problems/count-of-range-sum/",
-      description: "Count range sums using BIT and prefix sums",
-      details: {
-        keyDifference: "Combining prefix sums with BIT for complex counting",
-        commonError: "Incorrect handling of cumulative sums",
-        optimization: "Use coordinate compression for large sum ranges"
-      }
-    },
-    {
-      id: 19,
-      title: "Maximum Sum Queries",
-      difficulty: "hard",
-      link: "https://leetcode.com/problems/maximum-sum-queries/",
-      description: "Handle maximum sum queries efficiently using BIT",
-      details: {
-        keyDifference: "Adapting BIT for maximum sum problems",
-        commonError: "Incorrect update order for maximum maintenance",
-        optimization: "Combine BIT with segment tree for range maximum"
-      }
-    },
-    {
-      id: 20,
-      title: "Optimal Range Modification",
-      difficulty: "hard",
-      link: "https://example.com/optimal-range-mod",
-      description: "Find optimal modifications to satisfy range conditions using BIT",
-      details: {
-        keyDifference: "Applying BIT to optimization problems",
-        commonError: "Incorrect handling of conflicting range conditions",
-        optimization: "Use dynamic programming with BIT"
-      }
-    },
+      title: "Advanced Applications",
+      questions: [
+        {
+          id: 17,
+          title: "Dynamic Median Finding",
+          difficulty: "hard",
+          link: "https://leetcode.com/problems/sliding-window-median/",
+          description: "Base Pattern: Order maintenance",
+          details: {
+            keyDifference: "find_median() - Middle element tracking",
+            commonError: "Window slides",
+            optimization: "Dual BIT"
+          }
+        },
+        {
+          id: 18,
+          title: "Range LIS",
+          difficulty: "medium",
+          link: "https://leetcode.com/problems/number-of-longest-increasing-subsequence/",
+          description: "Builds on #17: Sequence tracking",
+          details: {
+            keyDifference: "find_lis() - Length tracking for LIS",
+            commonError: "Count update",
+            optimization: "Length compression"
+          }
+        },
+        {
+          id: 19,
+          title: "Dynamic Convex Hull",
+          difficulty: "hard",
+          link: "https://codeforces.com/problemset/problem/319/C",
+          description: "Builds on #18: Hull maintenance",
+          details: {
+            keyDifference: "update_hull() - Point tracking for convex hull",
+            commonError: "Hull updates",
+            optimization: "Point filtering"
+          }
+        },
+        {
+          id: 20,
+          title: "Range Optimization",
+          difficulty: "hard",
+          link: "https://leetcode.com/problems/longest-increasing-subsequence-ii/",
+          description: "Builds on #19: Multi-parameter",
+          details: {
+            keyDifference: "optimize_range() - Parameter balance for optimization",
+            commonError: "Constraint handling",
+            optimization: "Parameter pruning"
+          }
+        }
+      ]
+    }
   ],
   summary: {
     progressionElements: [
-      "Basic range sum queries → Complex range operations",
-      "1D BITs → 2D BITs",
-      "Point updates → Range updates",
-      "Sum queries → Min/Max queries"
+      "Basic range operations → Advanced multi-parameter optimizations",
+      "1D operations → 2D and higher-dimensional operations",
+      "Single BIT → Multiple coordinated BITs",
+      "Static structures → Dynamic and persistent structures"
     ],
     coreTechniques: [
-      "Lowbit operation for tree traversal",
-      "Prefix sum calculations",
-      "Difference array technique for range updates",
-      "Coordinate compression for large ranges"
+      "Binary Indexed Tree construction and querying",
+      "Coordinate compression",
+      "2D Binary Indexed Trees",
+      "Multiple BITs for complex queries",
+      "Advanced applications (median finding, LIS, convex hull)"
     ],
     implementationGuidelines: [
       {
@@ -283,15 +309,56 @@ class BinaryIndexedTree:
     def range_query(self, left, right):
         return self.query(right) - self.query(left - 1)
         `
+      },
+      {
+        title: "2D Binary Indexed Tree Template",
+        code: `
+class BinaryIndexedTree2D:
+    def __init__(self, n, m):
+        self.n = n
+        self.m = m
+        self.tree = [[0] * (m + 1) for _ in range(n + 1)]
+    
+    def update(self, x, y, delta):
+        i = x
+        while i <= self.n:
+            j = y
+            while j <= self.m:
+                self.tree[i][j] += delta
+                j += j & (-j)
+            i += i & (-i)
+    
+    def query(self, x, y):
+        sum = 0
+        i = x
+        while i > 0:
+            j = y
+            while j > 0:
+                sum += self.tree[i][j]
+                j -= j & (-j)
+            i -= i & (-i)
+        return sum
+    
+    def range_query(self, x1, y1, x2, y2):
+        return (self.query(x2, y2) - self.query(x1-1, y2) - 
+                self.query(x2, y1-1) + self.query(x1-1, y1-1))
+        `
       }
     ],
     testingStrategy: [
       "Test with various array sizes and query types",
-      "Check edge cases (empty array, single element, all same elements)",
-      "Verify correct handling of updates and subsequent queries",
-      "Test performance with large inputs and frequent updates",
-      "Validate 2D BIT implementations"
+      "Include edge cases (single element, all same elements)",
+      "Verify correctness of range updates and queries",
+      "Test with large number of updates and queries",
+      "Benchmark performance with different BIT implementations"
+    ],
+    commonPitfalls: [
+      "Using 0-based indexing instead of 1-based indexing",
+      "Forgetting to update all affected positions in multi-dimensional BITs",
+      "Integer overflow in cumulative frequency calculations",
+      "Incorrect range calculations in query operations",
+      "Not handling edge cases for empty ranges or out-of-bounds queries"
     ]
   }
-};
+}
 
