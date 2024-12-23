@@ -1,5 +1,4 @@
-// components/patterns/QuestionsList.tsx
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { ChevronRight, Info, ChevronDown, ChevronUp } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -21,6 +20,7 @@ interface QuestionsListProps {
 
 export const QuestionsList = ({ pattern, completedQuestions, toggleQuestion }: QuestionsListProps) => {
   const [expandedSubpatterns, setExpandedSubpatterns] = useState<number[]>([]);
+  const contentRefs = useRef<Record<number, HTMLDivElement | null>>({});
 
   const toggleSubpattern = (subpatternIndex: number) => {
     setExpandedSubpatterns((prev) =>
@@ -124,21 +124,32 @@ export const QuestionsList = ({ pattern, completedQuestions, toggleQuestion }: Q
                 <h2 className="text-2xl font-bold text-gray-800 dark:text-gray-100">
                   {subpattern.title}
                 </h2>
-                {expandedSubpatterns.includes(subpatternIndex) ? (
-                  <ChevronUp className="w-6 h-6 text-gray-600 dark:text-gray-400" />
-                ) : (
-                  <ChevronDown className="w-6 h-6 text-gray-600 dark:text-gray-400" />
-                )}
+                <div className="transform transition-transform duration-300">
+                  {expandedSubpatterns.includes(subpatternIndex) ? (
+                    <ChevronUp className="w-6 h-6 text-gray-600 dark:text-gray-400" />
+                  ) : (
+                    <ChevronDown className="w-6 h-6 text-gray-600 dark:text-gray-400" />
+                  )}
+                </div>
               </div>
             </div>
             
-            {expandedSubpatterns.includes(subpatternIndex) && (
-              <div className="expand-animation space-y-6">
+            <div 
+              ref={el => contentRefs.current[subpatternIndex] = el}
+              className="overflow-hidden transition-all duration-300 ease-in-out"
+              style={{
+                maxHeight: expandedSubpatterns.includes(subpatternIndex) 
+                  ? `${contentRefs.current[subpatternIndex]?.scrollHeight}px` 
+                  : '0',
+                opacity: expandedSubpatterns.includes(subpatternIndex) ? 1 : 0,
+              }}
+            >
+              <div className="space-y-6">
                 {subpattern.questions.map((question, index) => 
                   renderQuestion(question, index, `${subpatternIndex + 1}.`)
                 )}
               </div>
-            )}
+            </div>
           </div>
         ))
       ) : (
@@ -200,3 +211,5 @@ export const QuestionsList = ({ pattern, completedQuestions, toggleQuestion }: Q
     </div>
   );
 };
+
+export default QuestionsList;
