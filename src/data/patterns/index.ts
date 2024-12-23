@@ -1,5 +1,5 @@
 import { Pattern } from '../types';
-import { countingPattern } from './counting-pattern';
+import { countingPattern } from './counting/counting-pattern';
 import { monotonicQueuePattern } from './monotonic-queue-pattern';
 import { simulationPattern } from './simulation-pattern';
 import { linearSortingPattern } from './linear-sorting-pattern';
