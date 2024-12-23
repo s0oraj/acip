@@ -1,7 +1,9 @@
+// QuestionsList.tsx update
 import { Pattern } from "@/types";
 import { QuestionComponent } from "./Question";
 import { SubpatternComponent } from "./Subpattern";
 import { PatternSummary } from "./PatternSummary";
+import ErrorBoundary from "@/components/ErrorBoundary";
 
 interface QuestionsListProps {
   pattern: Pattern;
@@ -14,13 +16,14 @@ export const QuestionsList = ({ pattern, completedQuestions, toggleQuestion }: Q
     <div className="space-y-12">
       {pattern.subpatterns && pattern.subpatterns.length > 0 ? (
         pattern.subpatterns.map((subpattern, subpatternIndex) => (
-          <SubpatternComponent
-            key={subpatternIndex}
-            subpattern={subpattern}
-            subpatternIndex={subpatternIndex}
-            completedQuestions={completedQuestions}
-            toggleQuestion={toggleQuestion}
-          />
+          <ErrorBoundary key={subpatternIndex}>
+            <SubpatternComponent
+              subpattern={subpattern}
+              subpatternIndex={subpatternIndex}
+              completedQuestions={completedQuestions}
+              toggleQuestion={toggleQuestion}
+            />
+          </ErrorBoundary>
         ))
       ) : (
         <div className="space-y-6">
@@ -35,9 +38,9 @@ export const QuestionsList = ({ pattern, completedQuestions, toggleQuestion }: Q
           ))}
         </div>
       )}
-
       <PatternSummary summary={pattern.summary} />
     </div>
   );
 };
+
 export default QuestionsList;
