@@ -1,4 +1,5 @@
-import { useState, useRef } from "react";
+// src/components/patterns/pattern-detail-components/questions-list/Subpattern.tsx
+import { useState, useRef, useEffect } from "react";
 import { ChevronDown, ChevronUp } from 'lucide-react';
 import { Subpattern } from "@/types";
 import { QuestionComponent } from "./Question";
@@ -16,9 +17,24 @@ export const SubpatternComponent = ({ subpattern, subpatternIndex, completedQues
   const [isExpanded, setIsExpanded] = useState(false);
   const contentRef = useRef<HTMLDivElement | null>(null);
   
-  const toggleSubpattern = () => setIsExpanded(!isExpanded);
-  const animationKey = subpattern.title.toLowerCase().replace(/\s+/g, '');
+  useEffect(() => {
+    console.log('Subpattern rendered:', subpattern.title);
+  }, [subpattern]);
+
+  const toggleSubpattern = () => {
+    console.log('Toggling subpattern:', subpattern.title);
+    setIsExpanded(!isExpanded);
+  };
+
+  const animationKey = subpattern.title.toLowerCase().replace(/[^a-z0-9]/g, '');
+  console.log('Animation key:', animationKey);
+  console.log('Available animations:', Object.keys(countingAnimations));
+  
   const animation = countingAnimations[animationKey];
+  console.log('Found animation:', animation);
+
+  const contentHeight = contentRef.current?.scrollHeight || 'auto';
+  console.log('Content height:', contentHeight);
 
   return (
     <div className="space-y-6">
@@ -50,12 +66,12 @@ export const SubpatternComponent = ({ subpattern, subpatternIndex, completedQues
         ref={contentRef}
         className="overflow-hidden transition-all duration-300 ease-in-out"
         style={{
-          maxHeight: isExpanded ? `${contentRef.current?.scrollHeight}px` : '0',
+          maxHeight: isExpanded ? contentHeight : 0,
           opacity: isExpanded ? 1 : 0,
         }}
       >
         <div className="space-y-6">
-          {subpattern.questions.map((question, index) => 
+          {subpattern.questions.map((question, index) => (
             <QuestionComponent
               key={question.id}
               question={question}
@@ -64,11 +80,9 @@ export const SubpatternComponent = ({ subpattern, subpatternIndex, completedQues
               isCompleted={completedQuestions.includes(question.id)}
               toggleQuestion={toggleQuestion}
             />
-          )}
+          ))}
         </div>
       </div>
     </div>
   );
 };
-
-export default SubpatternComponent;
