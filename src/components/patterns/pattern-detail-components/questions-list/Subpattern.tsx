@@ -12,12 +12,7 @@ interface SubpatternProps {
   toggleQuestion: (questionId: number) => void;
 }
 
-export const SubpatternComponent = ({ 
-  subpattern, 
-  subpatternIndex, 
-  completedQuestions, 
-  toggleQuestion 
-}: SubpatternProps) => {
+export const SubpatternComponent = ({ subpattern, subpatternIndex, completedQuestions, toggleQuestion }: SubpatternProps) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const contentRef = useRef<HTMLDivElement | null>(null);
   
@@ -27,9 +22,7 @@ export const SubpatternComponent = ({
 
   return (
     <div className="space-y-6">
-      <div
-        className="subpattern-header bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg border border-purple-100 dark:border-purple-900 transition-all duration-300 hover:shadow-xl"
-      >
+      <div className="subpattern-header bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg border border-purple-100 dark:border-purple-900 transition-all duration-300 hover:shadow-xl">
         <div className="flex items-center justify-between">
           <h2 
             className="text-2xl font-bold text-gray-800 dark:text-gray-100 cursor-pointer"
@@ -38,9 +31,7 @@ export const SubpatternComponent = ({
             {subpattern.title}
           </h2>
           <div className="flex items-center gap-4">
-            {animation && (
-              <AnimationDialog animation={animation} />
-            )}
+            {animation && <AnimationDialog animation={animation} />}
             <div 
               className="transform transition-transform duration-300 cursor-pointer"
               onClick={toggleSubpattern}
