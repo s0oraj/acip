@@ -3,7 +3,6 @@
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { BarChart, Bar, XAxis, YAxis, ResponsiveContainer, Tooltip } from 'recharts';
-import { motion } from 'framer-motion';
 import { Counter } from '@/data/types';
 
 interface FrequencyVisualizerProps {
@@ -40,18 +39,14 @@ const FrequencyVisualizer: React.FC<FrequencyVisualizerProps> = ({ counter }) =>
             <h4 className="text-md font-semibold mb-4">Input Sequence</h4>
             <div className="flex flex-wrap gap-2">
               {counter.data[step].array.map((val, idx) => (
-                <motion.div
+                <div
                   key={idx}
-                  className={`w-10 h-10 flex items-center justify-center rounded-lg font-mono text-lg
-                    ${idx === counter.data[step].activeIndex ? 'bg-blue-500 text-white' : 
+                  className={`w-10 h-10 flex items-center justify-center rounded-lg font-mono text-lg transition-all duration-300
+                    ${idx === counter.data[step].activeIndex ? 'bg-blue-500 text-white scale-110' : 
                       counter.data[step].highlightIndices?.includes(idx) ? 'bg-blue-100 text-blue-800' : 'bg-gray-100'}`}
-                  animate={{
-                    scale: idx === counter.data[step].activeIndex ? [1, 1.2, 1] : 1,
-                  }}
-                  transition={{ duration: 0.4 }}
                 >
                   {val}
-                </motion.div>
+                </div>
               ))}
             </div>
           </div>
@@ -108,3 +103,4 @@ const FrequencyVisualizer: React.FC<FrequencyVisualizerProps> = ({ counter }) =>
 };
 
 export default FrequencyVisualizer;
+
