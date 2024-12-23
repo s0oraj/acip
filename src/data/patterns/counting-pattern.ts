@@ -7,7 +7,7 @@ export const countingPattern: Pattern = {
   subpatterns: [
     {
       title: "Basic Counter Operations",
-      problems: [
+      questions: [
         {
           id: 1,
           title: "How Many Numbers Are Smaller Than Current Number",
@@ -48,7 +48,7 @@ export const countingPattern: Pattern = {
     },
     {
       title: "Frequency Distribution",
-      problems: [
+      questions: [
         {
           id: 4,
           title: "Count Elements With Maximum Frequency",
@@ -89,7 +89,7 @@ export const countingPattern: Pattern = {
     },
     {
       title: "Window-Based Counting",
-      problems: [
+      questions: [
         {
           id: 7,
           title: "Number of Sub-arrays of Size K",
@@ -130,7 +130,7 @@ export const countingPattern: Pattern = {
     },
     {
       title: "State-Based Counting",
-      problems: [
+      questions: [
         {
           id: 10,
           title: "Maximize Number of Subsequences",
@@ -171,7 +171,7 @@ export const countingPattern: Pattern = {
     },
     {
       title: "Population Tracking",
-      problems: [
+      questions: [
         {
           id: 13,
           title: "Maximum Population Year",
@@ -212,7 +212,7 @@ export const countingPattern: Pattern = {
     },
     {
       title: "Advanced Counting",
-      problems: [
+      questions: [
         {
           id: 16,
           title: "Count Number of Pairs With Absolute Difference K",
