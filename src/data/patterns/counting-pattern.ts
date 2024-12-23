@@ -15,7 +15,7 @@ export const countingPattern: Pattern = {
           link: "https://leetcode.com/problems/how-many-numbers-are-smaller-than-current-number/",
           description: "Base Pattern: Array element counting",
           details: {
-            keyOperation: "count[num] += 1",
+            keyDifference: "count[num] += 1",
             commonError: "Array bounds",
             optimization: "Value range compression"
           }
@@ -27,7 +27,7 @@ export const countingPattern: Pattern = {
           link: "https://leetcode.com/problems/most-frequent-even-element/",
           description: "Builds on #1: Adds filter condition",
           details: {
-            keyOperation: "if num % 2 == 0: count[num] += 1",
+            keyDifference: "if num % 2 == 0: count[num] += 1",
             commonError: "Edge cases (-1)",
             optimization: "Frequency tracking"
           }
@@ -39,7 +39,7 @@ export const countingPattern: Pattern = {
           link: "https://codeforces.com/problemset/problem/1520/A",
           description: "Builds on #2: Multiple value tracking",
           details: {
-            keyOperation: "seen.add((nums[i], nums[i+1]))",
+            keyDifference: "seen.add((nums[i], nums[i+1]))",
             commonError: "Pair ordering",
             optimization: "Set vs Counter"
           }
@@ -56,7 +56,7 @@ export const countingPattern: Pattern = {
           link: "https://leetcode.com/problems/count-elements-with-maximum-frequency/",
           description: "Base Pattern: Frequency tracking",
           details: {
-            keyOperation: "freq = Counter(nums)",
+            keyDifference: "freq = Counter(nums)",
             commonError: "Max tracking",
             optimization: "Single pass count"
           }
@@ -68,7 +68,7 @@ export const countingPattern: Pattern = {
           link: "https://leetcode.com/problems/maximum-equal-frequency/",
           description: "Builds on #4: Double frequency tracking",
           details: {
-            keyOperation: "freq_of_freq[freq[x]] += 1",
+            keyDifference: "freq_of_freq[freq[x]] += 1",
             commonError: "Map synchronization",
             optimization: "Running max tracking"
           }
@@ -80,7 +80,7 @@ export const countingPattern: Pattern = {
           link: "https://leetcode.com/problems/remove-letter-to-equalize-frequency/",
           description: "Builds on #5: Frequency grouping",
           details: {
-            keyOperation: "groups[freq[x]].add(x)",
+            keyDifference: "groups[freq[x]].add(x)",
             commonError: "Group updates",
             optimization: "Early termination"
           }
@@ -97,7 +97,7 @@ export const countingPattern: Pattern = {
           link: "https://leetcode.com/problems/number-of-sub-arrays-of-size-k-and-average-greater-than-or-equal-to-threshold/",
           description: "Base Pattern: Window sum counting",
           details: {
-            keyOperation: "window_sum += nums[right] - nums[left]",
+            keyDifference: "window_sum += nums[right] - nums[left]",
             commonError: "Window bounds",
             optimization: "Running average"
           }
@@ -109,7 +109,7 @@ export const countingPattern: Pattern = {
           link: "https://leetcode.com/problems/distinct-numbers-in-each-subarray/",
           description: "Builds on #7: Distinct counting",
           details: {
-            keyOperation: "window[nums[right]] += 1",
+            keyDifference: "window[nums[right]] += 1",
             commonError: "Count maintenance",
             optimization: "HashSet tracking"
           }
@@ -121,7 +121,7 @@ export const countingPattern: Pattern = {
           link: "https://leetcode.com/problems/find-the-k-beauty-of-a-number/",
           description: "Builds on #8: Condition checking",
           details: {
-            keyOperation: "if int(window_str) % num == 0: count += 1",
+            keyDifference: "if int(window_str) % num == 0: count += 1",
             commonError: "String conversion",
             optimization: "Rolling hash"
           }
@@ -138,7 +138,7 @@ export const countingPattern: Pattern = {
           link: "https://leetcode.com/problems/maximize-number-of-subsequences-in-a-string/",
           description: "Base Pattern: State counting",
           details: {
-            keyOperation: "state[char] += 1",
+            keyDifference: "state[char] += 1",
             commonError: "State ordering",
             optimization: "Prefix counting"
           }
@@ -150,7 +150,7 @@ export const countingPattern: Pattern = {
           link: "https://leetcode.com/problems/minimum-number-of-frogs-croaking/",
           description: "Builds on #10: Multi-state tracking",
           details: {
-            keyOperation: "states[next_state] += 1",
+            keyDifference: "states[next_state] += 1",
             commonError: "State sync",
             optimization: "Circular states"
           }
@@ -162,7 +162,7 @@ export const countingPattern: Pattern = {
           link: "https://codeforces.com/problemset/problem/1722/G",
           description: "Builds on #11: Pattern matching",
           details: {
-            keyOperation: "pattern[state].append(char)",
+            keyDifference: "pattern[state].append(char)",
             commonError: "Pattern validation",
             optimization: "State compression"
           }
@@ -179,7 +179,7 @@ export const countingPattern: Pattern = {
           link: "https://leetcode.com/problems/maximum-population-year/",
           description: "Base Pattern: Timeline counting",
           details: {
-            keyOperation: "timeline[year] += 1",
+            keyDifference: "timeline[year] += 1",
             commonError: "Year boundaries",
             optimization: "Line sweep"
           }
@@ -191,7 +191,7 @@ export const countingPattern: Pattern = {
           link: "https://leetcode.com/problems/number-of-flowers-in-full-bloom/",
           description: "Builds on #13: Range operations",
           details: {
-            keyOperation: "prefix[start] += 1; prefix[end] -= 1",
+            keyDifference: "prefix[start] += 1; prefix[end] -= 1",
             commonError: "Range overlap",
             optimization: "Prefix sums"
           }
@@ -203,7 +203,7 @@ export const countingPattern: Pattern = {
           link: "https://leetcode.com/problems/number-of-smooth-descent-periods/",
           description: "Builds on #14: Pattern growth",
           details: {
-            keyOperation: "if prices[i] > prices[i-1]: count += streak",
+            keyDifference: "if prices[i] > prices[i-1]: count += streak",
             commonError: "Reset conditions",
             optimization: "DP approach"
           }
@@ -220,7 +220,7 @@ export const countingPattern: Pattern = {
           link: "https://leetcode.com/problems/count-number-of-pairs-with-absolute-difference-k/",
           description: "Base Pattern: Pair counting",
           details: {
-            keyOperation: "count += freq[num + k]",
+            keyDifference: "count += freq[num + k]",
             commonError: "Double counting",
             optimization: "Single pass"
           }
@@ -232,7 +232,7 @@ export const countingPattern: Pattern = {
           link: "https://leetcode.com/problems/count-largest-group/",
           description: "Builds on #16: Group formation",
           details: {
-            keyOperation: "groups[digit_sum(num)] += 1",
+            keyDifference: "groups[digit_sum(num)] += 1",
             commonError: "Group sizing",
             optimization: "Digit sum memo"
           }
@@ -244,7 +244,7 @@ export const countingPattern: Pattern = {
           link: "https://leetcode.com/problems/find-longest-awesome-substring/",
           description: "Builds on #17: Balance checking",
           details: {
-            keyOperation: "state ^= (1 << char)",
+            keyDifference: "state ^= (1 << char)",
             commonError: "State tracking",
             optimization: "Bit manipulation"
           }
@@ -256,7 +256,7 @@ export const countingPattern: Pattern = {
           link: "https://leetcode.com/problems/k-divisible-elements-subarrays/",
           description: "Builds on #18: Pattern matching",
           details: {
-            keyOperation: "if divisible_count <= k: patterns.add(tuple(arr))",
+            keyDifference: "if divisible_count <= k: patterns.add(tuple(arr))",
             commonError: "Duplicate patterns",
             optimization: "Rolling hash"
           }
@@ -268,7 +268,7 @@ export const countingPattern: Pattern = {
           link: "https://leetcode.com/problems/apply-operations-to-maximize-frequency-score/",
           description: "Builds on #19: Advanced patterns",
           details: {
-            keyOperation: "count += check_window(nums, size)",
+            keyDifference: "count += check_window(nums, size)",
             commonError: "Score calculation",
             optimization: "Binary search"
           }
