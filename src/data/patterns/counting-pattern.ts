@@ -4,7 +4,7 @@ export const countingPattern: Pattern = {
   id: 1,
   title: "Counting Pattern",
   description: "Master frequency counting and statistical patterns across multiple complexity levels",
-  categories: [
+  subpatterns: [
     {
       title: "Basic Counter Operations",
       problems: [
