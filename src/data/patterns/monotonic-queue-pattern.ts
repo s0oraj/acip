@@ -1,264 +1,284 @@
-import { Pattern } from '../types';
+import { Pattern } from '../types'
 
 export const monotonicQueuePattern: Pattern = {
   id: 2,
-  title: "Monotonic Queue Pattern",
-  description: "Master the monotonic queue pattern for efficient sliding window operations and range queries.",
-  questions: [
+  title: "Monotonic Stack/Queue Pattern",
+  description: "Master monotonic stack and queue techniques for efficient next greater element, sliding window, and advanced applications across multiple complexity levels",
+  subpatterns: [
     {
-      id: 1,
-      title: "Sliding Window Maximum",
-      difficulty: "hard",
-      link: "https://leetcode.com/problems/sliding-window-maximum/",
-      description: "Base Pattern: Basic monotonic queue. Key Operation: while deque and nums[deque[-1]] < nums[i]: deque.pop()",
-      details: {
-        keyDifference: "Base Pattern: Basic monotonic queue",
-        commonError: "Not removing out-of-window elements",
-        optimization: "Single pass through array"
-      }
+      title: "Next Greater Problems (Foundation)",
+      questions: [
+        {
+          id: 1,
+          title: "Next Greater Element",
+          difficulty: "easy",
+          link: "https://leetcode.com/problems/next-greater-element-i/",
+          description: "Base Pattern: Monotonic decreasing stack",
+          details: {
+            keyDifference: "while stack and stack[-1] < num: res[stack.pop()] = num - Basic next greater",
+            commonError: "Missing elements handling",
+            optimization: "Map for O(1) lookups"
+          }
+        },
+        {
+          id: 2,
+          title: "Next Greater in Circular Array",
+          difficulty: "medium",
+          link: "https://leetcode.com/problems/next-greater-element-ii/",
+          description: "Builds on #1: Basic next greater",
+          details: {
+            keyDifference: "i % n - Added circular array handling",
+            commonError: "Double traversal missing",
+            optimization: "Virtual array doubling"
+          }
+        },
+        {
+          id: 3,
+          title: "Next Greater with Distance",
+          difficulty: "medium",
+          link: "https://leetcode.com/problems/daily-temperatures/",
+          description: "Builds on #2: Circular handling",
+          details: {
+            keyDifference: "res[stack.pop()] = i - stack[-1] - Added distance tracking",
+            commonError: "Distance calculation",
+            optimization: "In-place modification"
+          }
+        },
+        {
+          id: 4,
+          title: "Previous Greater Element",
+          difficulty: "medium",
+          link: "https://codeforces.com/problemset/problem/1766/C",
+          description: "Builds on #3: Distance tracking",
+          details: {
+            keyDifference: "while stack and stack[-1] <= num - Changed direction",
+            commonError: "Equal element handling",
+            optimization: "Direction abstraction"
+          }
+        },
+        {
+          id: 5,
+          title: "Next Greater with Constraints",
+          difficulty: "medium",
+          link: "https://leetcode.com/problems/next-greater-element-iii/",
+          description: "Builds on #4: Directional search",
+          details: {
+            keyDifference: "if not valid(next): continue - Added constraint check",
+            commonError: "Constraint validation",
+            optimization: "Early termination"
+          }
+        }
+      ]
     },
     {
-      id: 2,
-      title: "Maximum Window Average",
-      difficulty: "easy",
-      link: "https://leetcode.com/problems/maximum-average-subarray-i/",
-      description: "Builds on #1: Changes to average calculation. Key Difference: Running sum maintenance",
-      details: {
-        keyDifference: "Running sum maintenance",
-        commonError: "Float precision issues",
-        optimization: "Avoid redundant calculations"
-      }
+      title: "Monotonic Window Operations",
+      questions: [
+        {
+          id: 6,
+          title: "Sliding Window Maximum",
+          difficulty: "hard",
+          link: "https://leetcode.com/problems/sliding-window-maximum/",
+          description: "Base Pattern: Monotonic decreasing deque",
+          details: {
+            keyDifference: "while deque and nums[deque[-1]] < nums[i]: deque.pop() - Window max",
+            commonError: "Window bounds",
+            optimization: "Single pass"
+          }
+        },
+        {
+          id: 7,
+          title: "Sliding Window Minimum",
+          difficulty: "medium",
+          link: "https://codeforces.com/problemset/problem/1428/C",
+          description: "Builds on #6: Window maximum",
+          details: {
+            keyDifference: "while deque and nums[deque[-1]] > nums[i]: deque.pop() - Min tracking",
+            commonError: "Sign flip issues",
+            optimization: "Direction abstraction"
+          }
+        },
+        {
+          id: 8,
+          title: "Fixed Window Average",
+          difficulty: "easy",
+          link: "https://leetcode.com/problems/moving-average-from-data-stream/",
+          description: "Builds on #7: Window tracking",
+          details: {
+            keyDifference: "sum += num - (deque[0] if len(deque) == k else 0) - Added average",
+            commonError: "Partial windows",
+            optimization: "Running sum"
+          }
+        },
+        {
+          id: 9,
+          title: "Window Difference Limit",
+          difficulty: "medium",
+          link: "https://leetcode.com/problems/longest-continuous-subarray-with-absolute-diff-less-than-or-equal-to-limit/",
+          description: "Builds on #8: Window stats",
+          details: {
+            keyDifference: "while max_d[0] - min_d[0] > limit - Added limit check",
+            commonError: "Two deque sync",
+            optimization: "Early bounds check"
+          }
+        },
+        {
+          id: 10,
+          title: "Dynamic Window Sum",
+          difficulty: "hard",
+          link: "https://leetcode.com/problems/shortest-subarray-with-sum-at-least-k/",
+          description: "Builds on #9: Window constraints",
+          details: {
+            keyDifference: "while sum[i] - sum[deque[0]] >= K - Added sum condition",
+            commonError: "Negative sums",
+            optimization: "Two-ended pruning"
+          }
+        }
+      ]
     },
     {
-      id: 3,
-      title: "Window Maximum Product",
-      difficulty: "easy",
-      link: "https://leetcode.com/problems/maximum-product-of-three-numbers/",
-      description: "Builds on #2: Handle negative numbers",
-      details: {
-        keyDifference: "Track both max and min deques",
-        commonError: "Missing negative number cases",
-        optimization: "Two-ended tracking"
-      }
+      title: "Competition Stack Problems",
+      questions: [
+        {
+          id: 11,
+          title: "Most Competitive Subsequence",
+          difficulty: "medium",
+          link: "https://leetcode.com/problems/find-the-most-competitive-subsequence/",
+          description: "Base Pattern: Monotonic with competition",
+          details: {
+            keyDifference: "while stack and len(stack) + rem > k and stack[-1] > num - Basic competition",
+            commonError: "Remaining elements",
+            optimization: "Early termination"
+          }
+        },
+        {
+          id: 12,
+          title: "Remove K Digits",
+          difficulty: "medium",
+          link: "https://leetcode.com/problems/remove-k-digits/",
+          description: "Builds on #11: Competition stack",
+          details: {
+            keyDifference: "while k > 0 and stack and stack[-1] > num - Added K limit",
+            commonError: "Leading zeros",
+            optimization: "Digit counting"
+          }
+        },
+        {
+          id: 13,
+          title: "Maximum Width Ramp",
+          difficulty: "medium",
+          link: "https://leetcode.com/problems/maximum-width-ramp/",
+          description: "Builds on #12: K-limited stack",
+          details: {
+            keyDifference: "while stack and nums[stack[-1]] <= nums[i] - Added width tracking",
+            commonError: "Width calculation",
+            optimization: "Binary search"
+          }
+        },
+        {
+          id: 14,
+          title: "Minimum Cost Tree",
+          difficulty: "medium",
+          link: "https://codeforces.com/problemset/problem/1313/C",
+          description: "Builds on #13: Width tracking",
+          details: {
+            keyDifference: "cost = min(stack[-1], nums[i]) - Added cost calculation",
+            commonError: "Cost propagation",
+            optimization: "DP combination"
+          }
+        },
+        {
+          id: 15,
+          title: "Stock Span Problem",
+          difficulty: "medium",
+          link: "https://leetcode.com/problems/online-stock-span/",
+          description: "Builds on #14: Cost tracking",
+          details: {
+            keyDifference: "span = i - prev_greater[i] - Added span calculation",
+            commonError: "Consecutive counting",
+            optimization: "Price-span pairs"
+          }
+        }
+      ]
     },
     {
-      id: 4,
-      title: "Window Maximum GCD",
-      difficulty: "medium",
-      link: "https://practice.geeksforgeeks.org/problems/maximum-gcd-of-siblings-of-a-binary-tree/1",
-      description: "Builds on #3: GCD property maintenance",
-      details: {
-        keyDifference: "GCD calculation in window",
-        commonError: "Unnecessary GCD recalculations",
-        optimization: "GCD property optimization"
-      }
-    },
-    {
-      id: 5,
-      title: "K-Length Window Maximum Sum",
-      difficulty: "medium",
-      link: "https://leetcode.com/problems/maximum-sum-of-distinct-subarrays-with-length-k/",
-      description: "Builds on #4: Adds uniqueness constraint",
-      details: {
-        keyDifference: "Hash set for uniqueness",
-        commonError: "Not maintaining unique set",
-        optimization: "Sliding window with set"
-      }
-    },
-    {
-      id: 6,
-      title: "Longest Continuous Subarray with Absolute Diff ≤ Limit",
-      difficulty: "hard",
-      link: "https://leetcode.com/problems/longest-continuous-subarray-with-absolute-diff-less-than-or-equal-to-limit/",
-      description: "Base window constraint pattern",
-      details: {
-        keyDifference: "Dual queue for min/max",
-        commonError: "Wrong queue updates",
-        optimization: "Early constraint check"
-      }
-    },
-    {
-      id: 7,
-      title: "Maximum Subarray Length with Max-Min ≤ K",
-      difficulty: "hard",
-      link: "https://practice.geeksforgeeks.org/problems/maximum-subarray-size-with-difference/1",
-      description: "Builds on #6: Different constraint type",
-      details: {
-        keyDifference: "Modified difference calculation",
-        commonError: "Incorrect bound checking",
-        optimization: "Binary search on answer"
-      }
-    },
-    {
-      id: 8,
-      title: "Longest Nice Subarray with Range K",
-      difficulty: "medium",
-      link: "https://leetcode.com/problems/longest-nice-subarray/",
-      description: "Builds on #7: Bitwise constraints",
-      details: {
-        keyDifference: "AND operation checking",
-        commonError: "Missing bit positions",
-        optimization: "Bit manipulation tricks"
-      }
-    },
-    {
-      id: 9,
-      title: "Find Subarrays with Equal Elements",
-      difficulty: "medium",
-      link: "https://leetcode.com/problems/number-of-subarrays-having-even-product/",
-      description: "Builds on #8: Equality constraints",
-      details: {
-        keyDifference: "Product property check",
-        commonError: "Overflow in product",
-        optimization: "Use parity instead of product"
-      }
-    },
-    {
-      id: 10,
-      title: "Maximum Window Size with Single Unique Element",
-      difficulty: "medium",
-      link: "https://practice.geeksforgeeks.org/problems/length-of-the-longest-substring-with-distinct-characters/1",
-      description: "Builds on #9: Uniqueness constraint",
-      details: {
-        keyDifference: "Set-based checking",
-        commonError: "Set update timing",
-        optimization: "Two-pointer technique"
-      }
-    },
-    {
-      id: 11,
-      title: "Minimum Number of Coins for Fruits",
-      difficulty: "hard",
-      link: "https://leetcode.com/problems/minimum-number-of-coins-for-fruits/",
-      description: "Base optimization pattern",
-      details: {
-        keyDifference: "Decreasing queue maintenance",
-        commonError: "Wrong coin calculation",
-        optimization: "Dynamic programming with queue"
-      }
-    },
-    {
-      id: 12,
-      title: "Minimum Cost to Buy Sequential Items",
-      difficulty: "medium",
-      link: "https://practice.geeksforgeeks.org/problems/minimum-cost-of-buying-candies-with-discount/1",
-      description: "Builds on #11: Sequential purchase",
-      details: {
-        keyDifference: "Discount rules",
-        commonError: "Wrong order selection",
-        optimization: "Greedy approach"
-      }
-    },
-    {
-      id: 13,
-      title: "Optimal Purchase with Free Items",
-      difficulty: "medium",
-      link: "https://www.hackerrank.com/challenges/minimum-cost",
-      description: "Builds on #12: Free item rules",
-      details: {
-        keyDifference: "Complex reward structure",
-        commonError: "Missing free item combinations",
-        optimization: "State compression"
-      }
-    },
-    {
-      id: 14,
-      title: "Minimum Cost with Alternative Choices",
-      difficulty: "hard",
-      link: "https://practice.geeksforgeeks.org/problems/minimum-cost-path/1",
-      description: "Builds on #13: Path choices",
-      details: {
-        keyDifference: "Multiple path options",
-        commonError: "Suboptimal path selection",
-        optimization: "Priority queue approach"
-      }
-    },
-    {
-      id: 15,
-      title: "Sequential Purchase Optimization",
-      difficulty: "hard",
-      link: "https://www.hackerearth.com/practice/algorithms/greedy/basics-of-greedy-algorithms/practice-problems/algorithm/shopping-time-problem/",
-      description: "Builds on #14: Complex rewards",
-      details: {
-        keyDifference: "Time constraints",
-        commonError: "Invalid sequence selection",
-        optimization: "State machine approach"
-      }
-    },
-    {
-      id: 16,
-      title: "Maximum Rectangle in Histogram",
-      difficulty: "hard",
-      link: "https://leetcode.com/problems/largest-rectangle-in-histogram/",
-      description: "Base histogram pattern",
-      details: {
-        keyDifference: "Stack-based approach",
-        commonError: "Missing edge rectangles",
-        optimization: "Sentinel values"
-      }
-    },
-    {
-      id: 17,
-      title: "Largest Rectangle with Height Limit",
-      difficulty: "hard",
-      link: "https://practice.geeksforgeeks.org/problems/maximum-rectangular-area-in-a-histogram-1587115620/1",
-      description: "Builds on #16: Height constraints",
-      details: {
-        keyDifference: "Limited height expansion",
-        commonError: "Constraint violations",
-        optimization: "Early pruning"
-      }
-    },
-    {
-      id: 18,
-      title: "Maximum Area Rectangle with Condition",
-      difficulty: "hard",
-      link: "https://www.hackerrank.com/challenges/largest-rectangle",
-      description: "Builds on #17: Area conditions",
-      details: {
-        keyDifference: "Additional constraints",
-        commonError: "Missing valid areas",
-        optimization: "Two-ended scan"
-      }
-    },
-    {
-      id: 19,
-      title: "Optimal Rectangle Selection",
-      difficulty: "hard",
-      link: "https://practice.geeksforgeeks.org/problems/maximum-size-rectangle/1",
-      description: "Builds on #18: 2D extension",
-      details: {
-        keyDifference: "Matrix handling",
-        commonError: "Row processing order",
-        optimization: "Row-by-row histogram"
-      }
-    },
-    {
-      id: 20,
-      title: "Maximum Volume Container",
-      difficulty: "medium",
-      link: "https://leetcode.com/problems/container-with-most-water/",
-      description: "Builds on #19: Volume calculation",
-      details: {
-        keyDifference: "Two-pointer technique",
-        commonError: "Wrong pointer movement",
-        optimization: "Skip similar heights"
-      }
+      title: "Advanced Applications",
+      questions: [
+        {
+          id: 16,
+          title: "Rectangle Histogram",
+          difficulty: "hard",
+          link: "https://leetcode.com/problems/largest-rectangle-in-histogram/",
+          description: "Base Pattern: Area calculation",
+          details: {
+            keyDifference: "area = height * (right - left - 1) - Basic area",
+            commonError: "Boundary handling",
+            optimization: "Sentinel values"
+          }
+        },
+        {
+          id: 17,
+          title: "Maximum Binary Tree",
+          difficulty: "medium",
+          link: "https://leetcode.com/problems/maximum-binary-tree/",
+          description: "Builds on #16: Area tracking",
+          details: {
+            keyDifference: "node.left = construct(left); node.right = construct(right) - Added tree build",
+            commonError: "Range splitting",
+            optimization: "Stack construction"
+          }
+        },
+        {
+          id: 18,
+          title: "Sum of Subarray Minimums",
+          difficulty: "medium",
+          link: "https://leetcode.com/problems/sum-of-subarray-minimums/",
+          description: "Builds on #17: Tree ranges",
+          details: {
+            keyDifference: "sum += val * left * right - Added contribution calc",
+            commonError: "Contribution range",
+            optimization: "MOD handling"
+          }
+        },
+        {
+          id: 19,
+          title: "Maximum Score Good Array",
+          difficulty: "hard",
+          link: "https://leetcode.com/problems/maximum-score-of-a-good-array/",
+          description: "Builds on #18: Range contribution",
+          details: {
+            keyDifference: "score = min(nums[left], nums[right]) * (right - left) - Added scoring",
+            commonError: "Score boundaries",
+            optimization: "Two pointer sweep"
+          }
+        },
+        {
+          id: 20,
+          title: "Maximal Rectangle",
+          difficulty: "hard",
+          link: "https://leetcode.com/problems/maximal-rectangle/",
+          description: "Builds on #19: Linear scoring",
+          details: {
+            keyDifference: "heights[j] = (heights[j] + 1 if matrix[i][j] == '1' else 0) - Added 2D handling",
+            commonError: "Height reset",
+            optimization: "Height caching"
+          }
+        }
+      ]
     }
   ],
   summary: {
     progressionElements: [
-      "Basic window operations → Window constraints",
-      "Single element tracking → Multiple element tracking",
-      "Fixed window size → Variable window size",
-      "Simple constraints → Complex optimization problems"
+      "Basic next greater → Complex window operations",
+      "Single element tracking → Multiple element constraints",
+      "Fixed window → Dynamic window with conditions",
+      "1D problems → 2D extensions"
     ],
     coreTechniques: [
-      "Monotonic queue maintenance",
-      "Two-pointer sliding window",
-      "Deque for efficient operations",
-      "Constraint checking and optimization",
-      "Dynamic programming with queue"
+      "Monotonic stack/queue maintenance",
+      "Two-pointer techniques",
+      "Sliding window optimizations",
+      "Dynamic programming with stack",
+      "Area/volume calculations with stack"
     ],
     implementationGuidelines: [
       {
@@ -282,38 +302,22 @@ class MonotonicQueue:
     def max(self):
         return self.queue[0] if self.queue else None
         `
-      },
-      {
-        title: "Sliding Window Maximum Template",
-        code: `
-from collections import deque
-
-def maxSlidingWindow(nums, k):
-    result = []
-    window = deque()
-    
-    for i, num in enumerate(nums):
-        while window and nums[window[-1]] < num:
-            window.pop()
-        window.append(i)
-        
-        if window[0] == i - k:
-            window.popleft()
-        
-        if i >= k - 1:
-            result.append(nums[window[0]])
-    
-    return result
-        `
       }
     ],
     testingStrategy: [
       "Test edge cases (empty input, single element)",
-      "Test various window sizes",
-      "Test with different constraints and optimization criteria",
+      "Test circular array scenarios",
+      "Test with various window sizes and constraints",
       "Test performance with large inputs",
       "Test for correctness of monotonicity property"
+    ],
+    commonPitfalls: [
+      "Forgetting to handle circular array cases",
+      "Incorrect window bound management",
+      "Mishandling of equal elements",
+      "Inefficient implementations leading to TLE",
+      "Overlooking edge cases in advanced applications"
     ]
   }
-};
+}
 
