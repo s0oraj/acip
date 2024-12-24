@@ -1,107 +1,57 @@
-import { Animation } from '@/data/types';
+// src/data/patterns/counting-pattern/animations/basic-counter/data.ts
+import { Animation } from '@/types';
+import { Hash, Filter, Layers } from 'lucide-react';
+
+export const patterns = {
+  basic: {
+    data: [4, 2, 4, 1, 4, 3],
+    icon: 'hash',
+    title: "Basic Counter",
+    desc: "Element Frequency",
+    color: "#4F46E5"
+  },
+  conditional: {
+    data: [2, 3, 2, 4, 5, 2, 4, 6],
+    icon: 'filter',
+    title: "Even Counter",
+    desc: "Filtered Frequency",
+    color: "#7C3AED"
+  },
+  multi: {
+    data: ['AB', 'BC', 'AB', 'CD', 'AB'],
+    icon: 'layers',
+    title: "Multi-Value",
+    desc: "Pattern Frequency",
+    color: "#2563EB"
+  }
+};
 
 export const basicCounterAnimation: Animation = {
   id: "basic-counter",
   title: "Basic Counter Operations",
   description: "Understanding different types of counting operations",
-  counters: [
+  steps: [
     {
       title: "Single Value Counter",
       description: "Count occurrences of each element in an array",
-      data: [
-        {
-          description: "Initialize empty counter",
-          array: [4, 1, 2, 1, 2],
-          counter: {},
-          code: "counter = {}"
-        },
-        {
-          description: "Process first element (4)",
-          array: [4, 1, 2, 1, 2],
-          activeIndex: 0,
-          counter: {"4": 1},
-          code: "counter[4] = 1"
-        },
-        {
-          description: "Process second element (1)",
-          array: [4, 1, 2, 1, 2],
-          activeIndex: 1,
-          counter: {"4": 1, "1": 1},
-          code: "counter[1] = 1"
-        },
-        {
-          description: "Process remaining elements",
-          array: [4, 1, 2, 1, 2],
-          counter: {"4": 1, "1": 2, "2": 2},
-          code: "# Process elements 2, 1, 2"
-        }
-      ]
-    },
-    {
-      title: "Conditional Counter",
-      description: "Count occurrences of even elements in an array",
-      data: [
-        {
-          description: "Initialize empty counter",
-          array: [3, 2, 4, 1, 6],
-          counter: {},
-          code: "counter = {}"
-        },
-        {
-          description: "Skip odd element (3)",
-          array: [3, 2, 4, 1, 6],
-          activeIndex: 0,
-          counter: {},
-          code: "# 3 is odd, skip"
-        },
-        {
-          description: "Process even element (2)",
-          array: [3, 2, 4, 1, 6],
-          activeIndex: 1,
-          counter: {"2": 1},
-          code: "if 2 % 2 == 0:\n    counter[2] = 1"
-        },
-        {
-          description: "Process remaining elements",
-          array: [3, 2, 4, 1, 6],
-          counter: {"2": 1, "4": 1, "6": 1},
-          code: "# Process 4 (even), skip 1 (odd), process 6 (even)"
-        }
-      ]
-    },
-    {
-      title: "Multi-Value Counter",
-      description: "Count occurrences of consecutive pairs in a string",
-      data: [
-        {
-          description: "Initialize empty set",
-          array: ['A', 'B', 'A', 'C', 'C', 'B'],
-          counter: {},
-          code: "seen = set()"
-        },
-        {
-          description: "Process first pair (AB)",
-          array: ['A', 'B', 'A', 'C', 'C', 'B'],
-          activeIndex: 0,
-          highlightIndices: [0, 1],
-          counter: {"AB": 1},
-          code: "seen.add('AB')"
-        },
-        {
-          description: "Process second pair (BA)",
-          array: ['A', 'B', 'A', 'C', 'C', 'B'],
-          activeIndex: 1,
-          highlightIndices: [1, 2],
-          counter: {"AB": 1, "BA": 1},
-          code: "seen.add('BA')"
-        },
-        {
-          description: "Process remaining pairs",
-          array: ['A', 'B', 'A', 'C', 'C', 'B'],
-          counter: {"AB": 1, "BA": 1, "AC": 1, "CC": 1, "CB": 1},
-          code: "# Process AC, CC, CB"
-        }
-      ]
+      array: patterns.basic.data,
+      phases: patterns.basic.data.map((val, index) => ({
+        description: index === 0 
+          ? "Initialize empty counter" 
+          : `Process element (${val})`,
+        activeIndex: index,
+        highlightIndices: [index],
+        counter: patterns.basic.data
+          .slice(0, index + 1)
+          .reduce((acc, curr) => {
+            acc[curr] = (acc[curr] || 0) + 1;
+            return acc;
+          }, {}),
+        code: index === 0 
+          ? "const counter = {};" 
+          : `counter[${val}] = (counter[${val}] || 0) + 1;`
+      }))
     }
-  ]
+  ],
+  counters: []
 };
