@@ -15,8 +15,8 @@ import StateBasedCountingVisualizer from './state-based-counting/visualizer';
 import { populationTrackingAnimation } from './population-tracking/data';
 import PopulationTrackingVisualizer from './population-tracking/visualizer';
 
-import { advancedCounterAnimation } from './advanced-counter-operations/data';
-import AdvancedCounterOperationsVisualizer from './advanced-counter-operations/visualizer';
+//import { advancedCounterAnimation } from './advanced-counter-operations/data';
+//import AdvancedCounterOperationsVisualizer from './advanced-counter-operations/visualizer';
 
 
 export const visualizers = {
@@ -24,17 +24,16 @@ export const visualizers = {
   'frequency-distribution': FrequencyDistributionVisualizer,
   'window-based-counting': WindowBasedCountingVisualizer,
   'state-based-counting': StateBasedCountingVisualizer,
-  'population-tracking': PopulationTrackingVisualizer,
-  'advanced-counter-operations': AdvancedCounterOperationsVisualizer
+  'population-tracking': PopulationTrackingVisualizer
 };
-
+//'advanced-counter-operations': AdvancedCounterOperationsVisualizer
 export const countingAnimations = {
   "basic-counter-operations": basicCounterAnimation,
   "frequency-distribution": frequencyDistributionAnimation,
   "window-based-counting": windowBasedCountingAnimation,
   "state-based-counting": stateBasedCountingAnimation,
   "population-tracking": populationTrackingAnimation,
-  "advanced-counter-operations": advancedCounterAnimation
+  "advanced-counter-operations": placeholderAnimation
 };
 
 const placeholderAnimation = {
