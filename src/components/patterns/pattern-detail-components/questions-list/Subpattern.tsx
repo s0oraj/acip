@@ -1,5 +1,5 @@
 // src/components/patterns/pattern-detail-components/questions-list/Subpattern.tsx
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef } from "react";
 import { ChevronDown, ChevronUp } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import { Subpattern } from "@/types";
@@ -27,7 +27,9 @@ export const SubpatternComponent = ({
 
   const subpatternPath = subpattern.title.toLowerCase().replace(/[^a-z0-9]+/g, '-');
   
-  const contentHeight = contentRef.current?.scrollHeight || 'auto';
+  const toggleSubpattern = () => {
+    setIsExpanded(!isExpanded);
+  };
 
   return (
     <div className="space-y-6">
@@ -68,7 +70,7 @@ export const SubpatternComponent = ({
         ref={contentRef}
         className="overflow-hidden transition-all duration-300 ease-in-out"
         style={{
-          maxHeight: isExpanded ? contentHeight : 0,
+          maxHeight: isExpanded ? contentRef.current?.scrollHeight || 'auto' : 0,
           opacity: isExpanded ? 1 : 0,
         }}
       >
@@ -89,8 +91,8 @@ export const SubpatternComponent = ({
       <AnimationDialog
         isOpen={isDialogOpen}
         onClose={() => setIsDialogOpen(false)}
-        patternPath={pattern}
-        subpatternPath={subpatternPath}
+        pattern={pattern}
+        subpattern={subpatternPath}
       />
     </div>
   );
