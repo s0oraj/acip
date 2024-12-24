@@ -1,3 +1,4 @@
+// src/data/types.ts
 export interface QuestionDetails {
   keyDifference: string;
   commonError: string;
@@ -13,7 +14,8 @@ export interface Question {
   details?: QuestionDetails;
 }
 
-export interface SubPattern {
+export interface Subpattern {
+  id: string;  // Added id field (e.g., "1.1")
   title: string;
   questions: Question[];
 }
@@ -29,10 +31,10 @@ export interface PatternSummary {
 }
 
 export interface Pattern {
-  id: number;
+  id: string;  // Changed to string to match our pattern mapping
   title: string;
   description: string;
-  subpatterns: SubPattern[];
+  subpatterns: Subpattern[];
   questions: Question[];
   summary?: PatternSummary;
 }
@@ -75,4 +77,3 @@ export interface Counter {
   description: string;
   data: CounterStep[];
 }
-
