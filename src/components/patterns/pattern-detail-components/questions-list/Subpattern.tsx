@@ -1,4 +1,3 @@
-// src/components/patterns/pattern-detail-components/questions-list/Subpattern.tsx
 import { useState, useRef, useEffect } from "react";
 import { ChevronDown, ChevronUp } from 'lucide-react';
 import { Subpattern } from "@/types";
@@ -15,7 +14,8 @@ interface SubpatternProps {
 
 export const SubpatternComponent = ({ subpattern, subpatternIndex, completedQuestions, toggleQuestion }: SubpatternProps) => {
   const [isExpanded, setIsExpanded] = useState(false);
-  const contentRef = useRef<HTMLDivElement | null>(null);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const contentRef = useRef(null);
   
   useEffect(() => {
     console.log('Subpattern rendered:', subpattern.title);
@@ -27,62 +27,66 @@ export const SubpatternComponent = ({ subpattern, subpatternIndex, completedQues
   };
 
   const animationKey = subpattern.title.toLowerCase().replace(/[^a-z0-9]/g, '');
-  console.log('Animation key:', animationKey);
-  console.log('Available animations:', Object.keys(countingAnimations));
-  
   const animation = countingAnimations[animationKey];
-  console.log('Found animation:', animation);
 
   const contentHeight = contentRef.current?.scrollHeight || 'auto';
-  console.log('Content height:', contentHeight);
 
   return (
-    <div className="space-y-6">
-      <div className="subpattern-header bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg border border-purple-100 dark:border-purple-900 transition-all duration-300 hover:shadow-xl">
+    <div className="border rounded-lg mb-4">
+      <div className="p-4">
         <div className="flex items-center justify-between">
-          <h2 
-            className="text-2xl font-bold text-gray-800 dark:text-gray-100 cursor-pointer"
-            onClick={toggleSubpattern}
-          >
-            {subpattern.title}
-          </h2>
           <div className="flex items-center gap-4">
-            {animation && <AnimationDialog animation={animation} />}
-            <div 
-              className="transform transition-transform duration-300 cursor-pointer"
+            <h3 className="text-lg font-semibold">
+              {subpattern.title}
+            </h3>
+            
+            {animation && (
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => setIsDialogOpen(true)}
+              >
+                View Animation
+              </Button>
+            )}
+            
+            <Button
+              variant="ghost"
+              size="sm"
               onClick={toggleSubpattern}
+              className="ml-2"
             >
-              {isExpanded ? (
-                <ChevronUp className="w-6 h-6 text-gray-600 dark:text-gray-400" />
-              ) : (
-                <ChevronDown className="w-6 h-6 text-gray-600 dark:text-gray-400" />
-              )}
-            </div>
+              {isExpanded ? <ChevronUp /> : <ChevronDown />}
+            </Button>
           </div>
         </div>
       </div>
-      
-      <div 
+
+      <div
         ref={contentRef}
-        className="overflow-hidden transition-all duration-300 ease-in-out"
-        style={{
-          maxHeight: isExpanded ? contentHeight : 0,
-          opacity: isExpanded ? 1 : 0,
-        }}
+        className={`overflow-hidden transition-all duration-300 ${
+          isExpanded ? 'max-h-[1000px]' : 'max-h-0'
+        }`}
       >
-        <div className="space-y-6">
+        <div className="p-4 pt-0">
           {subpattern.questions.map((question, index) => (
             <QuestionComponent
               key={question.id}
               question={question}
-              index={index}
-              prefix={`${subpatternIndex + 1}.`}
               isCompleted={completedQuestions.includes(question.id)}
-              toggleQuestion={toggleQuestion}
+              onToggle={() => toggleQuestion(question.id)}
             />
           ))}
         </div>
       </div>
+
+      {animation && (
+        <AnimationDialog
+          isOpen={isDialogOpen}
+          onClose={() => setIsDialogOpen(false)}
+          animation={animation}
+        />
+      )}
     </div>
   );
 };
