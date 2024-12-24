@@ -32,10 +32,9 @@ export const countingAnimations = {
   "frequency-distribution": frequencyDistributionAnimation,
   "window-based-counting": windowBasedCountingAnimation,
   "state-based-counting": stateBasedCountingAnimation,
-  "population-tracking": placeholderAnimation,
-  "advanced-counter-operations": placeholderAnimation
 };
-
+/*"population-tracking": placeholderAnimation,
+  "advanced-counter-operations": placeholderAnimation*/
 const placeholderAnimation = {
   title: "Coming Soon",
   steps: [{
