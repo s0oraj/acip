@@ -1,4 +1,4 @@
-// src/data/patterns/counting/animations/index.ts
+// src/data/patterns/counting-pattern/animations/index.ts
 
 import { basicCounterAnimation } from './basic-counter-operations/data';
 const placeholderAnimation = {
