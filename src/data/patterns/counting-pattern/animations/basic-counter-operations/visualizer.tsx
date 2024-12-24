@@ -6,6 +6,7 @@ import { Hash, Filter, Layers } from 'lucide-react';
 import { patterns } from './data';
 
 const Visualizer: React.FC = () => {
+  console.log('Visualizer component mounted');
   const [activePattern, setActivePattern] = useState('basic');
   const [step, setStep] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
