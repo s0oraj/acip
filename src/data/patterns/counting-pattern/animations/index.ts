@@ -14,7 +14,7 @@ const placeholderAnimation = {
 };
 
 export const countingAnimations = {
-  basiccounteroperations: basicCounterAnimation,
+  "basic-counter-operations": basicCounterAnimation,
   frequencydistribution: placeholderAnimation,
   windowbasedcounting: placeholderAnimation, 
   statebasedcounting: placeholderAnimation,
