@@ -1,7 +1,8 @@
 
 import { basicCounterAnimation } from './basic-counter-operations/data';
 
-import { Visualizer as BasicCounterOperationsVisualizer } from './basic-counter-operations/visualizer';
+// src/data/patterns/counting-pattern/animations/index.ts
+import BasicCounterOperationsVisualizer from './basic-counter-operations/visualizer';
 
 export const visualizers = {
   'basic-counter-operations': BasicCounterOperationsVisualizer,
