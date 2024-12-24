@@ -1,6 +1,12 @@
 
 import { basicCounterAnimation } from './basic-counter-operations/data';
 
+import { Visualizer as BasicCounterOperationsVisualizer } from './basic-counter-operations/visualizer';
+
+export const visualizers = {
+  'basic-counter-operations': BasicCounterOperationsVisualizer,
+  // Add other visualizers here as needed
+};
 const placeholderAnimation = {
   title: "Coming Soon",
   steps: [{
