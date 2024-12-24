@@ -1,4 +1,4 @@
-// src/data/patterns/counting-pattern/animations/basic-counter/visualizer.tsx
+
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { BarChart, Bar, XAxis, YAxis, ResponsiveContainer, Tooltip } from 'recharts';
