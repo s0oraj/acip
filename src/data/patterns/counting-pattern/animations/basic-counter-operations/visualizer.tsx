@@ -42,7 +42,6 @@ const Visualizer: React.FC = () => {
 
   return (
     <div className="p-6">
-      {/* Pattern Selection */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
         {Object.entries(patterns).map(([key, { icon, title, desc, color }]) => (
           <button
@@ -69,11 +68,10 @@ const Visualizer: React.FC = () => {
         ))}
       </div>
 
-      {/* Visualizations */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-4">
         <div className="bg-white p-5 rounded-xl shadow-sm">
           <h3 className="text-lg font-semibold mb-3">Input Sequence</h3>
-          <div className="flex flex-wrap gap-2">
+          <div className="flex flex-wrap gap-2 mb-4">
             {patterns[activePattern].data.map((val, idx) => (
               <div
                 key={idx}
@@ -83,6 +81,19 @@ const Visualizer: React.FC = () => {
                 {val}
               </div>
             ))}
+          </div>
+          
+          <div className="mt-4">
+            <div className="flex justify-between text-sm text-gray-500 mb-1">
+              <span>Step {step + 1}</span>
+              <span>of {patterns[activePattern].data.length}</span>
+            </div>
+            <div className="w-full bg-gray-200 rounded-full h-2">
+              <div
+                className="bg-blue-500 h-2 rounded-full transition-all duration-300"
+                style={{ width: `${((step + 1) / patterns[activePattern].data.length) * 100}%` }}
+              />
+            </div>
           </div>
         </div>
 
@@ -103,7 +114,6 @@ const Visualizer: React.FC = () => {
         </div>
       </div>
 
-      {/* Code Display */}
       <div className="bg-gray-800 p-3 rounded-lg mb-4">
         <pre className="text-sm text-white overflow-x-auto">
           <code>
@@ -114,15 +124,13 @@ const Visualizer: React.FC = () => {
         </pre>
       </div>
 
-      {/* Step Description */}
       <p className="text-sm text-gray-600 mb-4">
         {step === 0 
           ? "Initialize empty counter" 
           : `Process element (${patterns[activePattern].data[step-1]})`}
       </p>
 
-      {/* Controls */}
-      <div className="flex justify-center gap-6 mb-4">
+      <div className="flex justify-center gap-6">
         <button
           onClick={() => setIsPlaying(!isPlaying)}
           className={`w-12 h-12 rounded-full flex items-center justify-center transition-all duration-300 ${
@@ -146,20 +154,6 @@ const Visualizer: React.FC = () => {
         >
           <RotateCcw className="w-5 h-5" />
         </button>
-      </div>
-
-      {/* Progress Bar */}
-      <div className="max-w-2xl mx-auto">
-        <div className="flex justify-between text-sm text-gray-500">
-          <span>Step {step + 1}</span>
-          <span>of {patterns[activePattern].data.length}</span>
-        </div>
-        <div className="w-full bg-gray-200 rounded-full h-2 mt-1">
-          <div
-            className="bg-blue-500 h-2 rounded-full transition-all duration-300"
-            style={{ width: `${((step + 1) / patterns[activePattern].data.length) * 100}%` }}
-          />
-        </div>
       </div>
     </div>
   );
