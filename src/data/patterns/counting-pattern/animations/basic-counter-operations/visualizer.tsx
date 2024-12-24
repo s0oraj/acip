@@ -144,5 +144,5 @@ const Visualizer: React.FC = () => {
     </Card>
   );
 };
-
+export default BasicCounterVisualizer;
 export default Visualizer;
