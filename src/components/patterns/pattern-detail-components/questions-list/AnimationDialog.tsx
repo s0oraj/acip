@@ -19,38 +19,43 @@ const AnimationDialog = ({ isOpen, onClose, pattern, subpattern }: AnimationDial
       console.log('AnimationDialog opened with:', {
         pattern,
         subpattern,
-        importPath: `@/data/patterns/${pattern}/animations/${subpattern}/visualizer`
+        relativePath: `../../../../data/patterns/${pattern}/animations/${subpattern}/visualizer`
       });
     }
   }, [isOpen, pattern, subpattern]);
 
   const DynamicVisualizer = lazy(() => {
-    const importPath = `@/data/patterns/${pattern}/animations/${subpattern}/visualizer`;
+    // Using relative path instead of @ alias
+    const relativePath = `../../../../data/patterns/${pattern}/animations/${subpattern}/visualizer`;
     console.log('Attempting to import visualizer:', {
-      importPath,
+      relativePath,
       pattern,
-      subpattern,
-      fullPath: `/data/patterns/${pattern}/animations/${subpattern}/visualizer`
+      subpattern
     });
 
-    return import(importPath)
+    return import(relativePath)
       .then(module => {
-        console.log('Successfully loaded visualizer module:', {
-          module,
-          hasDefaultExport: !!module.default
-        });
+        if (!module.default) {
+          throw new Error('Visualizer module does not have a default export');
+        }
+        console.log('Successfully loaded visualizer module');
         return module;
       })
       .catch(err => {
+        let errorMessage = 'Failed to load visualizer';
+        if (err.message.includes('Failed to resolve module specifier')) {
+          errorMessage = 'Could not find visualizer file';
+        } else if (err.message.includes('default export')) {
+          errorMessage = 'Invalid visualizer module format';
+        }
+        
         console.error('Visualizer import error:', {
-          error: err.message,
-          stack: err.stack,
-          pattern,
-          subpattern,
-          importPath,
+          message: err.message,
+          path: relativePath,
           errorType: err.constructor.name
         });
-        setError(`Failed to load visualizer for ${pattern}/${subpattern}`);
+        
+        setError(`${errorMessage} for ${pattern}/${subpattern}`);
         throw err;
       });
   });
@@ -69,10 +74,13 @@ const AnimationDialog = ({ isOpen, onClose, pattern, subpattern }: AnimationDial
                   {JSON.stringify({
                     pattern,
                     subpattern,
-                    importPath: `@/data/patterns/${pattern}/animations/${subpattern}/visualizer`,
+                    attemptedPath: `../../../../data/patterns/${pattern}/animations/${subpattern}/visualizer`,
                     timestamp: new Date().toISOString()
                   }, null, 2)}
                 </pre>
+                <p className="mt-2 text-xs text-gray-600">
+                  Expected file location: src/data/patterns/{pattern}/animations/{subpattern}/visualizer.tsx
+                </p>
               </div>
             ) : (
               <Suspense fallback={
