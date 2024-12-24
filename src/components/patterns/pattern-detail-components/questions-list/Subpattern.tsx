@@ -1,3 +1,4 @@
+// src/components/patterns/pattern-detail-components/questions-list/Subpattern.tsx
 import { useState, useRef, useEffect } from "react";
 import { ChevronDown, ChevronUp } from 'lucide-react';
 import { Button } from "@/components/ui/button";
@@ -8,7 +9,7 @@ import AnimationDialog from "./AnimationDialog";
 interface SubpatternProps {
   subpattern: Subpattern;
   subpatternIndex: number;
-  pattern: string;  // Added pattern prop
+  pattern: string;
   completedQuestions: number[];
   toggleQuestion: (questionId: number) => void;
 }
@@ -16,7 +17,7 @@ interface SubpatternProps {
 export const SubpatternComponent = ({ 
   subpattern, 
   subpatternIndex, 
-  pattern,  // New pattern prop
+  pattern,
   completedQuestions, 
   toggleQuestion 
 }: SubpatternProps) => {
@@ -24,20 +25,7 @@ export const SubpatternComponent = ({
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const contentRef = useRef<HTMLDivElement | null>(null);
 
-  useEffect(() => {
-    console.log('Subpattern rendered:', subpattern.title);
-  }, [subpattern]);
-
-  const toggleSubpattern = () => {
-    console.log('Toggling subpattern:', subpattern.title);
-    setIsExpanded(!isExpanded);
-  };
-
-  // Convert title to kebab case for the subpattern identifier
-  const subpatternId = subpattern.title
-  .toLowerCase()
-  .replace(/[^a-z0-9]+/g, '-')
-  .replace(/^-+|-+$/g, ''); // Remove leading/trailing hyphens
+  const subpatternPath = subpattern.title.toLowerCase().replace(/[^a-z0-9]+/g, '-');
   
   const contentHeight = contentRef.current?.scrollHeight || 'auto';
 
@@ -101,8 +89,8 @@ export const SubpatternComponent = ({
       <AnimationDialog
         isOpen={isDialogOpen}
         onClose={() => setIsDialogOpen(false)}
-        pattern={pattern}
-        subpattern={subpatternId}
+        patternPath={pattern}
+        subpatternPath={subpatternPath}
       />
     </div>
   );
