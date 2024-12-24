@@ -1,12 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import { BarChart, Bar, XAxis, YAxis, ResponsiveContainer, Tooltip } from 'recharts';
-import { Hash, Filter, Layers, Play, Pause, RotateCcw } from 'lucide-react';
+import { Hash, Filter, Layers, Play, Pause, RotateCcw, ChevronLeft, ChevronRight } from 'lucide-react';
 import { patterns } from './data';
 
 const Visualizer: React.FC = () => {
   const [activePattern, setActivePattern] = useState('basic');
   const [step, setStep] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
+  const [questionIndex, setQuestionIndex] = useState(0);
+
+  const questions = [
+    { title: "Basic Counter", data: patterns.basic.data },
+    { title: "Even Counter", data: patterns.conditional.data },
+    { title: "Multi-Value", data: patterns.multi.data }
+  ];
 
   const getIcon = (iconName: string) => {
     switch (iconName) {
@@ -40,32 +47,40 @@ const Visualizer: React.FC = () => {
     return Object.entries(freq).map(([key, value]) => ({ name: key, value }));
   };
 
+  const handleNext = () => {
+    const nextIndex = (questionIndex + 1) % questions.length;
+    setQuestionIndex(nextIndex);
+    setActivePattern(Object.keys(patterns)[nextIndex]);
+    setStep(0);
+    setIsPlaying(false);
+  };
+
+  const handlePrevious = () => {
+    const prevIndex = (questionIndex - 1 + questions.length) % questions.length;
+    setQuestionIndex(prevIndex);
+    setActivePattern(Object.keys(patterns)[prevIndex]);
+    setStep(0);
+    setIsPlaying(false);
+  };
+
   return (
     <div className="p-6">
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
-        {Object.entries(patterns).map(([key, { icon, title, desc, color }]) => (
-          <button
-            key={key}
-            onClick={() => {
-              setActivePattern(key);
-              setStep(0);
-              setIsPlaying(false);
-            }}
-            className={`p-4 rounded-xl transition-all ${
-              activePattern === key 
-                ? 'bg-white shadow-lg scale-105' 
-                : 'bg-gray-50 hover:bg-white hover:shadow'
-            }`}
-          >
-            <div className="flex items-center gap-3 mb-2">
-              <div style={{ color }} className="p-2 rounded-lg bg-opacity-10 bg-current">
-                {getIcon(icon)}
-              </div>
-              <span className="font-semibold">{title}</span>
-            </div>
-            <p className="text-sm text-gray-600">{desc}</p>
-          </button>
-        ))}
+      <div className="flex items-center justify-between mb-6">
+        <button
+          onClick={handlePrevious}
+          className="p-2 rounded-full hover:bg-gray-100 transition-colors"
+          disabled={questionIndex === 0}
+        >
+          <ChevronLeft className="w-6 h-6" />
+        </button>
+        <h2 className="text-xl font-semibold">{questions[questionIndex].title}</h2>
+        <button
+          onClick={handleNext}
+          className="p-2 rounded-full hover:bg-gray-100 transition-colors"
+          disabled={questionIndex === questions.length - 1}
+        >
+          <ChevronRight className="w-6 h-6" />
+        </button>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-4">
