@@ -1,3 +1,4 @@
+/*
 // src/data/patterns/counting-pattern/animations/index.ts
 import { basicCounterAnimation } from './basic-counter-operations/data';
 import BasicCounterOperationsVisualizer from './basic-counter-operations/visualizer';
@@ -32,7 +33,30 @@ export const countingAnimations = {
   "population-tracking": populationTrackingAnimation,
   "advanced-counter-operations": advancedCounterAnimation
 };
+*/
 
+// src/data/patterns/counting-pattern/animations/index.ts
+import { basicCounterAnimation } from './basic-counter-operations/data';
+import { frequencyDistributionAnimation } from './frequency-distribution/data';
+import { windowBasedCountingAnimation } from './window-based-counting/data';
+import BasicCounterOperationsVisualizer from './basic-counter-operations/visualizer';
+import FrequencyDistributionVisualizer from './frequency-distribution/visualizer';
+import WindowBasedCountingVisualizer from './window-based-counting/visualizer';
+
+export const visualizers = {
+  'basic-counter-operations': BasicCounterOperationsVisualizer,
+  'frequency-distribution': FrequencyDistributionVisualizer,
+  'window-based-counting': WindowBasedCountingVisualizer
+};
+
+export const countingAnimations = {
+  "basic-counter-operations": basicCounterAnimation,
+  "frequency-distribution": frequencyDistributionAnimation,
+  "window-based-counting": windowBasedCountingAnimation,
+  statebasedcounting: placeholderAnimation,
+  populationtracking: placeholderAnimation,
+  advancedcounting: placeholderAnimation
+};
 const placeholderAnimation = {
   title: "Coming Soon",
   steps: [{
