@@ -1,12 +1,12 @@
-
-import { basicCounterAnimation } from './basic-counter-operations/data';
-
 // src/data/patterns/counting-pattern/animations/index.ts
+import { basicCounterAnimation } from './basic-counter-operations/data';
+import { frequencyDistributionAnimation } from './frequency-distribution/data';
 import BasicCounterOperationsVisualizer from './basic-counter-operations/visualizer';
+import FrequencyDistributionVisualizer from './frequency-distribution/visualizer';
 
 export const visualizers = {
   'basic-counter-operations': BasicCounterOperationsVisualizer,
-  // Add other visualizers here as needed
+  'frequency-distribution': FrequencyDistributionVisualizer
 };
 const placeholderAnimation = {
   title: "Coming Soon",
@@ -22,8 +22,8 @@ const placeholderAnimation = {
 
 export const countingAnimations = {
   "basic-counter-operations": basicCounterAnimation,
-  frequencydistribution: placeholderAnimation,
-  windowbasedcounting: placeholderAnimation, 
+  "frequency-distribution": frequencyDistributionAnimation,
+  windowbasedcounting: placeholderAnimation,
   statebasedcounting: placeholderAnimation,
   populationtracking: placeholderAnimation,
   advancedcounting: placeholderAnimation
