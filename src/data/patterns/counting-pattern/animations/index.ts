@@ -24,8 +24,10 @@ export const visualizers = {
   'frequency-distribution': FrequencyDistributionVisualizer,
   'window-based-counting': WindowBasedCountingVisualizer,
 };
-//'advanced-counter-operations': AdvancedCounterOperationsVisualizer
-//  'population-tracking': PopulationTrackingVisualizer
+// 'state-based-counting': StateBasedCountingVisualizer
+// population-tracking': PopulationTrackingVisualizer
+// advanced-counter-operations': AdvancedCounterOperationsVisualizer
+
 export const countingAnimations = {
   "basic-counter-operations": basicCounterAnimation,
   "frequency-distribution": frequencyDistributionAnimation,
@@ -34,8 +36,9 @@ export const countingAnimations = {
   populationtracking: placeholderAnimation,
   advancedcounting: placeholderAnimation
 };
-/*"population-tracking": placeholderAnimation,
-  "advanced-counter-operations": placeholderAnimation*/
+// "state-based-counting": stateBasedCountingAnimation
+// population-tracking": placeholderAnimation,
+//advanced-counter-operations": placeholderAnimation
 const placeholderAnimation = {
   title: "Coming Soon",
   steps: [{
