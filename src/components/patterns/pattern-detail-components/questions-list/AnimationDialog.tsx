@@ -15,13 +15,41 @@ const AnimationDialog = ({ isOpen, onClose, pattern, subpattern }: AnimationDial
 
   useEffect(() => {
     setError(null);
-  }, [isOpen]);
+    if (isOpen) {
+      console.log('AnimationDialog opened with:', {
+        pattern,
+        subpattern,
+        importPath: `@/data/patterns/${pattern}/animations/${subpattern}/visualizer`
+      });
+    }
+  }, [isOpen, pattern, subpattern]);
 
   const DynamicVisualizer = lazy(() => {
-    console.log(`Loading visualizer for pattern: ${pattern}, subpattern: ${subpattern}`);
-    return import(`@/data/patterns/${pattern}/animations/${subpattern}/visualizer`)
+    const importPath = `@/data/patterns/${pattern}/animations/${subpattern}/visualizer`;
+    console.log('Attempting to import visualizer:', {
+      importPath,
+      pattern,
+      subpattern,
+      fullPath: `/data/patterns/${pattern}/animations/${subpattern}/visualizer`
+    });
+
+    return import(importPath)
+      .then(module => {
+        console.log('Successfully loaded visualizer module:', {
+          module,
+          hasDefaultExport: !!module.default
+        });
+        return module;
+      })
       .catch(err => {
-        console.error('Import error:', err);
+        console.error('Visualizer import error:', {
+          error: err.message,
+          stack: err.stack,
+          pattern,
+          subpattern,
+          importPath,
+          errorType: err.constructor.name
+        });
         setError(`Failed to load visualizer for ${pattern}/${subpattern}`);
         throw err;
       });
@@ -36,10 +64,23 @@ const AnimationDialog = ({ isOpen, onClose, pattern, subpattern }: AnimationDial
               <div className="text-red-500">
                 <p>Error loading visualizer</p>
                 <p className="font-mono text-sm">{error}</p>
-                <p className="mt-2 text-sm">Attempted path: /data/patterns/{pattern}/animations/{subpattern}/visualizer</p>
+                <p className="mt-2 text-sm">Debug Information:</p>
+                <pre className="text-xs bg-gray-100 p-2 mt-1 rounded">
+                  {JSON.stringify({
+                    pattern,
+                    subpattern,
+                    importPath: `@/data/patterns/${pattern}/animations/${subpattern}/visualizer`,
+                    timestamp: new Date().toISOString()
+                  }, null, 2)}
+                </pre>
               </div>
             ) : (
-              <Suspense fallback={<div>Loading visualization...</div>}>
+              <Suspense fallback={
+                <div className="flex items-center justify-center h-full">
+                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500" />
+                  <span className="ml-2">Loading visualization...</span>
+                </div>
+              }>
                 <DynamicVisualizer />
               </Suspense>
             )}
