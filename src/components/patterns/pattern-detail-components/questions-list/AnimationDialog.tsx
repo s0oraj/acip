@@ -4,14 +4,21 @@ import { Card, CardContent } from '@/components/ui/card';
 
 // Dynamic import for visualizers
 const getVisualizer = (pattern: string, subpattern: string) => {
-  return lazy(() => import(`@/data/patterns/${pattern}/animations/${subpattern}/visualizer`));
+  // Using the correct path structure
+  return lazy(() => import(`@/data/patterns/${pattern}/animations/${subpattern}/visualizer`).catch(err => {
+    console.error("Failed to load visualizer:", err);
+    // Return a default export with an error message component
+    return {
+      default: () => <div>Failed to load visualization. Please try again.</div>
+    };
+  }));
 };
 
 interface AnimationDialogProps {
   isOpen: boolean;
   onClose: () => void;
   pattern: string;  // e.g., 'counting'
-  subpattern: string;  // e.g., 'basic-counter'
+  subpattern: string;  // e.g., 'basic-counter-operations'
 }
 
 const AnimationDialog = ({ isOpen, onClose, pattern, subpattern }: AnimationDialogProps) => {
