@@ -7,6 +7,7 @@ interface PatternAnimationProps {
   patternId: string;
 }
 
+
 export const PatternAnimation: React.FC<PatternAnimationProps> = ({ patternId }) => {
   const animation = countingAnimations[patternId.toLowerCase().replace(/\s+/g, '')];
   
