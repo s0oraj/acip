@@ -1,15 +1,4 @@
-// src/components/patterns/pattern-detail-components/questions-list/AnimationDialog.tsx
-import React, { useState, useEffect, lazy, Suspense } from 'react';
-import { Dialog, DialogContent } from "@/components/ui/dialog";
-import { Card, CardContent } from '@/components/ui/card';
-
-interface AnimationDialogProps {
-  isOpen: boolean;
-  onClose: () => void;
-  pattern: string;
-  subpattern: string;
-}
-
+// In AnimationDialog.tsx, update the code to:
 const AnimationDialog = ({ isOpen, onClose, pattern, subpattern }: AnimationDialogProps) => {
   const [error, setError] = useState<string | null>(null);
 
@@ -18,11 +7,25 @@ const AnimationDialog = ({ isOpen, onClose, pattern, subpattern }: AnimationDial
   }, [isOpen]);
 
   const DynamicVisualizer = lazy(() => {
-    console.log(`Loading visualizer for pattern: ${pattern}, subpattern: ${subpattern}`);
-    return import(`@/data/patterns/${pattern}/animations/${subpattern}/visualizer`)
+    const importPath = `@/data/patterns/${pattern}/animations/${subpattern}/visualizer`;
+    console.log('Full import path:', importPath);
+    console.log('Pattern:', pattern);
+    console.log('Subpattern:', subpattern);
+    
+    return import(importPath)
+      .then(module => {
+        console.log('Successfully loaded module:', module);
+        return module;
+      })
       .catch(err => {
-        console.error('Import error:', err);
-        setError(`Failed to load visualizer for ${pattern}/${subpattern}`);
+        console.error('Import error details:', {
+          error: err.message,
+          stack: err.stack,
+          pattern,
+          subpattern,
+          importPath
+        });
+        setError(`Failed to load visualizer: ${err.message}`);
         throw err;
       });
   });
@@ -36,10 +39,19 @@ const AnimationDialog = ({ isOpen, onClose, pattern, subpattern }: AnimationDial
               <div className="text-red-500">
                 <p>Error loading visualizer</p>
                 <p className="font-mono text-sm">{error}</p>
-                <p className="mt-2 text-sm">Attempted path: /data/patterns/{pattern}/animations/{subpattern}/visualizer</p>
+                <p className="mt-2 text-sm">Debug info:</p>
+                <pre className="text-xs bg-gray-100 p-2 mt-1 rounded">
+                  Pattern: {pattern}
+                  Subpattern: {subpattern}
+                  Path: @/data/patterns/{pattern}/animations/{subpattern}/visualizer
+                </pre>
               </div>
             ) : (
-              <Suspense fallback={<div>Loading visualization...</div>}>
+              <Suspense fallback={
+                <div className="flex items-center justify-center h-full">
+                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500" />
+                </div>
+              }>
                 <DynamicVisualizer />
               </Suspense>
             )}
@@ -49,5 +61,3 @@ const AnimationDialog = ({ isOpen, onClose, pattern, subpattern }: AnimationDial
     </Dialog>
   );
 };
-
-export default AnimationDialog;
