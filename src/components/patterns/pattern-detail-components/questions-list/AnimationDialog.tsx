@@ -19,16 +19,30 @@ const AnimationDialog = ({ isOpen, onClose, pattern, subpattern }: AnimationDial
 
   const DynamicVisualizer = lazy(async () => {
     try {
-      // Using Vite's dynamic import
-      const module = await import(`/src/data/patterns/${pattern}/animations/${subpattern}/visualizer.tsx`);
-      console.log('Module loaded successfully:', module);
-      return module;
-    } catch (err) {
-      console.error('Import error:', {
-        error: err,
-        path: `/src/data/patterns/${pattern}/animations/${subpattern}/visualizer.tsx`
+      // Using relative path without extension
+      const importPath = `../../../../data/patterns/${pattern}/animations/${subpattern}/visualizer`;
+      console.log('Attempting to import:', importPath);
+      
+      // Vite's dynamic import
+      const module = await import(importPath);
+      
+      if (!module.default) {
+        throw new Error('No default export found in visualizer module');
+      }
+      
+      console.log('Module loaded successfully:', {
+        hasDefault: !!module.default,
+        exports: Object.keys(module)
       });
-      setError(`Failed to load visualizer for ${pattern}/${subpattern}`);
+      
+      return module;
+    } catch (err: any) {
+      console.error('Import error:', {
+        message: err.message,
+        type: err.constructor.name,
+        stack: err.stack
+      });
+      setError(`Failed to load visualizer: ${err.message}`);
       throw err;
     }
   });
@@ -43,20 +57,30 @@ const AnimationDialog = ({ isOpen, onClose, pattern, subpattern }: AnimationDial
                 <p>Error loading visualizer</p>
                 <p className="font-mono text-sm">{error}</p>
                 <p className="mt-2 text-sm">Debug Information:</p>
-                <pre className="text-xs bg-gray-100 p-2 mt-1 rounded">
+                <pre className="text-xs bg-gray-100 p-2 mt-1 rounded overflow-auto">
                   {JSON.stringify({
                     pattern,
                     subpattern,
-                    importPath: `/src/data/patterns/${pattern}/animations/${subpattern}/visualizer.tsx`,
+                    relativePath: `../../../../data/patterns/${pattern}/animations/${subpattern}/visualizer`,
+                    fullPath: `/src/data/patterns/${pattern}/animations/${subpattern}/visualizer`,
                     timestamp: new Date().toISOString()
                   }, null, 2)}
                 </pre>
+                <p className="mt-2 text-xs text-gray-600">
+                  Make sure the file exists at:<br />
+                  src/data/patterns/{pattern}/animations/{subpattern}/visualizer.tsx
+                </p>
               </div>
             ) : (
               <Suspense fallback={
-                <div className="flex items-center justify-center h-full">
-                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500" />
-                  <span className="ml-2">Loading visualization...</span>
+                <div className="flex items-center justify-center h-full space-y-2">
+                  <div>
+                    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500 mx-auto" />
+                    <p className="text-sm text-gray-600 mt-2">Loading visualization...</p>
+                    <p className="text-xs text-gray-500">
+                      Loading: {pattern}/{subpattern}
+                    </p>
+                  </div>
                 </div>
               }>
                 <DynamicVisualizer />
