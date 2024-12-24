@@ -20,7 +20,7 @@ export const visualizers = {
   'frequency-distribution': FrequencyDistributionVisualizer,
   'window-based-counting': WindowBasedCountingVisualizer,
   'state-based-counting': StateBasedCountingVisualizer,
-  'population-tracking': PopulationTrackingVisualizer
+  'population-tracking': PopulationTrackingVisualizer,
   'advanced-counter-operations': AdvancedCounterOperationsVisualizer,
 };
 
@@ -29,7 +29,7 @@ export const countingAnimations = {
   "frequency-distribution": frequencyDistributionAnimation,
   "window-based-counting": windowBasedCountingAnimation,
   "state-based-counting": stateBasedCountingAnimation,
-  "population-tracking": populationTrackingAnimation
+  "population-tracking": populationTrackingAnimation,
   "advanced-counter-operations": advancedCounterAnimation
 };
 
