@@ -34,7 +34,10 @@ export const SubpatternComponent = ({
   };
 
   // Convert title to kebab case for the subpattern identifier
-  const subpatternId = subpattern.title.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+  const subpatternId = subpattern.title
+  .toLowerCase()
+  .replace(/[^a-z0-9]+/g, '-')
+  .replace(/^-+|-+$/g, ''); // Remove leading/trailing hyphens
   
   const contentHeight = contentRef.current?.scrollHeight || 'auto';
 
