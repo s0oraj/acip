@@ -1,19 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import { BarChart, Bar, XAxis, YAxis, ResponsiveContainer, Tooltip } from 'recharts';
-import { Hash, Filter, Layers, Play, Pause, RotateCcw } from 'lucide-react';
+import { Hash, Filter, Layers } from 'lucide-react';
 import { patterns } from './data';
 
-const Visualizer: React.FC = () => {
+const Visualizer = () => {
   const [activePattern, setActivePattern] = useState('basic');
   const [step, setStep] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
 
   const getIcon = (iconName: string) => {
     switch (iconName) {
-      case 'hash': return <Hash className="w-5 h-5" />;
-      case 'filter': return <Filter className="w-5 h-5" />;
-      case 'layers': return <Layers className="w-5 h-5" />;
-      default: return <Hash className="w-5 h-5" />;
+      case 'hash': return <Hash className="w-4 h-4" />;
+      case 'filter': return <Filter className="w-4 h-4" />;
+      case 'layers': return <Layers className="w-4 h-4" />;
+      default: return <Hash className="w-4 h-4" />;
     }
   };
 
@@ -41,9 +41,9 @@ const Visualizer: React.FC = () => {
   };
 
   return (
-    <div className="p-8">
-      {/* Pattern Selection */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
+    <div className="w-full space-y-4">
+      {/* Pattern Selection - More compact grid */}
+      <div className="grid grid-cols-3 gap-2">
         {Object.entries(patterns).map(([key, { icon, title, desc, color }]) => (
           <button
             key={key}
@@ -52,32 +52,31 @@ const Visualizer: React.FC = () => {
               setStep(0);
               setIsPlaying(false);
             }}
-            className={`p-4 rounded-xl transition-all ${
+            className={`p-3 rounded-lg transition-all ${
               activePattern === key 
-                ? 'bg-white shadow-lg scale-105' 
+                ? 'bg-white shadow scale-102' 
                 : 'bg-gray-50 hover:bg-white hover:shadow'
             }`}
           >
-            <div className="flex items-center gap-3 mb-2">
-              <div style={{ color }} className="p-2 rounded-lg bg-opacity-10 bg-current">
+            <div className="flex items-center gap-2">
+              <div style={{ color }} className="p-1 rounded-lg bg-opacity-10 bg-current">
                 {getIcon(icon)}
               </div>
-              <span className="font-semibold">{title}</span>
+              <span className="font-medium text-sm">{title}</span>
             </div>
-            <p className="text-sm text-gray-600">{desc}</p>
           </button>
         ))}
       </div>
 
-      {/* Visualizations */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
-        <div className="bg-white p-6 rounded-xl shadow-sm">
-          <h3 className="text-lg font-semibold mb-4">Input Sequence</h3>
-          <div className="flex flex-wrap gap-2">
+      <div className="grid grid-cols-2 gap-4">
+        {/* Input Sequence - Reduced vertical space */}
+        <div className="bg-white p-4 rounded-lg shadow-sm">
+          <h3 className="text-sm font-medium mb-2">Input Sequence</h3>
+          <div className="flex flex-wrap gap-1">
             {patterns[activePattern].data.map((val, idx) => (
               <div
                 key={idx}
-                className={`w-12 h-12 flex items-center justify-center rounded-lg font-mono text-lg
+                className={`w-8 h-8 flex items-center justify-center rounded-md font-mono text-sm
                   ${idx < step ? 'bg-blue-100 text-blue-800' : 'bg-gray-100'}`}
               >
                 {val}
@@ -86,79 +85,61 @@ const Visualizer: React.FC = () => {
           </div>
         </div>
 
-        <div className="bg-white p-6 rounded-xl shadow-sm">
-          <h3 className="text-lg font-semibold mb-4">Frequency Distribution</h3>
-          <ResponsiveContainer width="100%" height={200}>
-            <BarChart data={getFrequencyData()} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
-              <XAxis dataKey="name" />
-              <YAxis />
-              <Tooltip />
-              <Bar
-                dataKey="value"
-                fill={patterns[activePattern].color}
-                radius={[4, 4, 0, 0]}
-              />
-            </BarChart>
-          </ResponsiveContainer>
+        {/* Frequency Distribution - Fixed height */}
+        <div className="bg-white p-4 rounded-lg shadow-sm">
+          <h3 className="text-sm font-medium mb-2">Frequency Distribution</h3>
+          <div className="h-32">
+            <ResponsiveContainer width="100%" height="100%">
+              <BarChart data={getFrequencyData()} margin={{ top: 5, right: 20, left: 0, bottom: 5 }}>
+                <XAxis dataKey="name" tick={{ fontSize: 12 }} />
+                <YAxis tick={{ fontSize: 12 }} />
+                <Tooltip />
+                <Bar
+                  dataKey="value"
+                  fill={patterns[activePattern].color}
+                  radius={[4, 4, 0, 0]}
+                />
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
         </div>
       </div>
 
-      {/* Code Display */}
-      <div className="bg-gray-800 p-4 rounded-lg mb-6">
-        <pre className="text-sm text-white overflow-x-auto">
-          <code>
-            {step === 0 
-              ? "const counter = {};" 
-              : `counter[${patterns[activePattern].data[step-1]}] = (counter[${patterns[activePattern].data[step-1]}] || 0) + 1;`}
-          </code>
-        </pre>
-      </div>
-
-      {/* Step Description */}
-      <p className="text-sm text-gray-600 mb-6">
-        {step === 0 
-          ? "Initialize empty counter" 
-          : `Process element (${patterns[activePattern].data[step-1]})`}
-      </p>
-
-      {/* Controls */}
-      <div className="flex justify-center gap-6 mb-6">
-        <button
-          onClick={() => setIsPlaying(!isPlaying)}
-          className={`w-12 h-12 rounded-full flex items-center justify-center transition-all duration-300 ${
-            isPlaying 
-            ? 'bg-gray-200 hover:bg-gray-300 text-gray-700'
-            : 'bg-blue-500 hover:bg-blue-600 text-white'
-          }`}
-        >
-          {isPlaying ? (
-            <Pause className="w-5 h-5" />
-          ) : (
-            <Play className="w-5 h-5 ml-0.5" />
-          )}
-        </button>
-        <button
-          onClick={() => {
-            setStep(0);
-            setIsPlaying(false);
-          }}
-          className="w-12 h-12 rounded-full flex items-center justify-center bg-gray-200 hover:bg-gray-300 text-gray-700 transition-all duration-300"
-        >
-          <RotateCcw className="w-5 h-5" />
-        </button>
-      </div>
-
-      {/* Progress Bar */}
-      <div className="max-w-2xl mx-auto">
-        <div className="flex justify-between text-sm text-gray-500">
-          <span>Step {step + 1}</span>
-          <span>of {patterns[activePattern].data.length}</span>
+      {/* Controls - Compact layout */}
+      <div className="flex items-center justify-between gap-4 px-4">
+        <div className="flex gap-2">
+          <button
+            onClick={() => setIsPlaying(!isPlaying)}
+            className={`px-4 py-1.5 rounded-md text-sm font-medium transition-colors
+              ${isPlaying 
+                ? 'bg-gray-200 hover:bg-gray-300'
+                : 'bg-blue-500 text-white hover:bg-blue-600'
+              }`}
+          >
+            {isPlaying ? 'Pause' : 'Play'}
+          </button>
+          <button
+            onClick={() => {
+              setStep(0);
+              setIsPlaying(false);
+            }}
+            className="px-4 py-1.5 rounded-md text-sm font-medium bg-gray-200 hover:bg-gray-300 transition-colors"
+          >
+            Reset
+          </button>
         </div>
-        <div className="w-full bg-gray-200 rounded-full h-2 mt-1">
-          <div
-            className="bg-blue-500 h-2 rounded-full transition-all duration-300"
-            style={{ width: `${((step + 1) / patterns[activePattern].data.length) * 100}%` }}
-          />
+        
+        <div className="flex-1 max-w-xs">
+          <div className="flex justify-between text-xs text-gray-500 mb-1">
+            <span>Step {step + 1}</span>
+            <span>of {patterns[activePattern].data.length}</span>
+          </div>
+          <div className="w-full bg-gray-200 rounded-full h-1.5">
+            <div
+              className="bg-blue-500 h-1.5 rounded-full transition-all duration-300"
+              style={{ width: `${((step + 1) / patterns[activePattern].data.length) * 100}%` }}
+            />
+          </div>
         </div>
       </div>
     </div>
