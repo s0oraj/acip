@@ -1,5 +1,5 @@
 // src/data/patterns/counting/animations/index.ts
-import { basicCounterAnimation } from './basic-counter';
+import { basicCounterAnimation } from './basic-counter-operations';
 
 const placeholderAnimation = {
   title: "Coming Soon",
