@@ -41,9 +41,9 @@ const Visualizer: React.FC = () => {
   };
 
   return (
-    <div className="p-8">
+    <div className="p-6">
       {/* Pattern Selection */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
         {Object.entries(patterns).map(([key, { icon, title, desc, color }]) => (
           <button
             key={key}
@@ -70,9 +70,9 @@ const Visualizer: React.FC = () => {
       </div>
 
       {/* Visualizations */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
-        <div className="bg-white p-6 rounded-xl shadow-sm">
-          <h3 className="text-lg font-semibold mb-4">Input Sequence</h3>
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-4">
+        <div className="bg-white p-5 rounded-xl shadow-sm">
+          <h3 className="text-lg font-semibold mb-3">Input Sequence</h3>
           <div className="flex flex-wrap gap-2">
             {patterns[activePattern].data.map((val, idx) => (
               <div
@@ -86,9 +86,9 @@ const Visualizer: React.FC = () => {
           </div>
         </div>
 
-        <div className="bg-white p-6 rounded-xl shadow-sm">
-          <h3 className="text-lg font-semibold mb-4">Frequency Distribution</h3>
-          <ResponsiveContainer width="100%" height={200}>
+        <div className="bg-white p-5 rounded-xl shadow-sm">
+          <h3 className="text-lg font-semibold mb-3">Frequency Distribution</h3>
+          <ResponsiveContainer width="100%" height={180}>
             <BarChart data={getFrequencyData()} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
               <XAxis dataKey="name" />
               <YAxis />
@@ -104,7 +104,7 @@ const Visualizer: React.FC = () => {
       </div>
 
       {/* Code Display */}
-      <div className="bg-gray-800 p-4 rounded-lg mb-6">
+      <div className="bg-gray-800 p-3 rounded-lg mb-4">
         <pre className="text-sm text-white overflow-x-auto">
           <code>
             {step === 0 
@@ -115,14 +115,14 @@ const Visualizer: React.FC = () => {
       </div>
 
       {/* Step Description */}
-      <p className="text-sm text-gray-600 mb-6">
+      <p className="text-sm text-gray-600 mb-4">
         {step === 0 
           ? "Initialize empty counter" 
           : `Process element (${patterns[activePattern].data[step-1]})`}
       </p>
 
       {/* Controls */}
-      <div className="flex justify-center gap-6 mb-6">
+      <div className="flex justify-center gap-6 mb-4">
         <button
           onClick={() => setIsPlaying(!isPlaying)}
           className={`w-12 h-12 rounded-full flex items-center justify-center transition-all duration-300 ${
