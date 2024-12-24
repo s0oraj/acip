@@ -1,4 +1,4 @@
-// src/data/patterns/counting-pattern/animations/basic-counter/data.ts
+
 import { Animation } from '@/types';
 import { Hash, Filter, Layers } from 'lucide-react';
 
