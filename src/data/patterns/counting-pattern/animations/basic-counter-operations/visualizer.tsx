@@ -1,12 +1,9 @@
-// src/data/patterns/counting-pattern/animations/basic-counter-operations/visualizer.tsx
 import React, { useState, useEffect } from 'react';
-import { Card, CardContent } from '@/components/ui/card';
 import { BarChart, Bar, XAxis, YAxis, ResponsiveContainer, Tooltip } from 'recharts';
-import { Hash, Filter, Layers } from 'lucide-react';
+import { Hash, Filter, Layers, Play, Pause, RotateCcw } from 'lucide-react';
 import { patterns } from './data';
 
 const Visualizer: React.FC = () => {
-  console.log('Visualizer component mounted');
   const [activePattern, setActivePattern] = useState('basic');
   const [step, setStep] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
@@ -44,105 +41,127 @@ const Visualizer: React.FC = () => {
   };
 
   return (
-    <Card className="w-full bg-gradient-to-br from-gray-50 to-gray-100">
-      <CardContent className="p-6">
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
-          {Object.entries(patterns).map(([key, { icon, title, desc, color }]) => (
-            <button
-              key={key}
-              onClick={() => {
-                setActivePattern(key);
-                setStep(0);
-                setIsPlaying(false);
-              }}
-              className={`p-4 rounded-xl transition-all ${
-                activePattern === key 
-                  ? 'bg-white shadow-lg scale-105' 
-                  : 'bg-gray-50 hover:bg-white hover:shadow'
-              }`}
-            >
-              <div className="flex items-center gap-3 mb-2">
-                <div style={{ color }} className="p-2 rounded-lg bg-opacity-10 bg-current">
-                  {getIcon(icon)}
-                </div>
-                <span className="font-semibold">{title}</span>
-              </div>
-              <p className="text-sm text-gray-600">{desc}</p>
-            </button>
-          ))}
-        </div>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-          <div className="bg-white p-6 rounded-xl shadow-sm">
-            <h3 className="text-lg font-semibold mb-4">Input Sequence</h3>
-            <div className="flex flex-wrap gap-2">
-              {patterns[activePattern].data.map((val, idx) => (
-                <div
-                  key={idx}
-                  className={`w-12 h-12 flex items-center justify-center rounded-lg font-mono text-lg
-                    ${idx < step ? 'bg-blue-100 text-blue-800' : 'bg-gray-100'}`}
-                >
-                  {val}
-                </div>
-              ))}
-            </div>
-          </div>
-
-          <div className="bg-white p-6 rounded-xl shadow-sm">
-            <h3 className="text-lg font-semibold mb-4">Frequency Distribution</h3>
-            <ResponsiveContainer width="100%" height={200}>
-              <BarChart data={getFrequencyData()} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
-                <XAxis dataKey="name" />
-                <YAxis />
-                <Tooltip />
-                <Bar
-                  dataKey="value"
-                  fill={patterns[activePattern].color}
-                  radius={[4, 4, 0, 0]}
-                />
-              </BarChart>
-            </ResponsiveContainer>
-          </div>
-        </div>
-
-        {/* Controls */}
-        <div className="flex justify-center gap-4 mt-6">
+    <div className="p-8">
+      {/* Pattern Selection */}
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
+        {Object.entries(patterns).map(([key, { icon, title, desc, color }]) => (
           <button
-            onClick={() => setIsPlaying(!isPlaying)}
-            className={`px-6 py-2 rounded-lg font-medium transition-colors
-              ${isPlaying 
-                ? 'bg-gray-200 hover:bg-gray-300'
-                : 'bg-blue-500 text-white hover:bg-blue-600'
-              }`}
-          >
-            {isPlaying ? 'Pause' : 'Play'}
-          </button>
-          <button
+            key={key}
             onClick={() => {
+              setActivePattern(key);
               setStep(0);
               setIsPlaying(false);
             }}
-            className="px-6 py-2 rounded-lg font-medium bg-gray-200 hover:bg-gray-300 transition-colors"
+            className={`p-4 rounded-xl transition-all ${
+              activePattern === key 
+                ? 'bg-white shadow-lg scale-105' 
+                : 'bg-gray-50 hover:bg-white hover:shadow'
+            }`}
           >
-            Reset
+            <div className="flex items-center gap-3 mb-2">
+              <div style={{ color }} className="p-2 rounded-lg bg-opacity-10 bg-current">
+                {getIcon(icon)}
+              </div>
+              <span className="font-semibold">{title}</span>
+            </div>
+            <p className="text-sm text-gray-600">{desc}</p>
           </button>
+        ))}
+      </div>
+
+      {/* Visualizations */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+        <div className="bg-white p-6 rounded-xl shadow-sm">
+          <h3 className="text-lg font-semibold mb-4">Input Sequence</h3>
+          <div className="flex flex-wrap gap-2">
+            {patterns[activePattern].data.map((val, idx) => (
+              <div
+                key={idx}
+                className={`w-12 h-12 flex items-center justify-center rounded-lg font-mono text-lg
+                  ${idx < step ? 'bg-blue-100 text-blue-800' : 'bg-gray-100'}`}
+              >
+                {val}
+              </div>
+            ))}
+          </div>
         </div>
 
-        {/* Progress Indicator */}
-        <div className="mt-4">
-          <div className="flex justify-between text-sm text-gray-500">
-            <span>Step {step + 1}</span>
-            <span>of {patterns[activePattern].data.length}</span>
-          </div>
-          <div className="w-full bg-gray-200 rounded-full h-2 mt-1">
-            <div
-              className="bg-blue-500 h-2 rounded-full transition-all duration-300"
-              style={{ width: `${((step + 1) / patterns[activePattern].data.length) * 100}%` }}
-            />
-          </div>
+        <div className="bg-white p-6 rounded-xl shadow-sm">
+          <h3 className="text-lg font-semibold mb-4">Frequency Distribution</h3>
+          <ResponsiveContainer width="100%" height={200}>
+            <BarChart data={getFrequencyData()} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
+              <XAxis dataKey="name" />
+              <YAxis />
+              <Tooltip />
+              <Bar
+                dataKey="value"
+                fill={patterns[activePattern].color}
+                radius={[4, 4, 0, 0]}
+              />
+            </BarChart>
+          </ResponsiveContainer>
         </div>
-      </CardContent>
-    </Card>
+      </div>
+
+      {/* Code Display */}
+      <div className="bg-gray-800 p-4 rounded-lg mb-6">
+        <pre className="text-sm text-white overflow-x-auto">
+          <code>
+            {step === 0 
+              ? "const counter = {};" 
+              : `counter[${patterns[activePattern].data[step-1]}] = (counter[${patterns[activePattern].data[step-1]}] || 0) + 1;`}
+          </code>
+        </pre>
+      </div>
+
+      {/* Step Description */}
+      <p className="text-sm text-gray-600 mb-6">
+        {step === 0 
+          ? "Initialize empty counter" 
+          : `Process element (${patterns[activePattern].data[step-1]})`}
+      </p>
+
+      {/* Controls */}
+      <div className="flex justify-center gap-6 mb-6">
+        <button
+          onClick={() => setIsPlaying(!isPlaying)}
+          className={`w-12 h-12 rounded-full flex items-center justify-center transition-all duration-300 ${
+            isPlaying 
+            ? 'bg-gray-200 hover:bg-gray-300 text-gray-700'
+            : 'bg-blue-500 hover:bg-blue-600 text-white'
+          }`}
+        >
+          {isPlaying ? (
+            <Pause className="w-5 h-5" />
+          ) : (
+            <Play className="w-5 h-5 ml-0.5" />
+          )}
+        </button>
+        <button
+          onClick={() => {
+            setStep(0);
+            setIsPlaying(false);
+          }}
+          className="w-12 h-12 rounded-full flex items-center justify-center bg-gray-200 hover:bg-gray-300 text-gray-700 transition-all duration-300"
+        >
+          <RotateCcw className="w-5 h-5" />
+        </button>
+      </div>
+
+      {/* Progress Bar */}
+      <div className="max-w-2xl mx-auto">
+        <div className="flex justify-between text-sm text-gray-500">
+          <span>Step {step + 1}</span>
+          <span>of {patterns[activePattern].data.length}</span>
+        </div>
+        <div className="w-full bg-gray-200 rounded-full h-2 mt-1">
+          <div
+            className="bg-blue-500 h-2 rounded-full transition-all duration-300"
+            style={{ width: `${((step + 1) / patterns[activePattern].data.length) * 100}%` }}
+          />
+        </div>
+      </div>
+    </div>
   );
 };
 
