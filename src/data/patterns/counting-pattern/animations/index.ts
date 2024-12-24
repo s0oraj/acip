@@ -32,6 +32,8 @@ export const countingAnimations = {
   "frequency-distribution": frequencyDistributionAnimation,
   "window-based-counting": windowBasedCountingAnimation,
   "state-based-counting": stateBasedCountingAnimation,
+  populationtracking: placeholderAnimation,
+  advancedcounting: placeholderAnimation
 };
 /*"population-tracking": placeholderAnimation,
   "advanced-counter-operations": placeholderAnimation*/
