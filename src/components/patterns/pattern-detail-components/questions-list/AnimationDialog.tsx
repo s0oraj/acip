@@ -20,13 +20,11 @@ const AnimationDialog = ({ isOpen, onClose, pattern, subpattern }: AnimationDial
   const attemptedPath = `/data/patterns/${pattern}/animations/${subpattern}/visualizer`;
 
   const DynamicVisualizer = lazy(() => {
-    // Log the import attempt for debugging
-    console.log(`Attempting to import: ${attemptedPath}`);
-    
-    return import(`@/data/patterns/${pattern}/animations/${subpattern}/visualizer`)
+    console.log(`Loading visualizer for pattern: ${patternPath}, subpattern: ${subpatternPath}`);
+    return import(`@/data/patterns/${patternPath}/animations/${subpatternPath}/visualizer`)
       .catch(err => {
         console.error('Import error:', err);
-        setError(`Failed to load: ${attemptedPath}`);
+        setError(`Failed to load visualizer for ${patternPath}/${subpatternPath}`);
         throw err;
       });
   });
