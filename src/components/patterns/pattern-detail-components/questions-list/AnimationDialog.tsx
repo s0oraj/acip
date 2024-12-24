@@ -2,7 +2,6 @@
 import React, { useState, useEffect, lazy, Suspense } from 'react';
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { Card, CardContent } from '@/components/ui/card';
-import dynamic from 'next/dynamic';
 
 interface AnimationDialogProps {
   isOpen: boolean;
@@ -13,40 +12,26 @@ interface AnimationDialogProps {
 
 const AnimationDialog = ({ isOpen, onClose, pattern, subpattern }: AnimationDialogProps) => {
   const [error, setError] = useState<string | null>(null);
-  const [DynamicVisualizer, setDynamicVisualizer] = useState<any>(null);
 
   useEffect(() => {
     setError(null);
-    if (isOpen) {
-      const loadVisualizer = async () => {
-        try {
-          // Using src/ instead of @/
-          const DynamicComponent = dynamic(
-            () => import(`src/data/patterns/${pattern}/animations/${subpattern}/visualizer`), {
-            loading: () => (
-              <div className="flex items-center justify-center h-full">
-                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500" />
-                <span className="ml-2">Loading visualization...</span>
-              </div>
-            ),
-            ssr: false
-          });
-          
-          setDynamicVisualizer(() => DynamicComponent);
-          setError(null);
-        } catch (err: any) {
-          console.error('Failed to load visualizer:', {
-            error: err.message,
-            path: `src/data/patterns/${pattern}/animations/${subpattern}/visualizer`
-          });
-          setError(`Failed to load visualizer: ${err.message}`);
-          setDynamicVisualizer(null);
-        }
-      };
+  }, [isOpen]);
 
-      loadVisualizer();
+  const DynamicVisualizer = lazy(async () => {
+    try {
+      // Using Vite's dynamic import
+      const module = await import(`/src/data/patterns/${pattern}/animations/${subpattern}/visualizer.tsx`);
+      console.log('Module loaded successfully:', module);
+      return module;
+    } catch (err) {
+      console.error('Import error:', {
+        error: err,
+        path: `/src/data/patterns/${pattern}/animations/${subpattern}/visualizer.tsx`
+      });
+      setError(`Failed to load visualizer for ${pattern}/${subpattern}`);
+      throw err;
     }
-  }, [isOpen, pattern, subpattern]);
+  });
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
@@ -62,21 +47,20 @@ const AnimationDialog = ({ isOpen, onClose, pattern, subpattern }: AnimationDial
                   {JSON.stringify({
                     pattern,
                     subpattern,
-                    importPath: `src/data/patterns/${pattern}/animations/${subpattern}/visualizer`,
+                    importPath: `/src/data/patterns/${pattern}/animations/${subpattern}/visualizer.tsx`,
                     timestamp: new Date().toISOString()
                   }, null, 2)}
                 </pre>
-                <p className="mt-2 text-xs text-gray-600">
-                  Attempted file path: src/data/patterns/{pattern}/animations/{subpattern}/visualizer.tsx
-                </p>
               </div>
-            ) : DynamicVisualizer ? (
-              <DynamicVisualizer />
             ) : (
-              <div className="flex items-center justify-center h-full">
-                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500" />
-                <span className="ml-2">Loading visualization...</span>
-              </div>
+              <Suspense fallback={
+                <div className="flex items-center justify-center h-full">
+                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500" />
+                  <span className="ml-2">Loading visualization...</span>
+                </div>
+              }>
+                <DynamicVisualizer />
+              </Suspense>
             )}
           </CardContent>
         </Card>
