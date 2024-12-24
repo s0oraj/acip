@@ -1,3 +1,5 @@
+
+// src/components/patterns/pattern-detail-components/questions-list/QuestionsList.tsx
 import { Pattern } from "@/types";
 import { QuestionComponent } from "./Question";
 import { SubpatternComponent } from "./Subpattern";
@@ -11,8 +13,7 @@ interface QuestionsListProps {
 }
 
 export const QuestionsList = ({ pattern, completedQuestions, toggleQuestion }: QuestionsListProps) => {
-  // Convert pattern title to kebab case for the pattern identifier
-  const patternId = pattern.title.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+  const patternPath = pattern.title.toLowerCase().replace(/[^a-z0-9]+/g, '-');
 
   return (
     <div className="space-y-12">
@@ -22,7 +23,7 @@ export const QuestionsList = ({ pattern, completedQuestions, toggleQuestion }: Q
             <SubpatternComponent
               subpattern={subpattern}
               subpatternIndex={subpatternIndex}
-              pattern={patternId}
+              pattern={patternPath}
               completedQuestions={completedQuestions}
               toggleQuestion={toggleQuestion}
             />
@@ -45,5 +46,3 @@ export const QuestionsList = ({ pattern, completedQuestions, toggleQuestion }: Q
     </div>
   );
 };
-
-export default QuestionsList;
