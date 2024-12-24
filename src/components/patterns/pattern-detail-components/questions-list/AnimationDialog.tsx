@@ -1,43 +1,62 @@
-import React, { Suspense } from 'react'
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog"
+// src/components/patterns/pattern-detail-components/questions-list/AnimationDialog.tsx
+import React, { useState, useEffect } from 'react';
+import { Dialog, DialogContent } from "@/components/ui/dialog";
+import { Card, CardContent } from '@/components/ui/card';
+import { visualizers } from '@/data/patterns/counting-pattern/animations';
 
 interface AnimationDialogProps {
-  isOpen: boolean
-  onClose: () => void
-  title: string
-  Visualizer?: React.ComponentType
+  isOpen: boolean;
+  onClose: () => void;
+  pattern: string;
+  subpattern: string;
 }
 
-const AnimationDialog: React.FC<AnimationDialogProps> = ({
-  isOpen,
-  onClose,
-  title,
-  Visualizer
-}) => {
+const AnimationDialog = ({ isOpen, onClose, pattern, subpattern }: AnimationDialogProps) => {
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    setError(null);
+  }, [isOpen]);
+
+  const Visualizer = visualizers[subpattern];
+
+  if (!Visualizer) {
+    console.error('No visualizer found for:', { pattern, subpattern });
+    return (
+      <Dialog open={isOpen} onOpenChange={onClose}>
+        <DialogContent className="max-w-6xl h-[90vh] p-4">
+          <Card className="w-full h-full bg-gradient-to-br from-gray-50 to-gray-100">
+            <CardContent className="p-4">
+              <div className="text-red-500">
+                <p>Error loading visualizer</p>
+                <p className="font-mono text-sm">No visualizer found for {subpattern}</p>
+                <p className="mt-2 text-sm">Debug Information:</p>
+                <pre className="text-xs bg-gray-100 p-2 mt-1 rounded">
+                  {JSON.stringify({
+                    pattern,
+                    subpattern,
+                    timestamp: new Date().toISOString()
+                  }, null, 2)}
+                </pre>
+              </div>
+            </CardContent>
+          </Card>
+        </DialogContent>
+      </Dialog>
+    );
+  }
+
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-[95vw] w-[95vw] max-h-[90vh] p-0">
-        <DialogHeader className="px-6 py-4 border-b">
-          <DialogTitle className="text-xl font-semibold">{title}</DialogTitle>
-        </DialogHeader>
-        <div className="flex-1 overflow-auto p-6 h-[calc(90vh-4rem)]">
-          <Suspense fallback={
-            <div className="flex items-center justify-center h-full">
-              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
-            </div>
-          }>
-            {Visualizer && <Visualizer />}
-          </Suspense>
-        </div>
+      <DialogContent className="max-w-6xl h-[90vh] p-4">
+        <Card className="w-full h-full bg-gradient-to-br from-gray-50 to-gray-100">
+          <CardContent className="p-4">
+            <Visualizer />
+          </CardContent>
+        </Card>
       </DialogContent>
     </Dialog>
-  )
-}
+  );
+};
 
-export default AnimationDialog
-
+export default AnimationDialog;
