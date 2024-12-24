@@ -21,7 +21,7 @@ export const visualizers = {
   'window-based-counting': WindowBasedCountingVisualizer,
   'state-based-counting': StateBasedCountingVisualizer,
   'population-tracking': PopulationTrackingVisualizer,
-  'advanced-counter-operations': AdvancedCounterOperationsVisualizer,
+  'advanced-counter-operations': AdvancedCounterOperationsVisualizer
 };
 
 export const countingAnimations = {
