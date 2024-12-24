@@ -1,3 +1,4 @@
+// src/components/patterns/pattern-detail-components/questions-list/AnimationDialog.tsx
 import React, { useState, useEffect, lazy, Suspense } from 'react';
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { Card, CardContent } from '@/components/ui/card';
@@ -16,15 +17,12 @@ const AnimationDialog = ({ isOpen, onClose, pattern, subpattern }: AnimationDial
     setError(null);
   }, [isOpen]);
 
-  // Construct the path using the pattern and subpattern
-  const attemptedPath = `/data/patterns/${pattern}/animations/${subpattern}/visualizer`;
-
   const DynamicVisualizer = lazy(() => {
-    console.log(`Loading visualizer for pattern: ${patternPath}, subpattern: ${subpatternPath}`);
-    return import(`@/data/patterns/${patternPath}/animations/${subpatternPath}/visualizer`)
+    console.log(`Loading visualizer for pattern: ${pattern}, subpattern: ${subpattern}`);
+    return import(`@/data/patterns/${pattern}/animations/${subpattern}/visualizer`)
       .catch(err => {
         console.error('Import error:', err);
-        setError(`Failed to load visualizer for ${patternPath}/${subpatternPath}`);
+        setError(`Failed to load visualizer for ${pattern}/${subpattern}`);
         throw err;
       });
   });
@@ -38,7 +36,7 @@ const AnimationDialog = ({ isOpen, onClose, pattern, subpattern }: AnimationDial
               <div className="text-red-500">
                 <p>Error loading visualizer</p>
                 <p className="font-mono text-sm">{error}</p>
-                <p className="mt-2 text-sm">Attempted path: {attemptedPath}</p>
+                <p className="mt-2 text-sm">Attempted path: /data/patterns/{pattern}/animations/{subpattern}/visualizer</p>
               </div>
             ) : (
               <Suspense fallback={<div>Loading visualization...</div>}>
