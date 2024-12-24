@@ -1,8 +1,8 @@
 // pages/Index.tsx
 import { Brain } from 'lucide-react';
 import { patterns } from "@/data/patterns";
-import { StatisticsSection } from "@/components/patterns/StatisticsSection";
-import { PatternGrid } from "@/components/patterns/PatternGrid";
+import { StatisticsSection } from "@/components/patterns/index-page-components/StatisticsSection";
+import { PatternGrid } from "@/components/patterns/index-page-components/PatternGrid";
 
 const Index = () => {
   return (
