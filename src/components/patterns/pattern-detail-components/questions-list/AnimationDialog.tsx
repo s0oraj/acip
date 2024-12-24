@@ -1,62 +1,41 @@
-// src/components/patterns/pattern-detail-components/questions-list/AnimationDialog.tsx
-import React, { useState, useEffect } from 'react';
-import { Dialog, DialogContent } from "@/components/ui/dialog";
-import { Card, CardContent } from '@/components/ui/card';
-import { visualizers } from '@/data/patterns/counting-pattern/animations';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@reach/dialog';
+import { Suspense } from 'react';
 
-interface AnimationDialogProps {
+interface Props {
   isOpen: boolean;
   onClose: () => void;
-  pattern: string;
-  subpattern: string;
+  title: string;
+  Visualizer?: React.ReactNode;
 }
 
-const AnimationDialog = ({ isOpen, onClose, pattern, subpattern }: AnimationDialogProps) => {
-  const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    setError(null);
-  }, [isOpen]);
-
-  const Visualizer = visualizers[subpattern];
-
-  if (!Visualizer) {
-    console.error('No visualizer found for:', { pattern, subpattern });
-    return (
-      <Dialog open={isOpen} onOpenChange={onClose}>
-        <DialogContent className="max-w-6xl h-[90vh] p-4">
-          <Card className="w-full h-full bg-gradient-to-br from-gray-50 to-gray-100">
-            <CardContent className="p-4">
-              <div className="text-red-500">
-                <p>Error loading visualizer</p>
-                <p className="font-mono text-sm">No visualizer found for {subpattern}</p>
-                <p className="mt-2 text-sm">Debug Information:</p>
-                <pre className="text-xs bg-gray-100 p-2 mt-1 rounded">
-                  {JSON.stringify({
-                    pattern,
-                    subpattern,
-                    timestamp: new Date().toISOString()
-                  }, null, 2)}
-                </pre>
-              </div>
-            </CardContent>
-          </Card>
-        </DialogContent>
-      </Dialog>
-    );
-  }
-
+const MyComponent: React.FC<Props> = ({ isOpen, onClose, title, Visualizer }) => {
   return (
-    <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-6xl h-[90vh] p-4">
-        <Card className="w-full h-full bg-gradient-to-br from-gray-50 to-gray-100">
-          <CardContent className="p-4">
-            <Visualizer />
-          </CardContent>
-        </Card>
+    <Dialog 
+      open={isOpen} 
+      onOpenChange={onClose}
+      className="max-w-[95vw] w-full max-h-[90vh]"
+    >
+      <DialogContent className="max-w-[95vw] w-full max-h-[90vh] overflow-auto p-0">
+        <DialogHeader className="p-6 pb-0">
+          <DialogTitle>{title}</DialogTitle>
+        </DialogHeader>
+        <div className="p-6 pt-0">
+          <Suspense fallback={<div>Loading...</div>}>
+            {Visualizer && <Visualizer />}
+          </Suspense>
+        </div>
       </DialogContent>
     </Dialog>
   );
 };
 
-export default AnimationDialog;
+export default MyComponent;
+
+
+// Add these styles to your Dialog component's base styles (e.g., in a global stylesheet or styled-components)
+.dialog-content {
+  width: 95vw;
+  max-width: 95vw;
+  max-height: 90vh;
+  overflow: auto;
+}
