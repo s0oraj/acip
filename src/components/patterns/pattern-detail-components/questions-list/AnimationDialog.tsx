@@ -23,7 +23,7 @@ const AnimationDialog = ({ isOpen, onClose, pattern, subpattern }: AnimationDial
     console.error('No visualizer found for:', { pattern, subpattern });
     return (
       <Dialog open={isOpen} onOpenChange={onClose}>
-        <DialogContent className="max-w-6xl p-0 overflow-hidden">
+        <DialogContent className="max-w-[95vw] w-full p-0 h-[95vh] overflow-hidden">
           <Card className="w-full h-full bg-gradient-to-br from-gray-50 to-gray-100">
             <CardContent className="p-4">
               <div className="text-red-500">
@@ -47,8 +47,8 @@ const AnimationDialog = ({ isOpen, onClose, pattern, subpattern }: AnimationDial
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-6xl p-0 overflow-hidden">
-        <div className="h-[85vh] overflow-y-auto bg-gradient-to-br from-gray-50 to-gray-100">
+      <DialogContent className="max-w-[95vw] w-full p-0 h-[95vh] overflow-hidden">
+        <div className="h-full overflow-y-auto bg-gradient-to-br from-gray-50 to-gray-100">
           <Visualizer />
         </div>
       </DialogContent>
