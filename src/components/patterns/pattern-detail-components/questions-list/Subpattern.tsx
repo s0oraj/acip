@@ -1,23 +1,29 @@
 import { useState, useRef, useEffect } from "react";
 import { ChevronDown, ChevronUp } from 'lucide-react';
-import { Button } from "@/components/ui/button";  // Added missing import
+import { Button } from "@/components/ui/button";
 import { Subpattern } from "@/types";
 import { QuestionComponent } from "./Question";
 import AnimationDialog from "./AnimationDialog";
-import { countingAnimations } from "@/data/patterns/counting/animations";
 
 interface SubpatternProps {
   subpattern: Subpattern;
   subpatternIndex: number;
+  pattern: string;  // Added pattern prop
   completedQuestions: number[];
   toggleQuestion: (questionId: number) => void;
 }
 
-export const SubpatternComponent = ({ subpattern, subpatternIndex, completedQuestions, toggleQuestion }: SubpatternProps) => {
+export const SubpatternComponent = ({ 
+  subpattern, 
+  subpatternIndex, 
+  pattern,  // New pattern prop
+  completedQuestions, 
+  toggleQuestion 
+}: SubpatternProps) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const contentRef = useRef<HTMLDivElement | null>(null);
-  
+
   useEffect(() => {
     console.log('Subpattern rendered:', subpattern.title);
   }, [subpattern]);
@@ -27,8 +33,9 @@ export const SubpatternComponent = ({ subpattern, subpatternIndex, completedQues
     setIsExpanded(!isExpanded);
   };
 
-  const animationKey = subpattern.title.toLowerCase().replace(/[^a-z0-9]/g, '');
-  const animation = countingAnimations[animationKey];
+  // Convert title to kebab case for the subpattern identifier
+  const subpatternId = subpattern.title.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+  
   const contentHeight = contentRef.current?.scrollHeight || 'auto';
 
   return (
@@ -43,16 +50,14 @@ export const SubpatternComponent = ({ subpattern, subpatternIndex, completedQues
           </h2>
           
           <div className="flex items-center gap-4">
-            {animation && (
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => setIsDialogOpen(true)}
-                className="flex items-center gap-2"
-              >
-                View Animation
-              </Button>
-            )}
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setIsDialogOpen(true)}
+              className="flex items-center gap-2"
+            >
+              View Animation
+            </Button>
             
             <div
               className="transform transition-transform duration-300 cursor-pointer"
@@ -90,13 +95,12 @@ export const SubpatternComponent = ({ subpattern, subpatternIndex, completedQues
         </div>
       </div>
 
-      {animation && (
-        <AnimationDialog
-          isOpen={isDialogOpen}
-          onClose={() => setIsDialogOpen(false)}
-          animation={animation}
-        />
-      )}
+      <AnimationDialog
+        isOpen={isDialogOpen}
+        onClose={() => setIsDialogOpen(false)}
+        pattern={pattern}
+        subpattern={subpatternId}
+      />
     </div>
   );
 };
