@@ -8,19 +8,22 @@ interface Props {
   Visualizer?: React.ReactNode;
 }
 
-const MyComponent: React.FC<Props> = ({ isOpen, onClose, title, Visualizer }) => {
+const AnimationDialog: React.FC<Props> = ({ isOpen, onClose, title, Visualizer }) => {
   return (
     <Dialog 
       open={isOpen} 
       onOpenChange={onClose}
-      className="max-w-[95vw] w-full max-h-[90vh]"
     >
-      <DialogContent className="max-w-[95vw] w-full max-h-[90vh] overflow-auto p-0">
-        <DialogHeader className="p-6 pb-0">
-          <DialogTitle>{title}</DialogTitle>
+      <DialogContent className="fixed inset-5 flex flex-col bg-background rounded-lg shadow-lg max-w-[95vw] w-[95vw] max-h-[90vh] mx-auto my-auto overflow-hidden">
+        <DialogHeader className="px-6 py-4 border-b">
+          <DialogTitle className="text-xl font-semibold">{title}</DialogTitle>
         </DialogHeader>
-        <div className="p-6 pt-0">
-          <Suspense fallback={<div>Loading...</div>}>
+        <div className="flex-1 overflow-auto p-6">
+          <Suspense fallback={
+            <div className="flex items-center justify-center h-full">
+              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+            </div>
+          }>
             {Visualizer && <Visualizer />}
           </Suspense>
         </div>
@@ -29,13 +32,5 @@ const MyComponent: React.FC<Props> = ({ isOpen, onClose, title, Visualizer }) =>
   );
 };
 
-export default MyComponent;
+export default AnimationDialog;
 
-
-// Add these styles to your Dialog component's base styles (e.g., in a global stylesheet or styled-components)
-.dialog-content {
-  width: 95vw;
-  max-width: 95vw;
-  max-height: 90vh;
-  overflow: auto;
-}
