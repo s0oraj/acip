@@ -48,4 +48,3 @@ const AnimationDialog = ({ isOpen, onClose, pattern, subpattern }: AnimationDial
   );
 };
 
-export default AnimationDialog;
