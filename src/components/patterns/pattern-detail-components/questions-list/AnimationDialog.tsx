@@ -16,15 +16,20 @@ const AnimationDialog = ({ isOpen, onClose, pattern, subpattern }: AnimationDial
     setError(null);
   }, [isOpen]);
 
+  // Construct the path using the pattern and subpattern
   const attemptedPath = `/data/patterns/${pattern}/animations/${subpattern}/visualizer`;
 
-  const DynamicVisualizer = lazy(() => 
-    import(`@/data/patterns/${pattern}/animations/${subpattern}/visualizer`)
+  const DynamicVisualizer = lazy(() => {
+    // Log the import attempt for debugging
+    console.log(`Attempting to import: ${attemptedPath}`);
+    
+    return import(`@/data/patterns/${pattern}/animations/${subpattern}/visualizer`)
       .catch(err => {
+        console.error('Import error:', err);
         setError(`Failed to load: ${attemptedPath}`);
         throw err;
-      })
-  );
+      });
+  });
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
@@ -35,6 +40,7 @@ const AnimationDialog = ({ isOpen, onClose, pattern, subpattern }: AnimationDial
               <div className="text-red-500">
                 <p>Error loading visualizer</p>
                 <p className="font-mono text-sm">{error}</p>
+                <p className="mt-2 text-sm">Attempted path: {attemptedPath}</p>
               </div>
             ) : (
               <Suspense fallback={<div>Loading visualization...</div>}>
@@ -47,5 +53,5 @@ const AnimationDialog = ({ isOpen, onClose, pattern, subpattern }: AnimationDial
     </Dialog>
   );
 };
-export default AnimationDialog;
 
+export default AnimationDialog;
