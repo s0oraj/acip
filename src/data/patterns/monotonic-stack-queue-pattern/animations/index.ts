@@ -5,6 +5,8 @@ import { nextGreaterAnimation } from './next-greater-problems-foundation-/data';
 import { windowOperationsAnimation } from './monotonic-window-operations/data';
 import CompetitionVisualizer from './competition-stack-problems/visualizer';
 import { competitionStackAnimation } from './competition-stack-problems/data';
+import {advancedApplicationsAnimation } from './advanced-applications/data';
+
 
 
 export const visualizers = {
