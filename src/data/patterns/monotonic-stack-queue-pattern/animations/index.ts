@@ -20,7 +20,7 @@ export const monotonicQueueAnimations = {
   'next-greater-problems-foundation-': nextGreaterAnimation,
   'monotonic-window-operations': windowOperationsAnimation,
   "competition-stack-problems":competitionStackAnimation,
-  'advaned-applications':advancedApplicationsAnimation
+  "advaned-applications":advancedApplicationsAnimation
 };
 
 const placeholderAnimation = {
