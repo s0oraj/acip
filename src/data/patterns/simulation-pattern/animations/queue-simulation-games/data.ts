@@ -11,11 +11,11 @@ export const patterns = {
     color: "#4F46E5"
   },
   matchingQueue: {
-    students: [1, 1, 0, 0, 1],
-    sandwiches: [1, 0, 0, 1, 1],
+    queue: [1, 1, 0, 0, 1],
+    stack: [1, 0, 0, 1, 1],
     icon: 'arrowLeftRight',
-    title: "Lunch Queue",
-    desc: "Student-Sandwich Matching",
+    title: "Matching Game",
+    desc: "Queue vs Stack",
     color: "#7C3AED"
   },
   circularQueue: {
@@ -28,62 +28,29 @@ export const patterns = {
   }
 };
 
-const processMatchingQueue = (
-  students: number[],
-  sandwiches: number[],
-  step: number
-) => {
-  const state = {
-    students: [...students],
-    sandwiches: [...sandwiches],
-    matched: [],
-    rotations: 0,
-    stuck: false
-  };
-
-  for (let i = 0; i < step && state.students.length > 0; i++) {
-    if (state.students[0] === state.sandwiches[0]) {
-      state.matched.push({
-        student: state.students.shift()!,
-        sandwich: state.sandwiches.shift()!,
-        success: true
-      });
-    } else {
-      state.students.push(state.students.shift()!);
-      state.rotations++;
-      if (state.rotations > state.students.length) {
-        state.stuck = true;
-        break;
-      }
-    }
-  }
-
-  return state;
-};
-
 export const queueSimulationAnimation: Animation = {
   id: "queue-simulation",
-  title: "Queue Matching Simulation",
-  description: "Visualizing queue matching scenarios",
+  title: "Queue Simulation Games",
+  description: "Visualizing different queue-based game mechanics",
   steps: [
     {
-      title: "Student-Sandwich Matching",
-      description: "Match students with their preferred sandwiches",
-      array: patterns.matchingQueue.students,
-      phases: Array(10).fill(null).map((_, index) => ({
+      title: "Simple Queue Processing",
+      description: "Process a queue of people buying tickets",
+      array: patterns.simpleQueue.data,
+      phases: patterns.simpleQueue.data.map((tickets, index) => ({
         description: index === 0 
-          ? "Initialize queues" 
-          : `Processing step ${index}`,
+          ? "Initialize queue" 
+          : `Process person ${index + 1} (wants ${tickets} tickets)`,
         activeIndex: index,
         highlightIndices: [index],
-        counter: processMatchingQueue(
-          patterns.matchingQueue.students,
-          patterns.matchingQueue.sandwiches,
-          index
-        ),
+        counter: {
+          queue: patterns.simpleQueue.data.slice(index),
+          processed: patterns.simpleQueue.data.slice(0, index).reduce((acc, curr) => acc + curr, 0),
+          current: tickets
+        },
         code: index === 0 
-          ? "const state = initializeQueues();" 
-          : `processStep(${index});`
+          ? "const queue = [...tickets];" 
+          : `processTickets(${tickets});`
       }))
     }
   ],
