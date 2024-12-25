@@ -13,14 +13,14 @@ export const visualizers = {
   'next-greater-problems-foundation-': NextGreaterVisualizer,
   'monotonic-window-operations': MonotonicWindowVisualizer,
   'competition-stack-problems':CompetitionVisualizer,
-  'advaned-applications': AdvancedVisualizer
+  'advacned-applications': AdvancedVisualizer
 };
 
 export const monotonicQueueAnimations = {
   'next-greater-problems-foundation-': nextGreaterAnimation,
   'monotonic-window-operations': windowOperationsAnimation,
   "competition-stack-problems":competitionStackAnimation,
-  "advaned-applications":advancedApplicationsAnimation
+  "advanced-applications":advancedApplicationsAnimation
 };
 
 const placeholderAnimation = {
