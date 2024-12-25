@@ -22,5 +22,3 @@ export const simulationVisualizers = {
   "queue-simulation": QueueSimulationVisualizer,
   "event-processing": EventProcessingVisualizer
 };
-
-}
