@@ -11,6 +11,7 @@ import { articulationPointsPattern } from './articulation-points-and-bridges-pat
 import { segmentTreePattern } from './segment-tree-pattern/segment-tree-pattern';
 import { binaryIndexedTreePattern } from './binary-indexed-tree-pattern/binary-indexed-tree-pattern';
 
+
 export const patterns: Pattern[] = [
   countingPattern,
   monotonicQueuePattern,
