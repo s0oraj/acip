@@ -16,7 +16,7 @@ export const simulationAnimations = {
 };
 
 // Export all visualizers
-export const simulationVisualizers = {
+export const visualizers = {
   "state-machine": StateMachineVisualizer,
   "grid-movement": GridMovementVisualizer,
   "queue-simulation": QueueSimulationVisualizer,
