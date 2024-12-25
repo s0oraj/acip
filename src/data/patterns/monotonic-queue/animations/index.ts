@@ -1,6 +1,6 @@
 // src/data/patterns/monotonic-queue/animations/index.ts
-import { nextGreaterAnimation } from './next-greater/data';
-import NextGreaterVisualizer from './next-greater/visualizer';
+import { nextGreaterAnimation } from './next-greater-problems-foundation/data';
+import NextGreaterVisualizer from './next-greater-problems-foundation/visualizer';
 
 export const visualizers = {
   'next-greater': NextGreaterVisualizer
