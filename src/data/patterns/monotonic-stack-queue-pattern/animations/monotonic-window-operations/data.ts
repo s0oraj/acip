@@ -1,4 +1,3 @@
-// src/data/patterns/monotonic-stack-queue-pattern/animations/monotonic-window-operations/data.ts
 export const patterns = {
   max: {
     data: [1, 3, -1, -3, 5, 3, 6, 7],
@@ -82,7 +81,7 @@ export const windowOperationsAnimation = {
 deque.append(${index})
 if deque[0] <= ${index - patterns.max.windowSize}:
     deque.popleft()`
-    }])
+    }]
   })),
   counters: ["window", "result"]
 };
