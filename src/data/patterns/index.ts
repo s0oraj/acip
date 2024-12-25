@@ -1,6 +1,6 @@
 import { Pattern } from '../types';
 import { countingPattern } from './counting-pattern/counting-pattern';
-import { monotonicQueuePattern } from './monotonic-queue-pattern';
+import { monotonicQueuePattern } from '.monotonic-queue/monotonic-queue-pattern';
 import { simulationPattern } from './simulation-pattern';
 import { linearSortingPattern } from './linear-sorting-pattern';
 import { meetInMiddlePattern } from './meet-in-middle-pattern';
