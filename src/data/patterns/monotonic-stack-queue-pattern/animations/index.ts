@@ -6,7 +6,7 @@ import { windowOperationsAnimation } from './monotonic-window-operations/data';
 import CompetitionVisualizer from './competition-stack-problems/visualizer';
 import { competitionStackAnimation } from './competition-stack-problems/data';
 import {advancedApplicationsAnimation } from './advanced-applications/data';
-import AdvancedVisualizer from './advanced-applications/visualizer'
+import AdvancedVisualizer from './advanced-applications/visualizer';
 
 
 export const visualizers = {
