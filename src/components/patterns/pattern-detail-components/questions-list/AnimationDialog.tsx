@@ -1,7 +1,8 @@
-// src/components/patterns/pattern-detail-components/questions-list/AnimationDialog.tsx
 import React, { useState, useEffect } from 'react';
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { Card, CardContent } from '@/components/ui/card';
+import { visualizers } from '@/data/patterns/counting-pattern/animations';
+import { allVisualizers } from '@/data/patterns/visualizers-registry';
 
 interface AnimationDialogProps {
   isOpen: boolean;
@@ -12,34 +13,14 @@ interface AnimationDialogProps {
 
 const AnimationDialog = ({ isOpen, onClose, pattern, subpattern }: AnimationDialogProps) => {
   const [error, setError] = useState<string | null>(null);
-  const [Visualizer, setVisualizer] = useState<React.ComponentType | null>(null);
 
   useEffect(() => {
     setError(null);
-    
-    const loadVisualizer = async () => {
-      try {
-        // Dynamically import the visualizers based on the pattern
-        const patternModule = await import(`@/data/patterns/${pattern}/animations`);
-        const visualizer = patternModule.visualizers[subpattern];
-        
-        if (!visualizer) {
-          throw new Error(`No visualizer found for ${subpattern}`);
-        }
-        
-        setVisualizer(() => visualizer);
-      } catch (err) {
-        console.error('Error loading visualizer:', err);
-        setError(err instanceof Error ? err.message : 'Unknown error');
-      }
-    };
+  }, [isOpen]);
+  const Visualizer = allVisualizers[subpattern];
 
-    if (isOpen) {
-      loadVisualizer();
-    }
-  }, [isOpen, pattern, subpattern]);
-
-  if (error || !Visualizer) {
+  if (!Visualizer) {
+    console.error('No visualizer found for:', { pattern, subpattern });
     return (
       <Dialog open={isOpen} onOpenChange={onClose}>
         <DialogContent className="max-w-[95vw] w-full p-0 h-[95vh] overflow-hidden">
@@ -53,8 +34,7 @@ const AnimationDialog = ({ isOpen, onClose, pattern, subpattern }: AnimationDial
                   {JSON.stringify({
                     pattern,
                     subpattern,
-                    timestamp: new Date().toISOString(),
-                    error: error || 'Visualizer not found'
+                    timestamp: new Date().toISOString()
                   }, null, 2)}
                 </pre>
               </div>
