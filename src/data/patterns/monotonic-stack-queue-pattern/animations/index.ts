@@ -1,14 +1,17 @@
 // src/data/patterns/monotonic-stack-queue-pattern/animations/index.ts
-import { nextGreaterAnimation } from './next-greater-problems-foundation-/data';
-//import { NextGreaterVisualizer } from './next-greater-problems-foundation-/visualizer';
 import NextGreaterVisualizer from './next-greater-problems-foundation-/visualizer';
+import MonotonicWindowVisualizer from './monotonic-window-operations/visualizer';
+import { nextGreaterAnimation } from './next-greater-problems-foundation-/data';
+import { windowOperationsAnimation } from './monotonic-window-operations/data';
 
 export const visualizers = {
-  'next-greater-problems-foundation-': NextGreaterVisualizer // Remove trailing dash
+  'next-greater-problems-foundation-': NextGreaterVisualizer,
+  'monotonic-window-operations': MonotonicWindowVisualizer
 };
 
 export const monotonicQueueAnimations = {
-  'next-greater-problems-foundation-': nextGreaterAnimation // Remove trailing dash
+  'next-greater-problems-foundation-': nextGreaterAnimation,
+  'monotonic-window-operations': windowOperationsAnimation
 };
 
 const placeholderAnimation = {
