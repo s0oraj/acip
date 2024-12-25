@@ -9,16 +9,16 @@ import EventProcessingVisualizer from './event-processing-simulation/visualizer'
 
 // Export all animation data
 export const simulationAnimations = {
-  "state-machine": stateMachineAnimation,
-  "grid-movement": gridMovementAnimation,
-  "queue-simulation": queueSimulationAnimation,
-  "event-processing": eventProcessingAnimation
+  "state-machine-simulation": stateMachineAnimation,
+  "grid-movement-simulation": gridMovementAnimation,
+  "queue-simulation-simulation": queueSimulationAnimation,
+  "event-processing-simulation": eventProcessingAnimation
 };
 
 // Export all visualizers
 export const visualizers = {
-  "state-machine": StateMachineVisualizer,
-  "grid-movement": GridMovementVisualizer,
-  "queue-simulation": QueueSimulationVisualizer,
-  "event-processing": EventProcessingVisualizer
+  "state-machine-simulation": StateMachineVisualizer,
+  "grid-movement-simulation": GridMovementVisualizer,
+  "queue-simulation-simulation": QueueSimulationVisualizer,
+  "event-processing-simulation": EventProcessingVisualizer
 };
