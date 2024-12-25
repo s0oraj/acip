@@ -11,7 +11,7 @@ import EventProcessingVisualizer from './event-processing-simulation/visualizer'
 export const simulationAnimations = {
   "state-machine-simulation": stateMachineAnimation,
   "grid-movement-simulation": gridMovementAnimation,
-  "queue-simulation-simulation": queueSimulationAnimation,
+  "queue-simulation-games": queueSimulationAnimation,
   "event-processing-simulation": eventProcessingAnimation
 };
 
@@ -19,6 +19,6 @@ export const simulationAnimations = {
 export const visualizers = {
   "state-machine-simulation": StateMachineVisualizer,
   "grid-movement-simulation": GridMovementVisualizer,
-  "queue-simulation-simulation": QueueSimulationVisualizer,
+  "queue-simulation-games": QueueSimulationVisualizer,
   "event-processing-simulation": EventProcessingVisualizer
 };
