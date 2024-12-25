@@ -1,52 +1,25 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { steps, GRID_ROWS, GRID_COLS, PopulationTrackingStep } from './data';
 
-type AnimationStep = PopulationTrackingStep;
-
-const useAnimationFrame = (callback: () => void) => {
-  const requestRef = useRef<number>();
-  const previousTimeRef = useRef<number>();
-
-  const animate = (time: number) => {
-    if (previousTimeRef.current !== undefined) {
-      const deltaTime = time - previousTimeRef.current;
-      callback();
-    }
-    previousTimeRef.current = time;
-    requestRef.current = requestAnimationFrame(animate);
-  };
-
-  useEffect(() => {
-    requestRef.current = requestAnimationFrame(animate);
-    return () => cancelAnimationFrame(requestRef.current!);
-  }, []);
-};
-
 const PopulationTrackingVisualizer: React.FC = () => {
   const [currentStep, setCurrentStep] = useState(0);
-  const [gridData, setGridData] = useState(steps[0].gridState);
+  const [gridData, setGridData] = useState<number[][]>(steps[0].gridState);
   const [isAnimating, setIsAnimating] = useState(false);
   const [animationSpeed, setAnimationSpeed] = useState(1000);
-
-  useAnimationFrame(() => {
-    if (isAnimating) {
-      setCurrentStep((prevStep) => {
-        const nextStep = (prevStep + 1) % steps.length;
-        setGridData(steps[nextStep].gridState);
-        return nextStep;
-      });
-    }
-  });
 
   useEffect(() => {
     let timer: NodeJS.Timeout;
     if (isAnimating) {
-      timer = setTimeout(() => {
-        setCurrentStep((prevStep) => (prevStep + 1) % steps.length);
+      timer = setInterval(() => {
+        setCurrentStep((prevStep) => {
+          const nextStep = (prevStep + 1) % steps.length;
+          setGridData(steps[nextStep].gridState);
+          return nextStep;
+        });
       }, animationSpeed);
     }
-    return () => clearTimeout(timer);
-  }, [currentStep, isAnimating, animationSpeed]);
+    return () => clearInterval(timer);
+  }, [isAnimating, animationSpeed]);
 
   const toggleAnimation = () => {
     setIsAnimating(!isAnimating);
