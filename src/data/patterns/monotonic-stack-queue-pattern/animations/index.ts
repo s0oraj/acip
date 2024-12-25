@@ -1,6 +1,7 @@
 // src/data/patterns/monotonic-stack-queue-pattern/animations/index.ts
 import { nextGreaterAnimation } from './next-greater-problems-foundation-/data';
-import { NextGreaterVisualizer } from './next-greater-problems-foundation-/visualizer';
+//import { NextGreaterVisualizer } from './next-greater-problems-foundation-/visualizer';
+import NextGreaterVisualizer from './next-greater-problems-foundation-/visualizer';
 
 export const visualizers = {
   'next-greater-problems-foundation-': NextGreaterVisualizer // Remove trailing dash
