@@ -1,6 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { BarChart, Bar, XAxis, YAxis, ResponsiveContainer, Tooltip } from 'recharts';
-import { ArrowsUpDown, Group, Binary, Hash, LayersLinked, Play, Pause, RotateCcw } from 'lucide-react';
+import { 
+  ArrowUpDown, // Changed from ArrowsUpDown
+  Users, // Changed from Group
+  Binary,
+  Hash,
+  Layers, // Changed from LayersLinked
+  Play,
+  Pause,
+  RotateCcw 
+} from 'lucide-react';
 import { patterns } from './data';
 
 const Visualizer: React.FC = () => {
@@ -10,11 +19,11 @@ const Visualizer: React.FC = () => {
 
   const getIcon = (iconName: string) => {
     switch (iconName) {
-      case 'arrows-up-down': return <ArrowsUpDown className="w-5 h-5" />;
-      case 'group': return <Group className="w-5 h-5" />;
+      case 'arrows-up-down': return <ArrowUpDown className="w-5 h-5" />;
+      case 'group': return <Users className="w-5 h-5" />;
       case 'binary': return <Binary className="w-5 h-5" />;
       case 'hash': return <Hash className="w-5 h-5" />;
-      case 'layers-linked': return <LayersLinked className="w-5 h-5" />;
+      case 'layers-linked': return <Layers className="w-5 h-5" />;
       default: return <Hash className="w-5 h-5" />;
     }
   };
