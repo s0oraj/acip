@@ -1,16 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { BarChart, Bar, XAxis, YAxis, ResponsiveContainer, Tooltip } from 'recharts';
-import { 
-  ArrowUpDown, // Changed from ArrowsUpDown
-  Users, // Changed from Group
-  Binary,
-  Hash,
-  Layers, // Changed from LayersLinked
-  Play,
-  Pause,
-  RotateCcw 
-} from 'lucide-react';
-import { patterns } from './data';
+import { Hash, Users, Binary, Layers, MessagesSquare, Play, Pause, RotateCcw } from 'lucide-react';
+import { patterns, getVisualizationData, getStepDescription, getCodeSnippet } from './data';
 
 const Visualizer: React.FC = () => {
   const [activePattern, setActivePattern] = useState('pairs');
@@ -19,11 +10,11 @@ const Visualizer: React.FC = () => {
 
   const getIcon = (iconName: string) => {
     switch (iconName) {
-      case 'arrows-up-down': return <ArrowUpDown className="w-5 h-5" />;
-      case 'group': return <Users className="w-5 h-5" />;
-      case 'binary': return <Binary className="w-5 h-5" />;
       case 'hash': return <Hash className="w-5 h-5" />;
-      case 'layers-linked': return <Layers className="w-5 h-5" />;
+      case 'users': return <Users className="w-5 h-5" />;
+      case 'binary': return <Binary className="w-5 h-5" />;
+      case 'layers': return <Layers className="w-5 h-5" />;
+      case 'messages-square': return <MessagesSquare className="w-5 h-5" />;
       default: return <Hash className="w-5 h-5" />;
     }
   };
@@ -37,59 +28,6 @@ const Visualizer: React.FC = () => {
     }
     return () => clearTimeout(timer);
   }, [isPlaying, step, activePattern]);
-
-  const getVisualizationData = () => {
-    const curr = patterns[activePattern].data.slice(0, step);
-    
-    switch (activePattern) {
-      case 'pairs':
-        const pairs = [];
-        for (let i = 0; i < curr.length; i++) {
-          for (let j = i + 1; j < curr.length; j++) {
-            if (Math.abs(curr[i] - curr[j]) === patterns.pairs.k) {
-              pairs.push({ name: `${curr[i]}-${curr[j]}`, value: 1 });
-            }
-          }
-        }
-        return pairs;
-      
-      case 'groups':
-        return curr.reduce((acc, num) => {
-          const sum = String(num).split('').reduce((a, b) => a + Number(b), 0);
-          acc[sum] = (acc[sum] || 0) + 1;
-          return Object.entries(acc).map(([key, value]) => ({ name: `Sum ${key}`, value }));
-        }, {});
-      
-      case 'balance':
-        const freq = {};
-        curr.forEach(char => {
-          freq[char] = (freq[char] || 0) + 1;
-        });
-        return Object.entries(freq).map(([key, value]) => ({ name: key, value }));
-      
-      case 'subarray':
-        const patterns = new Set();
-        for (let i = 0; i < curr.length; i++) {
-          let count = 0;
-          for (let j = i; j < curr.length; j++) {
-            if (curr[j] % patterns.subarray.k === 0) count++;
-            patterns.add(curr.slice(i, j + 1).join(','));
-          }
-        }
-        return Array.from(patterns).map(pattern => ({ name: String(pattern), value: 1 }));
-      
-      case 'complex':
-        return curr.reduce((acc, val) => {
-          acc[val] = (acc[val] || 0) + 1;
-          return Object.entries(acc)
-            .sort((a, b) => Number(b[1]) - Number(a[1]))
-            .map(([key, value]) => ({ name: key, value }));
-        }, {});
-      
-      default:
-        return [];
-    }
-  };
 
   return (
     <div className="p-6">
@@ -123,33 +61,30 @@ const Visualizer: React.FC = () => {
         <div className="bg-white p-5 rounded-xl shadow-sm">
           <h3 className="text-lg font-semibold mb-3">Input Sequence</h3>
           <div className="flex flex-wrap gap-2">
-            {typeof patterns[activePattern].data === 'string' 
-              ? patterns[activePattern].data.split('').map((val, idx) => (
-                  <div
-                    key={idx}
-                    className={`w-12 h-12 flex items-center justify-center rounded-lg font-mono text-lg
-                      ${idx < step ? 'bg-blue-100 text-blue-800' : 'bg-gray-100'}`}
-                  >
-                    {val}
-                  </div>
-                ))
-              : patterns[activePattern].data.map((val, idx) => (
-                  <div
-                    key={idx}
-                    className={`w-12 h-12 flex items-center justify-center rounded-lg font-mono text-lg
-                      ${idx < step ? 'bg-blue-100 text-blue-800' : 'bg-gray-100'}`}
-                  >
-                    {val}
-                  </div>
-                ))
-            }
+            {patterns[activePattern].data.map((val, idx) => (
+              <div
+                key={idx}
+                className={`w-12 h-12 flex items-center justify-center rounded-lg font-mono text-lg
+                  ${idx < step ? 'bg-blue-100 text-blue-800' : 'bg-gray-100'}`}
+              >
+                {val}
+              </div>
+            ))}
           </div>
         </div>
 
         <div className="bg-white p-5 rounded-xl shadow-sm">
           <h3 className="text-lg font-semibold mb-3">Pattern Analysis</h3>
           <ResponsiveContainer width="100%" height={180}>
-            <BarChart data={getVisualizationData()} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
+            <BarChart 
+              data={getVisualizationData(
+                activePattern,
+                patterns[activePattern].data,
+                step,
+                patterns[activePattern].k
+              )}
+              margin={{ top: 10, right: 30, left: 0, bottom: 0 }}
+            >
               <XAxis dataKey="name" />
               <YAxis />
               <Tooltip />
@@ -166,16 +101,16 @@ const Visualizer: React.FC = () => {
       <div className="bg-gray-800 p-3 rounded-lg mb-4">
         <pre className="text-sm text-white overflow-x-auto">
           <code>
-            {getPatternCode()}
+            {getCodeSnippet(activePattern, step, patterns[activePattern].data)}
           </code>
         </pre>
       </div>
 
       <p className="text-sm text-gray-600 mb-4">
-        {getStepDescription()}
+        {getStepDescription(activePattern, step, patterns[activePattern].data)}
       </p>
 
-      <div className="flex justify-center gap-6 mb-4">
+      <div className="flex justify-center gap-6">
         <button
           onClick={() => setIsPlaying(!isPlaying)}
           className={`w-12 h-12 rounded-full flex items-center justify-center transition-all duration-300 ${
@@ -201,7 +136,7 @@ const Visualizer: React.FC = () => {
         </button>
       </div>
 
-      <div className="max-w-2xl mx-auto">
+      <div className="max-w-2xl mx-auto mt-4">
         <div className="flex justify-between text-sm text-gray-500">
           <span>Step {step + 1}</span>
           <span>of {patterns[activePattern].data.length}</span>
@@ -216,32 +151,5 @@ const Visualizer: React.FC = () => {
     </div>
   );
 };
-
-function getPatternCode() {
-  const pattern = patterns[activePattern];
-  const codeSnippets = {
-    pairs: 'count += freq.get(num + k) + freq.get(num - k);',
-    groups: 'groups[digitSum(num)]++;',
-    balance: 'state ^= (1 << (char.charCodeAt(0) - 97));',
-    subarray: 'patterns.add(array.slice(i, j + 1));',
-    complex: 'maxFreq = Math.max(maxFreq, ++count[num]);'
-  };
-  return step === 0 
-    ? '// Initialize data structures'
-    : codeSnippets[activePattern];
-}
-
-function getStepDescription() {
-  const descriptions = {
-    pairs: 'Finding pairs with target difference',
-    groups: 'Grouping by digit sum',
-    balance: 'Tracking character balance',
-    subarray: 'Generating valid subarrays',
-    complex: 'Computing frequency score'
-  };
-  return step === 0 
-    ? 'Initialize tracking structures'
-    : `${descriptions[activePattern]} - Step ${step}`;
-}
 
 export default Visualizer;
