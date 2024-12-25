@@ -1,16 +1,15 @@
-// src/data/patterns/monotonic-queue/animations/index.ts
+// src/data/patterns/monotonic-stack-queue-pattern/animations/index.ts
 import { nextGreaterAnimation } from './next-greater-problems-foundation-/data';
-import NextGreaterVisualizer from './next-greater-problems-foundation-/visualizer';
+import { NextGreaterVisualizer } from './next-greater-problems-foundation-/visualizer';
 
 export const visualizers = {
-  'next-greater-problems-foundation-': NextGreaterVisualizer
+  'next-greater-problems-foundation': NextGreaterVisualizer // Remove trailing dash
 };
 
 export const monotonicQueueAnimations = {
-  "next-greater-problems-foundation-": nextGreaterAnimation
+  'next-greater-problems-foundation': nextGreaterAnimation // Remove trailing dash
 };
 
-// Placeholder animation for any unimplemented visualizations
 const placeholderAnimation = {
   id: "placeholder",
   title: "Coming Soon",
@@ -30,7 +29,6 @@ const placeholderAnimation = {
   counters: []
 };
 
-// Use placeholder for any unimplemented animations
 Object.keys(visualizers).forEach(key => {
   if (!monotonicQueueAnimations[key]) {
     monotonicQueueAnimations[key] = placeholderAnimation;
