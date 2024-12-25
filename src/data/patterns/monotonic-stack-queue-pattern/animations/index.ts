@@ -13,7 +13,7 @@ export const visualizers = {
   'next-greater-problems-foundation-': NextGreaterVisualizer,
   'monotonic-window-operations': MonotonicWindowVisualizer,
   'competition-stack-problems':CompetitionVisualizer,
-  'advacned-applications': AdvancedVisualizer
+  'advanced-applications': AdvancedVisualizer
 };
 
 export const monotonicQueueAnimations = {
