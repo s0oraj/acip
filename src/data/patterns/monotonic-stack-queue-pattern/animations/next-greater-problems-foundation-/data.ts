@@ -1,70 +1,88 @@
-// src/data/patterns/monotonic-stack-queue-pattern/animations/next-greater-problems-foundation-/data.ts
-import { Animation } from '../types';
-
+// src/data/patterns/monotonic-stack-queue-pattern/animations/monotonic-window-operations/data.ts
 export const patterns = {
-  basic: {
-    data: [2, 1, 4, 3, 6, 5],
-    icon: 'stack',
-    title: "Next Greater",
-    desc: "Basic Stack Pattern",
+  max: {
+    data: [1, 3, -1, -3, 5, 3, 6, 7],
+    windowSize: 3,
+    icon: 'maximize',
+    title: "Window Maximum",
+    desc: "Sliding Window Max",
     color: "#4F46E5"
   },
-  circular: {
-    data: [5, 4, 3, 2, 1],
-    icon: 'repeat',
-    title: "Circular Array",
-    desc: "Wrap-around Search",
+  min: {
+    data: [5, 3, 4, 1, 2, 6, 2, 3],
+    windowSize: 3,
+    icon: 'minimize',
+    title: "Window Minimum",
+    desc: "Sliding Window Min",
     color: "#7C3AED"
   },
-  optimized: {
-    data: [1, 3, 2, 4, 6, 5],
-    icon: 'zap',
-    title: "Optimized",
-    desc: "Early Exit",
+  avg: {
+    data: [1, 10, 3, 5, 2, 8, 4, 6],
+    windowSize: 4,
+    icon: 'calculator',
+    title: "Window Average",
+    desc: "Fixed Window Avg",
     color: "#2563EB"
+  },
+  diff: {
+    data: [8, 2, 4, 7, 1, 5, 3, 6],
+    windowSize: 3,
+    limit: 4,
+    icon: 'move-horizontal',
+    title: "Difference Limit",
+    desc: "Max-Min Difference",
+    color: "#DC2626"
+  },
+  sum: {
+    data: [2, -1, 2, 1, -3, 4, 3, -2],
+    targetSum: 3,
+    icon: 'plus',
+    title: "Dynamic Sum",
+    desc: "Target Sum Window",
+    color: "#059669"
   }
 };
 
-export const nextGreaterAnimation = {
-  id: "next-greater",
-  title: "Next Greater Element",
-  description: "Find the next greater element for each array position using a monotonic stack",
-  steps: [
-    {
-      title: "Stack Operations",
-      description: "Using monotonic decreasing stack to find next greater elements",
-      array: patterns.basic.data,
-      phases: patterns.basic.data.map((val, index) => ({
-        description: index === 0 
-          ? "Initialize empty stack"
-          : `Process element ${val}`,
-        activeIndex: index,
-        highlightIndices: [index],
-        counter: {
-          stack: patterns.basic.data
-            .slice(0, index + 1)
-            .reduce((stack, curr) => {
-              while (stack.length && stack[stack.length - 1] < curr) {
-                stack.pop();
-              }
-              stack.push(curr);
-              return stack;
-            }, []),
-          result: patterns.basic.data
-            .slice(0, index + 1)
-            .reduce((res, curr, i, arr) => {
-              const nextGreater = arr.slice(i + 1).find(x => x > curr) || -1;
-              res[i] = nextGreater;
-              return res;
-            }, Array(patterns.basic.data.length).fill(-1))
-        },
-        code: index === 0
-          ? "stack = []"
-          : `while stack and stack[-1] < ${val}:
-    result[stack.pop()] = ${val}
-stack.append(${val})`
-      }))
-    }
-  ],
-  counters: ["stack", "result"]
+export const windowOperationsAnimation = {
+  id: "window-operations",
+  title: "Monotonic Window Operations",
+  description: "Visualize different sliding window operations using monotonic deques",
+  steps: patterns.max.data.map((_, index) => ({
+    title: "Window Operations",
+    description: "Visualizing window-based computations",
+    array: patterns.max.data,
+    phases: [{
+      description: index === 0 
+        ? "Initialize window" 
+        : `Process element at index ${index}`,
+      activeIndex: index,
+      highlightIndices: Array.from(
+        { length: patterns.max.windowSize }, 
+        (_, i) => Math.max(0, index - i)
+      ).filter(i => i >= 0),
+      counter: {
+        window: patterns.max.data.slice(
+          Math.max(0, index - patterns.max.windowSize + 1),
+          index + 1
+        ),
+        result: patterns.max.data
+          .slice(0, index + 1)
+          .reduce((acc, _, i, arr) => {
+            if (i < patterns.max.windowSize - 1) return acc;
+            const windowMax = Math.max(
+              ...arr.slice(i - patterns.max.windowSize + 1, i + 1)
+            );
+            return [...acc, windowMax];
+          }, [])
+      },
+      code: index === 0
+        ? "deque = collections.deque()"
+        : `while deque and nums[deque[-1]] < nums[${index}]:
+    deque.pop()
+deque.append(${index})
+if deque[0] <= ${index - patterns.max.windowSize}:
+    deque.popleft()`
+    }])
+  })),
+  counters: ["window", "result"]
 };
