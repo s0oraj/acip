@@ -1,5 +1,5 @@
 // src/data/patterns/monotonic-queue/animations/next-greater/data.ts
-import { Animation } from '@/types';
+import { Animation } from '../types';
 
 export const patterns = {
   basic: {
