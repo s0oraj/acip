@@ -1,4 +1,4 @@
-// src/data/patterns/monotonic-queue/animations/next-greater/data.ts
+// src/data/patterns/monotonic-stack-queue-pattern/animations/next-greater-problems-foundation-/data.ts
 import { Animation } from '../types';
 
 export const patterns = {
@@ -25,7 +25,7 @@ export const patterns = {
   }
 };
 
-export const nextGreaterAnimation: Animation = {
+export const nextGreaterAnimation = {
   id: "next-greater",
   title: "Next Greater Element",
   description: "Find the next greater element for each array position using a monotonic stack",
