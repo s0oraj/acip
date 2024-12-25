@@ -3,11 +3,11 @@ import { nextGreaterAnimation } from './next-greater-problems-foundation-/data';
 import { NextGreaterVisualizer } from './next-greater-problems-foundation-/visualizer';
 
 export const visualizers = {
-  'next-greater-problems-foundation': NextGreaterVisualizer // Remove trailing dash
+  'next-greater-problems-foundation-': NextGreaterVisualizer // Remove trailing dash
 };
 
 export const monotonicQueueAnimations = {
-  'next-greater-problems-foundation': nextGreaterAnimation // Remove trailing dash
+  'next-greater-problems-foundation-': nextGreaterAnimation // Remove trailing dash
 };
 
 const placeholderAnimation = {
