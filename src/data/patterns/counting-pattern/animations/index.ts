@@ -15,15 +15,15 @@ import WindowBasedCountingVisualizer from './window-based-counting/visualizer';
 //import { populationTrackingAnimation } from './population-tracking/data';
 //import PopulationTrackingVisualizer from './population-tracking/visualizer';
 
-import { advancedCounterAnimation } from './advanced-counter-operations/data';
-import AdvancedCounterOperationsVisualizer from './advanced-counter-operations/visualizer';
+import { advancedCounterAnimation } from './advanced-counting/data';
+import AdvancedCounterOperationsVisualizer from './advanced-counting/visualizer';
 
 
 export const visualizers = {
   'basic-counter-operations': BasicCounterOperationsVisualizer,
   'frequency-distribution': FrequencyDistributionVisualizer,
   'window-based-counting': WindowBasedCountingVisualizer,
-  'advanced-counter-operations': AdvancedCounterOperationsVisualizer
+  'advanced-counting': AdvancedCounterOperationsVisualizer
 };
 // 'state-based-counting': StateBasedCountingVisualizer
 // population-tracking': PopulationTrackingVisualizer
@@ -35,7 +35,7 @@ export const countingAnimations = {
   "window-based-counting": windowBasedCountingAnimation,
   statebasedcounting: placeholderAnimation,
   populationtracking: placeholderAnimation,
-  "advanced-counter-operations": advancedCounterAnimation
+  "advanced-counting": advancedCounterAnimation
 };
 // "state-based-counting": stateBasedCountingAnimation
 // population-tracking": placeholderAnimation,
