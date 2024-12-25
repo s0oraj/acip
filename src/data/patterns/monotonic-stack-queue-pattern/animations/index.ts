@@ -3,11 +3,11 @@ import { nextGreaterAnimation } from './next-greater-problems-foundation-/data';
 import NextGreaterVisualizer from './next-greater-problems-foundation-/visualizer';
 
 export const visualizers = {
-  'next-greater': NextGreaterVisualizer
+  'next-greater-problems-foundation-': NextGreaterVisualizer
 };
 
 export const monotonicQueueAnimations = {
-  "next-greater": nextGreaterAnimation
+  "next-greater-problems-foundation-": nextGreaterAnimation
 };
 
 // Placeholder animation for any unimplemented visualizations
