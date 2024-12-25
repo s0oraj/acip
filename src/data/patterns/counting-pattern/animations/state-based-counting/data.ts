@@ -1,65 +1,98 @@
-// src/data/patterns/counting-pattern/animations/state-based-counting/data.ts
-import { Animation } from '@/types';
+import { AnimationData } from '../types';
+import StateBasedCountingVisualizer from './visualizer';
 
-const statePatterns = {
-  'basic': {
-    title: "State Transition",
-    input: "babab",
-    target: "ab",
-    description: "Count subsequence occurrences",
-    states: ['a', 'b'],
-    getNextState: (char: string, currentState: string) => {
-      if (currentState === 'a' && char === 'b') return 'b';
-      if (currentState === '' && char === 'a') return 'a';
-      return currentState;
-    }
+export interface StatePattern {
+  id: number;
+  state: string;
+  count: number;
+  transitions: string[];
+}
+
+export const statePatterns: StatePattern[] = [
+  {
+    id: 1,
+    state: 'Initial',
+    count: 0,
+    transitions: ['Processing']
   },
-  'multi': {
-    title: "Multi-State",
-    input: "croak",
-    states: ['c', 'r', 'o', 'a', 'k'],
-    description: "Track frog croaking states",
-    getNextState: (char: string, currentState: string) => {
-      const stateOrder = "croak";
-      const currIdx = stateOrder.indexOf(currentState);
-      return char === stateOrder[(currIdx + 1) % 5] ? char : currentState;
-    }
+  {
+    id: 2,
+    state: 'Processing',
+    count: 0,
+    transitions: ['Success', 'Error']
   },
-  'pattern': {
-    title: "Pattern States",
-    input: "ABAABA",
-    states: ['A', 'B'],
-    pattern: "AB",
-    description: "Match state patterns",
-    getNextState: (char: string, currentState: string) => {
-      if (currentState === 'A' && char === 'B') return 'B';
-      if (char === 'A') return 'A';
-      return '';
-    }
+  {
+    id: 3,
+    state: 'Success',
+    count: 0,
+    transitions: ['Initial']
+  },
+  {
+    id: 4,
+    state: 'Error',
+    count: 0,
+    transitions: ['Initial']
   }
-};
+];
 
-export const stateBasedCountingAnimation: Animation = {
-  id: "state-based-counting",
-  title: "State-Based Counting Patterns",
-  description: "Understanding state transition counting techniques",
-  steps: Object.entries(statePatterns).map(([key, pattern]) => ({
-    title: pattern.title,
-    description: pattern.description,
-    array: pattern.input.split(''),
-    phases: pattern.input.split('').map((char, idx) => {
-      const state = pattern.states.reduce((acc, s) => ({
-        ...acc,
-        [s]: pattern.input.slice(0, idx + 1).filter(c => c === s).length
-      }), {});
-      return {
-        description: `Processing '${char}'`,
-        activeIndex: idx,
-        highlightIndices: [idx],
-        state,
-        character: char
-      };
-    })
-  })),
-  counters: []
+export interface StateBasedCountingStep {
+  description: string;
+  code: string;
+  highlightedLines: number[];
+  currentState: string;
+  statePatterns: StatePattern[];
+}
+
+export const steps: StateBasedCountingStep[] = [
+  {
+    description: "Initialize state patterns with counts",
+    code: `states = {
+  'Initial': { count: 0, transitions: ['Processing'] },
+  'Processing': { count: 0, transitions: ['Success', 'Error'] },
+  'Success': { count: 0, transitions: ['Initial'] },
+  'Error': { count: 0, transitions: ['Initial'] }
+}`,
+    highlightedLines: [1, 2, 3, 4, 5],
+    currentState: 'Initial',
+    statePatterns: statePatterns.map(pattern => ({ ...pattern }))
+  },
+  {
+    description: "Transition to Processing state and increment count",
+    code: `current_state = 'Processing'
+states['Processing'].count += 1`,
+    highlightedLines: [1, 2],
+    currentState: 'Processing',
+    statePatterns: statePatterns.map(pattern => ({
+      ...pattern,
+      count: pattern.state === 'Processing' ? 1 : 0
+    }))
+  },
+  {
+    description: "Transition to Success state and increment count",
+    code: `current_state = 'Success'
+states['Success'].count += 1`,
+    highlightedLines: [1, 2],
+    currentState: 'Success',
+    statePatterns: statePatterns.map(pattern => ({
+      ...pattern,
+      count: pattern.state === 'Success' ? 1 : pattern.state === 'Processing' ? 1 : 0
+    }))
+  },
+  {
+    description: "Return to Initial state",
+    code: `current_state = 'Initial'
+# Counts persist across state transitions`,
+    highlightedLines: [1, 2],
+    currentState: 'Initial',
+    statePatterns: statePatterns.map(pattern => ({
+      ...pattern,
+      count: pattern.state === 'Success' ? 1 : pattern.state === 'Processing' ? 1 : 0
+    }))
+  }
+];
+
+export const stateBasedCountingAnimation: AnimationData = {
+  name: 'State-Based Counting',
+  description: 'Visualize state transitions and counting',
+  component: StateBasedCountingVisualizer,
 };
