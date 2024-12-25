@@ -3,15 +3,20 @@ import NextGreaterVisualizer from './next-greater-problems-foundation-/visualize
 import MonotonicWindowVisualizer from './monotonic-window-operations/visualizer';
 import { nextGreaterAnimation } from './next-greater-problems-foundation-/data';
 import { windowOperationsAnimation } from './monotonic-window-operations/data';
+import CompetitionVisualizer from './competition-stack-problems/visualizer';
+import { competitionStackAnimation } from './competition-stack-problems/data';
+
 
 export const visualizers = {
   'next-greater-problems-foundation-': NextGreaterVisualizer,
-  'monotonic-window-operations': MonotonicWindowVisualizer
+  'monotonic-window-operations': MonotonicWindowVisualizer,
+  'competition-stack-problems':CompetitionVisualizer
 };
 
 export const monotonicQueueAnimations = {
   'next-greater-problems-foundation-': nextGreaterAnimation,
-  'monotonic-window-operations': windowOperationsAnimation
+  'monotonic-window-operations': windowOperationsAnimation,
+  "competition-stack-problems":competitionStackAnimation
 };
 
 const placeholderAnimation = {
