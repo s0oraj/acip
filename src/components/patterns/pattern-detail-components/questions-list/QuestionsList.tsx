@@ -1,3 +1,4 @@
+// QuestionsList.tsx
 import { Pattern } from "@/types";
 import { QuestionComponent } from "./Question";
 import { SubpatternComponent } from "./Subpattern";
@@ -14,21 +15,25 @@ export const QuestionsList = ({ pattern, completedQuestions, toggleQuestion }: Q
   const patternPath = pattern.title.toLowerCase().replace(/[^a-z0-9]+/g, '-');
 
   return (
-    <div className="space-y-12 animate-pattern-fade">
+    <div className="space-y-12">
       {pattern.subpatterns && pattern.subpatterns.length > 0 ? (
-        pattern.subpatterns.map((subpattern, subpatternIndex) => (
-          <ErrorBoundary key={subpatternIndex}>
-            <SubpatternComponent
-              subpattern={subpattern}
-              subpatternIndex={subpatternIndex}
-              pattern={patternPath}
-              completedQuestions={completedQuestions}
-              toggleQuestion={toggleQuestion}
-            />
-          </ErrorBoundary>
-        ))
+        <div className="grid gap-8">
+          {pattern.subpatterns.map((subpattern, subpatternIndex) => (
+            <ErrorBoundary key={subpatternIndex}>
+              <div className="bg-white dark:bg-gray-800/50 rounded-xl shadow-lg border border-gray-100 dark:border-gray-700 overflow-hidden">
+                <SubpatternComponent
+                  subpattern={subpattern}
+                  subpatternIndex={subpatternIndex}
+                  pattern={patternPath}
+                  completedQuestions={completedQuestions}
+                  toggleQuestion={toggleQuestion}
+                />
+              </div>
+            </ErrorBoundary>
+          ))}
+        </div>
       ) : (
-        <div className="space-y-6">
+        <div className="space-y-4 w-full">
           {pattern.questions.map((question, index) => (
             <QuestionComponent
               key={question.id}
@@ -40,7 +45,7 @@ export const QuestionsList = ({ pattern, completedQuestions, toggleQuestion }: Q
           ))}
         </div>
       )}
-      <div className="animate-pattern-slide">
+      <div className="mt-12">
         <PatternSummary summary={pattern.summary} />
       </div>
     </div>
