@@ -189,5 +189,5 @@ const BITAdvancedApplicationsVisualizer: React.FC = () => {
   );
 };
 
-export default AdvancedApplicationsVisualizer;
+export default BITAdvancedApplicationsVisualizer;
 
