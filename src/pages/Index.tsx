@@ -5,10 +5,10 @@ import { PatternGrid } from "@/components/patterns/index-page-components/Pattern
 
 const Index = () => {
   return (
-    <div className="min-h-screen bg-white dark:bg-gray-900">
+    <div className="min-h-screen bg-white dark:bg-gray-900 overflow-x-hidden">
       <div className="relative">
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div className="absolute -top-40 -right-20 w-80 h-80 bg-gradient-to-br from-blue-50 via-white to-indigo-50 rounded-full blur-3xl opacity-80" />
+          <div className="absolute -top-40 right-0 w-80 h-80 bg-gradient-to-br from-blue-50 via-white to-indigo-50 rounded-full blur-3xl opacity-80" />
           <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-gradient-to-br from-blue-50 via-white to-indigo-50 rounded-full blur-3xl opacity-80" />
         </div>
         
