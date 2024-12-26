@@ -1,12 +1,30 @@
 import React, { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
 import { Play, Pause, RotateCcw, ChevronLeft, ChevronRight } from 'lucide-react';
 import { graphStructureCloningAnimation } from './data';
+
+const styles = `
+  @keyframes drawLine {
+    to { stroke-dashoffset: 0; }
+  }
+  @keyframes scaleIn {
+    from { transform: scale(0); }
+    to { transform: scale(1); }
+  }
+`;
 
 const GraphStructureCloningVisualizer: React.FC = () => {
   const [step, setStep] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
   const [activeTab, setActiveTab] = useState(0);
+
+  useEffect(() => {
+    const styleElement = document.createElement('style');
+    styleElement.textContent = styles;
+    document.head.appendChild(styleElement);
+    return () => {
+      document.head.removeChild(styleElement);
+    };
+  }, []);
 
   useEffect(() => {
     let timer: NodeJS.Timeout;
@@ -39,7 +57,7 @@ const GraphStructureCloningVisualizer: React.FC = () => {
           const start = nodePositions[edge.from - 1];
           const end = nodePositions[edge.to - 1];
           return (
-            <motion.line
+            <line
               key={`edge-${index}`}
               x1={start.x}
               y1={start.y}
@@ -47,14 +65,12 @@ const GraphStructureCloningVisualizer: React.FC = () => {
               y2={end.y}
               stroke={isClone ? "green" : "blue"}
               strokeWidth={2}
-              initial={{ pathLength: 0 }}
-              animate={{ pathLength: 1 }}
-              transition={{ duration: 1, delay: index * 0.2 }}
+              style={{strokeDasharray: '100%', strokeDashoffset: '100%', animation: `drawLine 1s ${index * 0.2}s forwards`}}
             />
           );
         })}
         {nodes.map((node, index) => (
-          <motion.g key={`node-${index}`} initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: index * 0.1 }}>
+          <g key={`node-${index}`} style={{animation: `scaleIn 0.5s ${index * 0.1}s forwards`}}>
             <circle
               cx={nodePositions[index].x}
               cy={nodePositions[index].y}
@@ -72,7 +88,7 @@ const GraphStructureCloningVisualizer: React.FC = () => {
             >
               {node.label}
             </text>
-          </motion.g>
+          </g>
         ))}
       </svg>
     );
