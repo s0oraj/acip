@@ -9,7 +9,22 @@ interface QueueState {
   current: number;
 }
 
-const QueueSimulationVisualizer = ({
+interface Phase {
+  counter: QueueState;
+  code: string;
+}
+
+interface QueueSimulationVisualizerProps {
+  data: number[];
+  activeStep: number;
+  phase: Phase | null;
+  onPrev: () => void;
+  onNext: () => void;
+  onPlay: () => void;
+  onReplay: () => void;
+}
+
+const QueueSimulationVisualizer: React.FC<QueueSimulationVisualizerProps> = ({
   data,
   activeStep,
   phase,
@@ -17,16 +32,9 @@ const QueueSimulationVisualizer = ({
   onNext,
   onPlay,
   onReplay
-}: {
-  data: number[];
-  activeStep: number;
-  phase: any;
-  onPrev: () => void;
-  onNext: () => void;
-  onPlay: () => void;
-  onReplay: () => void;
 }) => {
-  const state: QueueState = phase?.counter || { queue: data, processed: 0, current: 0 };
+  const defaultState: QueueState = { queue: data || [], processed: 0, current: 0 };
+  const state: QueueState = phase?.counter || defaultState;
 
   return (
     <div className="w-full space-y-4">
@@ -60,7 +68,7 @@ const QueueSimulationVisualizer = ({
               variant="outline"
               size="icon"
               onClick={onNext}
-              disabled={activeStep === data.length - 1}
+              disabled={!data || activeStep >= (data.length - 1)}
             >
               <ArrowRight className="h-4 w-4" />
             </Button>
@@ -81,6 +89,9 @@ const QueueSimulationVisualizer = ({
                     <span className="text-sm">{tickets}</span>
                   </div>
                 ))}
+                {state.queue.length === 0 && (
+                  <div className="text-gray-500">Queue is empty</div>
+                )}
               </div>
             </div>
 
@@ -105,3 +116,4 @@ const QueueSimulationVisualizer = ({
 };
 
 export default QueueSimulationVisualizer;
+

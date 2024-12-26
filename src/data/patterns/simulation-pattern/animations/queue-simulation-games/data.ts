@@ -28,6 +28,18 @@ export const patterns = {
   }
 };
 
+const createDefaultPhase = (index: number): any => ({
+  description: index === 0 ? "Initialize queue" : `Process person ${index + 1}`,
+  activeIndex: index,
+  highlightIndices: [index],
+  counter: {
+    queue: [],
+    processed: 0,
+    current: 0
+  },
+  code: index === 0 ? "const queue = [];" : "processTickets(0);"
+});
+
 export const queueSimulationAnimation: Animation = {
   id: "queue-simulation",
   title: "Queue Simulation Games",
@@ -56,3 +68,27 @@ export const queueSimulationAnimation: Animation = {
   ],
   counters: []
 };
+
+// Ensure queueSimulationAnimation.steps is always an array with at least one valid step
+if (!Array.isArray(queueSimulationAnimation.steps) || queueSimulationAnimation.steps.length === 0) {
+  queueSimulationAnimation.steps = [{
+    title: "Default Step",
+    description: "No valid steps found",
+    array: [],
+    phases: [createDefaultPhase(0)]
+  }];
+} else {
+  // Ensure each step has a valid phases array
+  queueSimulationAnimation.steps = queueSimulationAnimation.steps.map(step => {
+    if (!Array.isArray(step.phases) || step.phases.length === 0) {
+      return {
+        ...step,
+        phases: [createDefaultPhase(0)]
+      };
+    }
+    return step;
+  });
+}
+
+export default queueSimulationAnimation;
+

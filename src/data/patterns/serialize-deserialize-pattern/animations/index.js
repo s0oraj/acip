@@ -1,23 +1,31 @@
+import { stringSerialization } from './string-serialization/data';
+import StringSerializationVisualizer from './string-serialization/visualizer';
+
+import { arrayListSerialization } from './array-list-serialization/data';
+import ArrayListSerializationVisualizer from './array-list-serialization/visualizer';
+
+import { treeSerialization } from './tree-serialization/data';
+import TreeSerializationVisualizer from './tree-serialization/visualizer';
+
+import { graphSerialization } from './graph-serialization/data';
+import GraphSerializationVisualizer from './graph-serialization/visualizer';
+
+import { dataStructureTransformations } from './data-structure-transformations/data';
+import DataStructureTransformationsVisualizer from './data-structure-transformations/visualizer';
 
 export const visualizers = {
+  'string-serialization': StringSerializationVisualizer,
+  'array-list-serialization': ArrayListSerializationVisualizer,
+  'tree-serialization': TreeSerializationVisualizer,
+  'graph-serialization': GraphSerializationVisualizer,
+  'data-structure-transformations': DataStructureTransformationsVisualizer
 };
 
-export const countingAnimations = {
-  "basic-counter-operations": placeholderAnimation,
-  "frequency-distribution": placeholderAnimation,
-  "window-based-counting": placeholderAnimation,
-  'state-based-counting': placeholderAnimation,
-  "population-tracking": placeholderAnimation,
-  "advanced-counting": placeholderAnimation
+export const serializeDeserializeAnimations = {
+  "string-serialization": stringSerialization,
+  "array-list-serialization": arrayListSerialization,
+  "tree-serialization": treeSerialization,
+  "graph-serialization": graphSerialization,
+  "data-structure-transformations": dataStructureTransformations
 };
-const placeholderAnimation = {
-  title: "Coming Soon",
-  steps: [{
-    description: "Animation under development",
-    code: "// TODO",
-    visualization: {
-      elements: [],
-      highlightIndices: []
-    }
-  }]
-};
+

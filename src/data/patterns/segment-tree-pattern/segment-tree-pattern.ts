@@ -112,7 +112,7 @@ export const segmentTreePattern: Pattern = {
       ]
     },
     {
-      title: "Advanced Range Operations",
+      title: "ST Advanced Range Operations",
       questions: [
         {
           id: 9,

@@ -20,12 +20,12 @@ interface RobotState {
 
 const DirectionArrow = ({ dir, color }: { dir: number, color: string }) => {
   const arrows = [
-    <ChevronRight className="w-4 h-4" style={{ color }} />,
-    <ChevronUp className="w-4 h-4" style={{ color }} />,
-    <ChevronLeft className="w-4 h-4" style={{ color }} />,
-    <ChevronDown className="w-4 h-4" style={{ color }} />
+    <ChevronRight key="right" className="w-4 h-4" style={{ color }} />,
+    <ChevronUp key="up" className="w-4 h-4" style={{ color }} />,
+    <ChevronLeft key="left" className="w-4 h-4" style={{ color }} />,
+    <ChevronDown key="down" className="w-4 h-4" style={{ color }} />
   ];
-  return arrows[dir];
+  return arrows[dir] || null;
 };
 
 const GridMovementVisualizer = ({
@@ -39,7 +39,7 @@ const GridMovementVisualizer = ({
 }: {
   data: any[];
   activeStep: number;
-  phase: any;
+  phase: { counter: RobotState; code?: string } | null;
   onPrev: () => void;
   onNext: () => void;
   onPlay: () => void;
@@ -120,7 +120,7 @@ const GridMovementVisualizer = ({
               variant="outline"
               size="icon"
               onClick={onNext}
-              disabled={activeStep === data.length - 1}
+              disabled={!data || activeStep === data.length - 1}
             >
               <ArrowRight className="h-4 w-4" />
             </Button>
@@ -165,3 +165,4 @@ const GridMovementVisualizer = ({
 };
 
 export default GridMovementVisualizer;
+
