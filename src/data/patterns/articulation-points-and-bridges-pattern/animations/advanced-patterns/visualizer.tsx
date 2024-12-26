@@ -23,72 +23,42 @@ const AdvancedPatternsVisualizer: React.FC = () => {
 
   const renderGraph = () => {
     const { visualizationData } = advancedPatternsAnimation.steps[step];
-    const width = 400;
-    const height = 300;
+    const width = 600;
+    const height = 400;
     const nodeRadius = 20;
 
-    const nodePositions = visualizationData.nodes.reduce((acc, node, index) => {
+    const nodePositions: { [key: number]: { x: number; y: number } } = {};
+    visualizationData.nodes.forEach((node, index) => {
       const angle = (2 * Math.PI * index) / visualizationData.nodes.length;
-      acc[node.id] = {
-        x: width / 2 + Math.cos(angle) * (width / 3 - nodeRadius),
-        y: height / 2 + Math.sin(angle) * (height / 3 - nodeRadius),
+      nodePositions[node.id] = {
+        x: width / 2 + Math.cos(angle) * 150,
+        y: height / 2 + Math.sin(angle) * 150,
       };
-      return acc;
-    }, {} as Record<number, { x: number; y: number }>);
-
-    const getNodeColor = (nodeId: number) => {
-      if (visualizationData.restrictedNodes?.includes(nodeId)) return 'red';
-      if (visualizationData.reachableNodes?.includes(nodeId)) return 'lightgreen';
-      if (visualizationData.optimizedPath?.includes(nodeId)) return 'lightgreen';
-      return 'lightblue';
-    };
-
-    const getEdgeColor = (edge: any) => {
-      if (edge.type === 'critical') return 'red';
-      if (edge.type === 'pseudo-critical') return 'orange';
-      if (edge.type === 'non-critical') return 'gray';
-      if (visualizationData.optimizedPath?.includes(edge.source) && visualizationData.optimizedPath?.includes(edge.target)) return 'green';
-      return 'black';
-    };
+    });
 
     return (
       <svg width={width} height={height}>
-        {visualizationData.edges.map((edge, index) => {
-          const start = nodePositions[edge.source];
-          const end = nodePositions[edge.target];
-
-          return (
-            <g key={`edge-${index}`}>
-              <line
-                x1={start.x}
-                y1={start.y}
-                x2={end.x}
-                y2={end.y}
-                stroke={getEdgeColor(edge)}
-                strokeWidth={2}
-              />
-              {edge.weight !== undefined && (
-                <text
-                  x={(start.x + end.x) / 2}
-                  y={(start.y + end.y) / 2}
-                  textAnchor="middle"
-                  dominantBaseline="central"
-                  fill={getEdgeColor(edge)}
-                  fontSize="12"
-                >
-                  {edge.weight}
-                </text>
-              )}
-            </g>
-          );
-        })}
+        {visualizationData.edges.map((edge, index) => (
+          <line
+            key={`edge-${index}`}
+            x1={nodePositions[edge.source].x}
+            y1={nodePositions[edge.source].y}
+            x2={nodePositions[edge.target].x}
+            y2={nodePositions[edge.target].y}
+            stroke={visualizationData.bridges?.some(
+              b => (b.source === edge.source && b.target === edge.target) ||
+                   (b.source === edge.target && b.target === edge.source)
+            ) ? 'red' : 'black'}
+            strokeWidth={2}
+          />
+        ))}
         {visualizationData.nodes.map((node) => (
           <g key={`node-${node.id}`}>
             <circle
               cx={nodePositions[node.id].x}
               cy={nodePositions[node.id].y}
               r={nodeRadius}
-              fill={getNodeColor(node.id)}
+              fill={visualizationData.articulationPoints?.includes(node.id) ? 'yellow' : 'lightblue'}
               stroke="black"
             />
             <text
@@ -96,9 +66,100 @@ const AdvancedPatternsVisualizer: React.FC = () => {
               y={nodePositions[node.id].y}
               textAnchor="middle"
               dominantBaseline="central"
+              fontSize="12"
+            >
+              {node.label}
+            </text>
+          </g>
+        ))}
+        {step === 0 && visualizationData.biconnectedComponents?.map((component, index) => (
+          <path
+            key={`biconnected-${index}`}
+            d={`M ${component.map(id => `${nodePositions[id].x},${nodePositions[id].y}`).join(' L ')} Z`}
+            fill="none"
+            stroke="green"
+            strokeWidth={2}
+            opacity={0.5}
+          />
+        ))}
+        {step === 2 && visualizationData.twoEdgeConnectedComponents?.map((component, index) => (
+          <path
+            key={`two-edge-connected-${index}`}
+            d={`M ${component.map(id => `${nodePositions[id].x},${nodePositions[id].y}`).join(' L ')} Z`}
+            fill="none"
+            stroke="purple"
+            strokeWidth={2}
+            opacity={0.5}
+          />
+        ))}
+        {step === 3 && visualizationData.cycles?.map((cycle, index) => (
+          <path
+            key={`cycle-${index}`}
+            d={`M ${cycle.map(id => `${nodePositions[id].x},${nodePositions[id].y}`).join(' L ')} Z`}
+            fill="none"
+            stroke="orange"
+            strokeWidth={2}
+            opacity={0.5}
+          />
+        ))}
+      </svg>
+    );
+  };
+
+  const renderBridgeTree = () => {
+    const { visualizationData } = advancedPatternsAnimation.steps[step];
+    if (!visualizationData.bridgeTreeNodes || !visualizationData.bridgeTreeEdges) return null;
+
+    const width = 600;
+    const height = 200;
+    const nodeRadius = 30;
+
+    const nodePositions: { [key: string]: { x: number; y: number } } = {};
+    visualizationData.bridgeTreeNodes.forEach((node, index) => {
+      nodePositions[node.id] = {
+        x: (index + 1) * (width / (visualizationData.bridgeTreeNodes.length + 1)),
+        y: height / 2,
+      };
+    });
+
+    return (
+      <svg width={width} height={height}>
+        {visualizationData.bridgeTreeEdges.map((edge, index) => (
+          <line
+            key={`bridge-tree-edge-${index}`}
+            x1={nodePositions[edge.source].x}
+            y1={nodePositions[edge.source].y}
+            x2={nodePositions[edge.target].x}
+            y2={nodePositions[edge.target].y}
+            stroke="black"
+            strokeWidth={2}
+          />
+        ))}
+        {visualizationData.bridgeTreeNodes.map((node) => (
+          <g key={`bridge-tree-node-${node.id}`}>
+            <circle
+              cx={nodePositions[node.id].x}
+              cy={nodePositions[node.id].y}
+              r={nodeRadius}
+              fill="lightgreen"
+              stroke="black"
+            />
+            <text
+              x={nodePositions[node.id].x}
+              y={nodePositions[node.id].y}
+              textAnchor="middle"
+              dominantBaseline="central"
+              fontSize="12"
             >
               {node.id}
-              {node.layer !== undefined && ` (L${node.layer})`}
+            </text>
+            <text
+              x={nodePositions[node.id].x}
+              y={nodePositions[node.id].y + nodeRadius + 15}
+              textAnchor="middle"
+              fontSize="10"
+            >
+              {node.nodes.join(', ')}
             </text>
           </g>
         ))}
@@ -131,6 +192,12 @@ const AdvancedPatternsVisualizer: React.FC = () => {
         <h3 className="text-xl font-semibold mb-4">{advancedPatternsAnimation.steps[step].title}</h3>
         <p className="text-gray-600 mb-4">{advancedPatternsAnimation.steps[step].description}</p>
         {renderGraph()}
+        {step === 1 && (
+          <>
+            <h4 className="text-lg font-semibold mt-6 mb-2">Bridge Tree</h4>
+            {renderBridgeTree()}
+          </>
+        )}
       </div>
 
       <div className="flex justify-center gap-4">
@@ -150,6 +217,20 @@ const AdvancedPatternsVisualizer: React.FC = () => {
         </button>
         <button
           onClick={() => { setStep(0); setIsPlaying(false); }}
-          className="w-12 h-12 rounded-full flex items-
+          className="w-12 h-12 rounded-full flex items-center justify-center bg-gray-200 hover:bg-gray-300 text-gray-700 transition-all duration-300"
+        >
+          <RotateCcw className="w-5 h-5" />
+        </button>
+        <button
+          onClick={() => setStep(s => Math.min(advancedPatternsAnimation.steps.length - 1, s + 1))}
+          className="w-12 h-12 rounded-full flex items-center justify-center bg-gray-200 hover:bg-gray-300 text-gray-700 transition-all duration-300"
+        >
+          <ChevronRight className="w-5 h-5" />
+        </button>
+      </div>
+    </div>
+  );
+};
 
+export default AdvancedPatternsVisualizer;
 
