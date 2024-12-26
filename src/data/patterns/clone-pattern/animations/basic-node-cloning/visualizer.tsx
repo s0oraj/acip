@@ -2,10 +2,36 @@ import React, { useState, useEffect } from 'react';
 import { Play, Pause, RotateCcw, ChevronLeft, ChevronRight } from 'lucide-react';
 import { basicNodeCloningAnimation } from './data';
 
+const fadeIn = {
+  opacity: 0,
+  animation: 'fadeIn 0.5s ease-out forwards',
+};
+
+const fadeInDelay = {
+  opacity: 0,
+  animation: 'fadeIn 0.5s ease-out 0.5s forwards',
+};
+
+const styles = `
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+`;
+
 const BasicNodeCloningVisualizer: React.FC = () => {
   const [step, setStep] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
   const [activeTab, setActiveTab] = useState(0);
+
+  useEffect(() => {
+    const styleElement = document.createElement('style');
+    styleElement.textContent = styles;
+    document.head.appendChild(styleElement);
+    return () => {
+      document.head.removeChild(styleElement);
+    };
+  }, []);
 
   useEffect(() => {
     let timer: NodeJS.Timeout;
@@ -23,15 +49,15 @@ const BasicNodeCloningVisualizer: React.FC = () => {
 
   const renderVisualization = () => {
     const { visualizationData } = basicNodeCloningAnimation.steps[step];
-    
+
     switch (step) {
       case 0:
         return (
           <div className="flex justify-around items-center h-64">
-            <div className="bg-blue-500 text-white p-4 rounded-full transition-opacity duration-500 opacity-100">
+            <div className={`bg-blue-500 text-white p-4 rounded-full ${fadeIn.animation}`}>
               {visualizationData.originalNode.value}
             </div>
-            <div className="bg-green-500 text-white p-4 rounded-full transition-opacity duration-500 opacity-100">
+            <div className={`bg-green-500 text-white p-4 rounded-full ${fadeInDelay.animation}`}>
               {visualizationData.clonedNode.value}
             </div>
           </div>
@@ -41,14 +67,14 @@ const BasicNodeCloningVisualizer: React.FC = () => {
           <div className="flex flex-col items-center h-64">
             <div className="flex mb-8">
               {visualizationData.originalChain.map((value, index) => (
-                <div key={`original-${index}`} className="bg-blue-500 text-white p-4 rounded-full mr-2 transition-opacity duration-500 opacity-100" style={{transitionDelay: `${index * 100}ms`}}>
+                <div key={`original-${index}`} className={`bg-blue-500 text-white p-4 rounded-full ${fadeIn.animation}`} style={{ animationDelay: `${index * 0.1}s` }}>
                   {value}
                 </div>
               ))}
             </div>
             <div className="flex">
               {visualizationData.clonedChain.map((value, index) => (
-                <div key={`cloned-${index}`} className="bg-green-500 text-white p-4 rounded-full mr-2 transition-opacity duration-500 opacity-100" style={{transitionDelay: `${500 + index * 100}ms`}}>
+                <div key={`cloned-${index}`} className={`bg-green-500 text-white p-4 rounded-full ${fadeInDelay.animation}`} style={{ animationDelay: `${index * 0.1}s` }}>
                   {value}
                 </div>
               ))}
@@ -60,7 +86,7 @@ const BasicNodeCloningVisualizer: React.FC = () => {
           <div className="flex flex-col items-center h-64">
             <div className="flex mb-8">
               {visualizationData.originalNodes.map((node, index) => (
-                <div key={`original-${index}`} className="bg-blue-500 text-white p-4 rounded-full mr-2 transition-opacity duration-500 opacity-100" style={{transitionDelay: `${index * 100}ms`}}>
+                <div key={`original-${index}`} className={`bg-blue-500 text-white p-4 rounded-full ${fadeIn.animation}`} style={{ animationDelay: `${index * 0.1}s` }}>
                   {node.value}
                   <div className="text-xs">R: {node.random}</div>
                 </div>
@@ -68,7 +94,7 @@ const BasicNodeCloningVisualizer: React.FC = () => {
             </div>
             <div className="flex">
               {visualizationData.clonedNodes.map((node, index) => (
-                <div key={`cloned-${index}`} className="bg-green-500 text-white p-4 rounded-full mr-2 transition-opacity duration-500 opacity-100" style={{transitionDelay: `${500 + index * 100}ms`}}>
+                <div key={`cloned-${index}`} className={`bg-green-500 text-white p-4 rounded-full ${fadeInDelay.animation}`} style={{ animationDelay: `${index * 0.1}s` }}>
                   {node.value}
                   <div className="text-xs">R: {node.random}</div>
                 </div>
@@ -79,11 +105,11 @@ const BasicNodeCloningVisualizer: React.FC = () => {
       case 3:
         return (
           <div className="flex flex-col items-center h-64">
-            <div className="relative w-48 h-48 animate-spin" style={{animationDuration: '2s'}}>
+            <div className="relative w-48 h-48 animate-spin-slow">
               {visualizationData.originalChain.map((value, index) => (
                 <div
                   key={`original-${index}`}
-                  className="absolute bg-blue-500 text-white p-4 rounded-full transition-opacity duration-500 opacity-100"
+                  className="absolute bg-blue-500 text-white p-4 rounded-full"
                   style={{
                     top: `${50 - 40 * Math.cos(2 * Math.PI * index / visualizationData.originalChain.length)}%`,
                     left: `${50 + 40 * Math.sin(2 * Math.PI * index / visualizationData.originalChain.length)}%`,
@@ -93,11 +119,11 @@ const BasicNodeCloningVisualizer: React.FC = () => {
                 </div>
               ))}
             </div>
-            <div className="relative w-48 h-48 mt-8 animate-spin" style={{animationDuration: '2s'}}>
+            <div className="relative w-48 h-48 animate-spin-slow mt-8">
               {visualizationData.clonedChain.map((value, index) => (
                 <div
                   key={`cloned-${index}`}
-                  className="absolute bg-green-500 text-white p-4 rounded-full transition-opacity duration-500 opacity-100"
+                  className="absolute bg-green-500 text-white p-4 rounded-full"
                   style={{
                     top: `${50 - 40 * Math.cos(2 * Math.PI * index / visualizationData.clonedChain.length)}%`,
                     left: `${50 + 40 * Math.sin(2 * Math.PI * index / visualizationData.clonedChain.length)}%`,
@@ -120,7 +146,7 @@ const BasicNodeCloningVisualizer: React.FC = () => {
         <h2 className="text-2xl font-bold mb-2">{basicNodeCloningAnimation.title}</h2>
         <p className="text-gray-600">{basicNodeCloningAnimation.description}</p>
       </div>
-      
+
       <div className="mb-4">
         <div className="flex space-x-2">
           {basicNodeCloningAnimation.steps.map((s, index) => (
@@ -174,3 +200,4 @@ const BasicNodeCloningVisualizer: React.FC = () => {
 };
 
 export default BasicNodeCloningVisualizer;
+
