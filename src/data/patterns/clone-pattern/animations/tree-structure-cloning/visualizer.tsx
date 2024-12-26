@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
 import { Play, Pause, RotateCcw, ChevronLeft, ChevronRight } from 'lucide-react';
 import { treeStructureCloningAnimation } from './data';
 
@@ -25,11 +24,8 @@ const TreeStructureCloningVisualizer: React.FC = () => {
   const renderTree = (node: any, isClone: boolean = false, depth: number = 0) => {
     const color = isClone ? 'bg-green-500' : 'bg-blue-500';
     return (
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: depth * 0.2 }}
-        className="flex flex-col items-center"
+      <div
+        className="flex flex-col items-center opacity-0 animate-fade-in" style={{animationDelay: `${depth * 200}ms`}}
       >
         <div className={`${color} text-white p-2 rounded-full mb-2`}>
           {node.value}
@@ -50,7 +46,7 @@ const TreeStructureCloningVisualizer: React.FC = () => {
             </div>
           ) : null
         )}
-      </motion.div>
+      </div>
     );
   };
 
@@ -130,5 +126,4 @@ const TreeStructureCloningVisualizer: React.FC = () => {
 };
 
 export default TreeStructureCloningVisualizer;
-
 
