@@ -60,14 +60,22 @@ const PatternDetail = () => {
     });
   };
 
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-pattern-50 to-white dark:from-gray-900 dark:to-gray-800">
+        <div className="animate-pulse text-pattern-600 dark:text-pattern-400">Loading...</div>
+      </div>
+    );
+  }
+
   if (!pattern) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-purple-50 to-white dark:from-gray-900 dark:to-gray-800">
-        <div className="text-center space-y-4 p-8 bg-white dark:bg-gray-800 rounded-xl shadow-lg">
-          <h2 className="text-2xl font-bold text-gray-800 dark:text-gray-200">
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-pattern-50 to-white dark:from-gray-900 dark:to-gray-800">
+        <div className="text-center space-y-4 bg-white dark:bg-gray-800 rounded-xl p-8 shadow-lg">
+          <h2 className="text-2xl font-bold text-pattern-800 dark:text-pattern-200">
             Pattern Not Found
           </h2>
-          <p className="text-gray-600 dark:text-gray-400">
+          <p className="text-pattern-600 dark:text-pattern-400">
             The pattern you're looking for doesn't exist.
           </p>
         </div>
@@ -79,24 +87,16 @@ const PatternDetail = () => {
     ? pattern.subpatterns.flatMap(subpattern => subpattern.questions)
     : pattern.questions;
 
-  if (isLoading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-purple-50 to-white dark:from-gray-900 dark:to-gray-800">
-        <div className="animate-pulse">Loading...</div>
-      </div>
-    );
-  }
-
   return (
-    <div className="min-h-screen bg-gradient-to-b from-purple-50 to-white dark:from-gray-900 dark:to-gray-800">
-      <div className="max-w-5xl mx-auto px-4 py-8">
+    <div className="min-h-screen bg-gradient-to-b from-pattern-50 to-white dark:from-gray-900 dark:to-gray-800">
+      <div className="max-w-6xl mx-auto px-4 py-8 animate-pattern-fade">
         <PatternHeader 
           pattern={pattern}
           completedQuestions={completedQuestions}
           allQuestions={allQuestions}
         />
         
-        <div className="mt-8">
+        <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8 animate-pattern-slide">
           <QuestionsList
             pattern={pattern}
             completedQuestions={completedQuestions}
