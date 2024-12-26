@@ -1,5 +1,3 @@
-
-// src/components/patterns/pattern-detail-components/questions-list/QuestionsList.tsx
 import { Pattern } from "@/types";
 import { QuestionComponent } from "./Question";
 import { SubpatternComponent } from "./Subpattern";
@@ -16,7 +14,7 @@ export const QuestionsList = ({ pattern, completedQuestions, toggleQuestion }: Q
   const patternPath = pattern.title.toLowerCase().replace(/[^a-z0-9]+/g, '-');
 
   return (
-    <div className="space-y-12">
+    <div className="space-y-12 animate-pattern-fade">
       {pattern.subpatterns && pattern.subpatterns.length > 0 ? (
         pattern.subpatterns.map((subpattern, subpatternIndex) => (
           <ErrorBoundary key={subpatternIndex}>
@@ -42,7 +40,9 @@ export const QuestionsList = ({ pattern, completedQuestions, toggleQuestion }: Q
           ))}
         </div>
       )}
-      <PatternSummary summary={pattern.summary} />
+      <div className="animate-pattern-slide">
+        <PatternSummary summary={pattern.summary} />
+      </div>
     </div>
   );
 };
