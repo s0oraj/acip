@@ -56,3 +56,26 @@ export const queueSimulationAnimation: Animation = {
   ],
   counters: []
 };
+
+// Ensure queueSimulationAnimation.steps is always an array
+if (!Array.isArray(queueSimulationAnimation.steps)) {
+  queueSimulationAnimation.steps = [];
+}
+
+// Validate each step
+queueSimulationAnimation.steps = queueSimulationAnimation.steps.filter(step => 
+  step && typeof step === 'object' && Array.isArray(step.phases)
+);
+
+// If all steps were invalid, provide a default step
+if (queueSimulationAnimation.steps.length === 0) {
+  queueSimulationAnimation.steps = [{
+    title: "Default Step",
+    description: "No valid steps found",
+    array: [],
+    phases: []
+  }];
+}
+
+export default queueSimulationAnimation;
+
