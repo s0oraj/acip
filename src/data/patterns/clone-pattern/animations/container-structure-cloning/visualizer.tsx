@@ -1,12 +1,39 @@
 import React, { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
 import { Play, Pause, RotateCcw, ChevronLeft, ChevronRight } from 'lucide-react';
 import { containerStructureCloningAnimation } from './data';
+
+const styles = `
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeInLeft {
+    from { opacity: 0; transform: translateX(-20px); }
+    to { opacity: 1; transform: translateX(0); }
+  }
+  @keyframes scaleIn {
+    from { opacity: 0; transform: scale(0.8); }
+    to { opacity: 1; transform: scale(1); }
+  }
+  @keyframes rotateY {
+    from { opacity: 0; transform: rotateY(90deg); }
+    to { opacity: 1; transform: rotateY(0); }
+  }
+`;
 
 const ContainerStructureCloningVisualizer: React.FC = () => {
   const [step, setStep] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
   const [activeTab, setActiveTab] = useState(0);
+
+  useEffect(() => {
+    const styleElement = document.createElement('style');
+    styleElement.textContent = styles;
+    document.head.appendChild(styleElement);
+    return () => {
+      document.head.removeChild(styleElement);
+    };
+  }, []);
 
   useEffect(() => {
     let timer: NodeJS.Timeout;
@@ -31,15 +58,13 @@ const ContainerStructureCloningVisualizer: React.FC = () => {
         return (
           <div className="flex flex-col-reverse items-center">
             {visualizationData.stack.map((item, index) => (
-              <motion.div
+              <div
                 key={`${isClone ? 'clone-' : ''}stack-${index}`}
                 className={`${color} text-white p-2 m-1 w-16 text-center`}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.1 }}
+                style={{animation: `fadeInUp 0.5s ${index * 0.1}s forwards`}}
               >
                 {item}
-              </motion.div>
+              </div>
             ))}
           </div>
         );
@@ -47,15 +72,13 @@ const ContainerStructureCloningVisualizer: React.FC = () => {
         return (
           <div className="flex items-center">
             {visualizationData.queue.map((item, index) => (
-              <motion.div
+              <div
                 key={`${isClone ? 'clone-' : ''}queue-${index}`}
                 className={`${color} text-white p-2 m-1 w-16 text-center`}
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: index * 0.1 }}
+                style={{animation: `fadeInLeft 0.5s ${index * 0.1}s forwards`}}
               >
                 {item}
-              </motion.div>
+              </div>
             ))}
           </div>
         );
@@ -63,15 +86,13 @@ const ContainerStructureCloningVisualizer: React.FC = () => {
         return (
           <div className="flex flex-col items-center">
             {visualizationData.priorityQueue.map((item, index) => (
-              <motion.div
+              <div
                 key={`${isClone ? 'clone-' : ''}pq-${index}`}
                 className={`${color} text-white p-2 m-1 w-32 text-center`}
-                initial={{ opacity: 0, scale: 0.8 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ delay: index * 0.1 }}
+                style={{animation: `scaleIn 0.5s ${index * 0.1}s forwards`}}
               >
                 {item.value} (P: {item.priority})
-              </motion.div>
+              </div>
             ))}
           </div>
         );
@@ -79,15 +100,13 @@ const ContainerStructureCloningVisualizer: React.FC = () => {
         return (
           <div className="grid grid-cols-2 gap-2">
             {visualizationData.hashMap.map((item, index) => (
-              <motion.div
+              <div
                 key={`${isClone ? 'clone-' : ''}hm-${index}`}
                 className={`${color} text-white p-2 m-1 text-center`}
-                initial={{ opacity: 0, rotateY: 90 }}
-                animate={{ opacity: 1, rotateY: 0 }}
-                transition={{ delay: index * 0.1 }}
+                style={{animation: `rotateY 0.5s ${index * 0.1}s forwards`}}
               >
                 {item.key}: {item.value}
-              </motion.div>
+              </div>
             ))}
           </div>
         );
@@ -102,7 +121,7 @@ const ContainerStructureCloningVisualizer: React.FC = () => {
         <h2 className="text-2xl font-bold mb-2">{containerStructureCloningAnimation.title}</h2>
         <p className="text-gray-600">{containerStructureCloningAnimation.description}</p>
       </div>
-      
+
       <div className="mb-4">
         <div className="flex space-x-2">
           {containerStructureCloningAnimation.steps.map((s, index) => (
