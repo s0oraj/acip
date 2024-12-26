@@ -79,7 +79,7 @@ export const gridMovementAnimation: Animation = {
             : `Execute step ${index + 1}`,
           activeIndex: index,
           highlightIndices: [index],
-          counter: patterns.multiRobot.robots.reduce((acc: any, robot, robotIndex) => {
+          counter: patterns.multiRobot.robots.reduce((acc: { robots?: Robot[] }, robot, robotIndex) => {
             if (!acc.robots) {
               acc.robots = patterns.multiRobot.robots.map((r, i) => ({
                 id: i,
@@ -104,3 +104,25 @@ export const gridMovementAnimation: Animation = {
   ],
   counters: []
 };
+
+// Ensure gridMovementAnimation.steps is always an array
+if (!Array.isArray(gridMovementAnimation.steps)) {
+  gridMovementAnimation.steps = [];
+}
+
+// Validate each step
+gridMovementAnimation.steps = gridMovementAnimation.steps.filter(step => 
+  step && typeof step === 'object' && Array.isArray(step.phases)
+);
+
+// If all steps were invalid, provide a default step
+if (gridMovementAnimation.steps.length === 0) {
+  gridMovementAnimation.steps = [{
+    title: "Default Step",
+    description: "No valid steps found",
+    array: [],
+    phases: []
+  }];
+}
+
+export default gridMovementAnimation;
