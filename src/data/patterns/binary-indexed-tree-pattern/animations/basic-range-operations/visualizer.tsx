@@ -2,165 +2,154 @@ import React, { useState, useEffect } from 'react';
 import { Play, Pause, RotateCcw, ChevronLeft, ChevronRight } from 'lucide-react';
 import { basicRangeOperationsAnimation } from './data';
 
-const BasicRangeOperationsVisualizer: React.FC = () => {
-  const [step, setStep] = useState(0);
-  const [isPlaying, setIsPlaying] = useState(false);
+const BasicRangeOperationsVisualizer = () => {
   const [activeTab, setActiveTab] = useState(0);
+  const [phase, setPhase] = useState('initial');
+  const [isPlaying, setIsPlaying] = useState(false);
 
   useEffect(() => {
-    let timer: NodeJS.Timeout;
+    let timer;
     if (isPlaying) {
-      timer = setTimeout(() => {
-        if (step < basicRangeOperationsAnimation.steps.length - 1) {
-          setStep(s => s + 1);
-        } else {
-          setIsPlaying(false);
-        }
-      }, 2000);
+      timer = setInterval(() => {
+        setPhase(prev => {
+          const phases = ['initial', 'processing', 'complete'];
+          const currentIndex = phases.indexOf(prev);
+          if (currentIndex === phases.length - 1) {
+            setIsPlaying(false);
+            return prev;
+          }
+          return phases[currentIndex + 1];
+        });
+      }, 1500);
     }
-    return () => clearTimeout(timer);
-  }, [isPlaying, step]);
+    return () => clearInterval(timer);
+  }, [isPlaying]);
 
-  const renderBIT = (bit: number[]) => {
-    const width = 600;
-    const height = 300;
-    const nodeRadius = 20;
-
-    return (
-      <svg width={width} height={height}>
-        {bit.map((value, index) => {
-          if (index === 0) return null; // Skip the 0th element
-          const x = (index / bit.length) * width;
-          const y = height / 2;
-
+  const renderBIT = (bit: number[], highlightIndices: number[] = []) => (
+    <div className="h-64">
+      <svg viewBox="0 0 400 300">
+        {bit.slice(1).map((value, idx) => {
+          const x = ((idx + 1) / bit.length) * 350 + 25;
+          const y = 150;
           return (
-            <g key={index}>
+            <g key={idx}>
               <circle
                 cx={x}
                 cy={y}
-                r={nodeRadius}
-                fill="lightblue"
-                stroke="black"
+                r={20}
+                className={`${
+                  highlightIndices.includes(idx + 1)
+                    ? 'fill-blue-500 text-white'
+                    : 'fill-gray-100 stroke-gray-300'
+                }`}
               />
               <text
                 x={x}
                 y={y}
                 textAnchor="middle"
-                dominantBaseline="central"
-                fontSize="12"
+                dominantBaseline="middle"
+                className="text-sm font-medium"
               >
                 {value}
-              </text>
-              <text
-                x={x}
-                y={y + nodeRadius + 15}
-                textAnchor="middle"
-                fontSize="10"
-              >
-                {index}
               </text>
             </g>
           );
         })}
       </svg>
-    );
-  };
+    </div>
+  );
 
-  const renderArray = (array: number[], query?: { start: number; end: number }) => {
-    return (
-      <div className="flex justify-center mt-4">
-        {array.map((value, index) => (
-          <div
-            key={index}
-            className={`w-12 h-12 flex items-center justify-center border border-gray-300 ${
-              query && index >= query.start && index <= query.end ? 'bg-green-200' : 'bg-blue-200'
-            }`}
-          >
-            {value}
-          </div>
-        ))}
-      </div>
-    );
-  };
+  const renderArray = (array: number[], query?: { start: number; end: number }) => (
+    <div className="flex justify-center gap-2 my-4">
+      {array.map((value, idx) => (
+        <div
+          key={idx}
+          className={`w-12 h-12 flex items-center justify-center rounded-lg font-medium
+            ${query && idx >= query.start && idx <= query.end
+              ? 'bg-green-100 text-green-800'
+              : 'bg-gray-100'
+          }`}
+        >
+          {value}
+        </div>
+      ))}
+    </div>
+  );
 
-  const { visualizationData } = basicRangeOperationsAnimation.steps[step];
+  const { steps } = basicRangeOperationsAnimation;
+  const currentStep = steps[activeTab];
 
   return (
     <div className="p-6">
-      <div className="mb-6">
-        <h2 className="text-2xl font-bold mb-2">{basicRangeOperationsAnimation.title}</h2>
-        <p className="text-gray-600">{basicRangeOperationsAnimation.description}</p>
-      </div>
-      
-      <div className="mb-4">
-        <div className="flex space-x-2">
-          {basicRangeOperationsAnimation.steps.map((s, index) => (
-            <button
-              key={index}
-              onClick={() => { setActiveTab(index); setStep(index); setIsPlaying(false); }}
-              className={`px-4 py-2 rounded ${activeTab === index ? 'bg-blue-500 text-white' : 'bg-gray-200'}`}
-            >
-              {s.title}
-            </button>
-          ))}
-        </div>
+      <div className="grid grid-cols-4 gap-4 mb-6">
+        {steps.map((step, idx) => (
+          <button
+            key={idx}
+            onClick={() => {
+              setActiveTab(idx);
+              setPhase('initial');
+              setIsPlaying(false);
+            }}
+            className={`p-4 rounded-xl transition-all ${
+              activeTab === idx
+                ? 'bg-white shadow-lg scale-105'
+                : 'bg-gray-50 hover:bg-white hover:shadow'
+            }`}
+          >
+            <span className="font-semibold">{step.title}</span>
+          </button>
+        ))}
       </div>
 
       <div className="bg-white p-6 rounded-xl shadow-sm mb-6">
-        <h3 className="text-xl font-semibold mb-4">{basicRangeOperationsAnimation.steps[step].title}</h3>
-        <p className="text-gray-600 mb-4">{basicRangeOperationsAnimation.steps[step].description}</p>
-        {renderBIT(visualizationData.bit)}
-        {visualizationData.array && renderArray(visualizationData.array, visualizationData.query)}
-        {visualizationData.instructions && (
-          <div className="mt-4">
-            <h4 className="font-semibold">Instructions:</h4>
-            <p>{visualizationData.instructions.join(', ')}</p>
-          </div>
-        )}
-        {visualizationData.sortedArray && (
-          <div className="mt-4">
-            <h4 className="font-semibold">Sorted Array:</h4>
-            <p>{visualizationData.sortedArray.join(', ')}</p>
-          </div>
-        )}
-        {visualizationData.result && (
-          <div className="mt-4">
-            <h4 className="font-semibold">Result:</h4>
-            <p>{visualizationData.result.join(', ')}</p>
-          </div>
-        )}
-        {visualizationData.query && (
-          <p className="mt-4 text-sm text-gray-600">
-            Query: [{visualizationData.query.start}, {visualizationData.query.end}]
-            {visualizationData.query.element && `, Element: ${visualizationData.query.element}`}
-          </p>
-        )}
+        <h3 className="text-xl font-bold mb-2">{currentStep.title}</h3>
+        <p className="text-gray-600 mb-4">{currentStep.description}</p>
+        
+        {currentStep.visualizationData.bit && 
+          renderBIT(
+            currentStep.visualizationData.bit,
+            currentStep.visualizationData.highlightIndices
+          )}
+        
+        {currentStep.visualizationData.array &&
+          renderArray(
+            currentStep.visualizationData.array,
+            currentStep.visualizationData.query
+          )}
       </div>
 
       <div className="flex justify-center gap-4">
         <button
-          onClick={() => setStep(s => Math.max(0, s - 1))}
-          className="w-12 h-12 rounded-full flex items-center justify-center bg-gray-200 hover:bg-gray-300 text-gray-700 transition-all duration-300"
+          onClick={() => setActiveTab(idx => Math.max(0, idx - 1))}
+          className="w-12 h-12 rounded-full flex items-center justify-center bg-gray-200 hover:bg-gray-300 text-gray-700"
         >
           <ChevronLeft className="w-5 h-5" />
         </button>
+        
         <button
           onClick={() => setIsPlaying(!isPlaying)}
-          className={`w-12 h-12 rounded-full flex items-center justify-center transition-all duration-300 ${
-            isPlaying ? 'bg-gray-200 hover:bg-gray-300 text-gray-700' : 'bg-blue-500 hover:bg-blue-600 text-white'
-          }`}
+          className={`w-12 h-12 rounded-full flex items-center justify-center
+            ${isPlaying
+              ? 'bg-gray-200 hover:bg-gray-300 text-gray-700'
+              : 'bg-blue-500 hover:bg-blue-600 text-white'
+            }`}
         >
           {isPlaying ? <Pause className="w-5 h-5" /> : <Play className="w-5 h-5 ml-0.5" />}
         </button>
+        
         <button
-          onClick={() => { setStep(0); setIsPlaying(false); }}
-          className="w-12 h-12 rounded-full flex items-center justify-center bg-gray-200 hover:bg-gray-300 text-gray-700 transition-all duration-300"
+          onClick={() => {
+            setPhase('initial');
+            setIsPlaying(false);
+          }}
+          className="w-12 h-12 rounded-full flex items-center justify-center bg-gray-200 hover:bg-gray-300 text-gray-700"
         >
           <RotateCcw className="w-5 h-5" />
         </button>
+        
         <button
-          onClick={() => setStep(s => Math.min(basicRangeOperationsAnimation.steps.length - 1, s + 1))}
-          className="w-12 h-12 rounded-full flex items-center justify-center bg-gray-200 hover:bg-gray-300 text-gray-700 transition-all duration-300"
+          onClick={() => setActiveTab(idx => Math.min(steps.length - 1, idx + 1))}
+          className="w-12 h-12 rounded-full flex items-center justify-center bg-gray-200 hover:bg-gray-300 text-gray-700"
         >
           <ChevronRight className="w-5 h-5" />
         </button>
@@ -170,5 +159,3 @@ const BasicRangeOperationsVisualizer: React.FC = () => {
 };
 
 export default BasicRangeOperationsVisualizer;
-
-
