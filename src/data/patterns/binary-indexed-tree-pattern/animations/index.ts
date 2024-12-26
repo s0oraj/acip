@@ -6,7 +6,7 @@ import { twoDOperationsAnimation } from './bit-2d-operations/data';
 import TwoDOperationsVisualizer from './bit-2d-operations/visualizer';
 import { multipleBITsAnimation } from './multiple-bits/data';
 import MultipleBITsVisualizer from './multiple-bits/visualizer';
-import { advancedApplicationsAnimation } from './bit-advanced-applications/data';
+import { bitAdvancedApplicationsAnimation } from './bit-advanced-applications/data';
 import AdvancedApplicationsVisualizer from './bit-advanced-applications/visualizer';
 
 export const visualizers = {
@@ -22,6 +22,6 @@ export const binaryIndexedTreeAnimations = {
   "order-statistics": orderStatisticsAnimation,
   "bit-2d-operations": twoDOperationsAnimation,
   "multiple-bits": multipleBITsAnimation,
-  "bit-advanced-applications": advancedApplicationsAnimation,
+  "bit-advanced-applications": bitAdvancedApplicationsAnimation,
 };
 
