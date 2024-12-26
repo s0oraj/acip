@@ -1,6 +1,6 @@
 import { Animation } from '@/types';
 
-export const advancedApplicationsAnimation: Animation = {
+export const bitAdvancedApplicationsAnimation: Animation = {
   id: "advanced-applications",
   title: "Advanced Applications",
   description: "Visualizing advanced applications of Binary Indexed Trees (BIT)",
