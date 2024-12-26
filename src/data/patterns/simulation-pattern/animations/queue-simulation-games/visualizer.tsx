@@ -33,7 +33,8 @@ const QueueSimulationVisualizer: React.FC<QueueSimulationVisualizerProps> = ({
   onPlay,
   onReplay
 }) => {
-  const state: QueueState = phase?.counter || { queue: data, processed: 0, current: 0 };
+  const defaultState: QueueState = { queue: data || [], processed: 0, current: 0 };
+  const state: QueueState = phase?.counter || defaultState;
 
   return (
     <div className="w-full space-y-4">
@@ -67,7 +68,7 @@ const QueueSimulationVisualizer: React.FC<QueueSimulationVisualizerProps> = ({
               variant="outline"
               size="icon"
               onClick={onNext}
-              disabled={activeStep === data.length - 1}
+              disabled={!data || activeStep >= (data.length - 1)}
             >
               <ArrowRight className="h-4 w-4" />
             </Button>
@@ -88,6 +89,9 @@ const QueueSimulationVisualizer: React.FC<QueueSimulationVisualizerProps> = ({
                     <span className="text-sm">{tickets}</span>
                   </div>
                 ))}
+                {state.queue.length === 0 && (
+                  <div className="text-gray-500">Queue is empty</div>
+                )}
               </div>
             </div>
 
