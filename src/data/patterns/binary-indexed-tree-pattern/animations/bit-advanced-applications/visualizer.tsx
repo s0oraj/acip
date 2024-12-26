@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Play, Pause, RotateCcw, ChevronLeft, ChevronRight } from 'lucide-react';
-import { advancedApplicationsAnimation } from './data';
+import { bitAdvancedApplicationsAnimation } from './data';
 
-const AdvancedApplicationsVisualizer: React.FC = () => {
+const BITAdvancedApplicationsVisualizer: React.FC = () => {
   const [step, setStep] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
   const [activeTab, setActiveTab] = useState(0);
@@ -11,7 +11,7 @@ const AdvancedApplicationsVisualizer: React.FC = () => {
     let timer: NodeJS.Timeout;
     if (isPlaying) {
       timer = setTimeout(() => {
-        if (step < advancedApplicationsAnimation.steps.length - 1) {
+        if (step < bitAdvancedApplicationsAnimation.steps.length - 1) {
           setStep(s => s + 1);
         } else {
           setIsPlaying(false);
@@ -21,112 +21,125 @@ const AdvancedApplicationsVisualizer: React.FC = () => {
     return () => clearTimeout(timer);
   }, [isPlaying, step]);
 
-  const renderBIT = (bit: number[], label: string) => {
-    const width = 600;
-    const height = 100;
-    const nodeRadius = 20;
-
-    return (
-      <div className="mb-4">
-        <div className="mb-4">
-        <h4 className="font-semibold">{label}</h4>
-        <svg width={width} height={height}>
-          {bit.map((value, index) => {
-            if (index === 0) return null; // Skip the 0th element
-            const x = (index / bit.length) * width;
-            const y = height / 2;
-
-            return (
-              <g key={index}>
-                <circle
-                  cx={x}
-                  cy={y}
-                  r={nodeRadius}
-                  fill="lightblue"
-                  stroke="black"
-                />
-                <text
-                  x={x}
-                  y={y}
-                  textAnchor="middle"
-                  dominantBaseline="central"
-                  fontSize="12"
-                >
-                  {value}
-                </text>
-                <text
-                  x={x}
-                  y={y + nodeRadius + 15}
-                  textAnchor="middle"
-                  fontSize="10"
-                >
-                  {index}
-                </text>
-              </g>
-            );
-          })}
-        </svg>
-      </div>
-    );
-  };
-
-  const renderArray = (array: number[], query?: { start: number; end: number }) => {
-    return (
-      <div className="flex justify-center mt-4">
-        {array.map((value, index) => (
-          <div
-            key={index}
-            className={`w-12 h-12 flex items-center justify-center border border-gray-300 ${
-              query && index >= query.start && index <= query.end ? 'bg-green-200' : 'bg-blue-200'
-            }`}
-          >
-            {value}
+  const renderVisualization = () => {
+    const { visualizationData } = bitAdvancedApplicationsAnimation.steps[step];
+    
+    switch (step) {
+      case 0: // Range Updates with Point Queries
+        return (
+          <div className="flex flex-col items-center">
+            <div className="mb-4">
+              <h4 className="text-lg font-semibold">Array</h4>
+              <div className="flex">
+                {visualizationData.array.map((value, index) => (
+                  <div key={index} className="w-10 h-10 border border-gray-300 flex items-center justify-center">
+                    {value}
+                  </div>
+                ))}
+              </div>
+            </div>
+            <div>
+              <h4 className="text-lg font-semibold">BIT</h4>
+              <div className="flex">
+                {visualizationData.bit.map((value, index) => (
+                  <div key={index} className="w-10 h-10 border border-gray-300 flex items-center justify-center">
+                    {value}
+                  </div>
+                ))}
+              </div>
+            </div>
+            <div className="mt-4">
+              <p>Update: [{visualizationData.update.start}, {visualizationData.update.end}] by {visualizationData.update.value}</p>
+              <p>Query at index: {visualizationData.query}</p>
+            </div>
           </div>
-        ))}
-      </div>
-    );
+        );
+      case 1: // 2D Range Sum Queries
+        return (
+          <div className="flex flex-col items-center">
+            <div className="mb-4">
+              <h4 className="text-lg font-semibold">2D Array</h4>
+              <div className="grid grid-cols-4 gap-1">
+                {visualizationData.array.map((row, rowIndex) => (
+                  row.map((value, colIndex) => (
+                    <div key={`${rowIndex}-${colIndex}`} className="w-10 h-10 border border-gray-300 flex items-center justify-center">
+                      {value}
+                    </div>
+                  ))
+                ))}
+              </div>
+            </div>
+            <div>
+              <h4 className="text-lg font-semibold">2D BIT</h4>
+              <div className="grid grid-cols-5 gap-1">
+                {visualizationData.bit.map((row, rowIndex) => (
+                  row.map((value, colIndex) => (
+                    <div key={`${rowIndex}-${colIndex}`} className="w-10 h-10 border border-gray-300 flex items-center justify-center">
+                      {value}
+                    </div>
+                  ))
+                ))}
+              </div>
+            </div>
+            <div className="mt-4">
+              <p>Query: [{visualizationData.query.x1}, {visualizationData.query.y1}] to [{visualizationData.query.x2}, {visualizationData.query.y2}]</p>
+            </div>
+          </div>
+        );
+      case 2: // Range Updates with Range Queries
+        return (
+          <div className="flex flex-col items-center">
+            <div className="mb-4">
+              <h4 className="text-lg font-semibold">Array</h4>
+              <div className="flex">
+                {visualizationData.array.map((value, index) => (
+                  <div key={index} className="w-10 h-10 border border-gray-300 flex items-center justify-center">
+                    {value}
+                  </div>
+                ))}
+              </div>
+            </div>
+            <div className="mb-4">
+              <h4 className="text-lg font-semibold">BIT 1</h4>
+              <div className="flex">
+                {visualizationData.bit1.map((value, index) => (
+                  <div key={index} className="w-10 h-10 border border-gray-300 flex items-center justify-center">
+                    {value}
+                  </div>
+                ))}
+              </div>
+            </div>
+            <div>
+              <h4 className="text-lg font-semibold">BIT 2</h4>
+              <div className="flex">
+                {visualizationData.bit2.map((value, index) => (
+                  <div key={index} className="w-10 h-10 border border-gray-300 flex items-center justify-center">
+                    {value}
+                  </div>
+                ))}
+              </div>
+            </div>
+            <div className="mt-4">
+              <p>Update: [{visualizationData.update.start}, {visualizationData.update.end}] by {visualizationData.update.value}</p>
+              <p>Query: [{visualizationData.query.start}, {visualizationData.query.end}]</p>
+            </div>
+          </div>
+        );
+      default:
+        return null;
+    }
   };
-
-  const renderPoints = (points: number[][], hull?: number[][]) => {
-    const width = 300;
-    const height = 300;
-    const pointRadius = 5;
-
-    return (
-      <svg width={width} height={height}>
-        {hull && (
-          <polygon
-            points={hull.map(point => `${point[0] * 50},${300 - point[1] * 50}`).join(' ')}
-            fill="none"
-            stroke="blue"
-            strokeWidth="2"
-          />
-        )}
-        {points.map((point, index) => (
-          <circle
-            key={index}
-            cx={point[0] * 50}
-            cy={300 - point[1] * 50}
-            r={pointRadius}
-            fill={hull && hull.some(hullPoint => hullPoint[0] === point[0] && hullPoint[1] === point[1]) ? 'red' : 'black'}
-          />
-        ))}
-      </svg>
-    );
-  };
-
-  const { visualizationData } = advancedApplicationsAnimation.steps[step];
 
   return (
     <div className="p-6">
       <div className="mb-6">
-        <h2 className="text-2xl font-bold mb-2">{advancedApplicationsAnimation.title}</h2>
-        <p className="text-gray-600">{advancedApplicationsAnimation.description}</p>
+        <h2 className="text-2xl font-bold mb-2">{bitAdvancedApplicationsAnimation.title}</h2>
+        <p className="text-gray-600">{bitAdvancedApplicationsAnimation.description}</p>
       </div>
       
       <div className="mb-4">
         <div className="flex space-x-2">
-          {advancedApplicationsAnimation.steps.map((s, index) => (
+          {bitAdvancedApplicationsAnimation.steps.map((s, index) => (
             <button
               key={index}
               onClick={() => { setActiveTab(index); setStep(index); setIsPlaying(false); }}
@@ -139,43 +152,9 @@ const AdvancedApplicationsVisualizer: React.FC = () => {
       </div>
 
       <div className="bg-white p-6 rounded-xl shadow-sm mb-6">
-        <h3 className="text-xl font-semibold mb-4">{advancedApplicationsAnimation.steps[step].title}</h3>
-        <p className="text-gray-600 mb-4">{advancedApplicationsAnimation.steps[step].description}</p>
-        <h4 className="font-semibold mt-4">Array:</h4>
-        {renderArray(visualizationData.array, visualizationData.query)}
-        {visualizationData.bits ? (
-          Object.entries(visualizationData.bits).map(([key, bit]) => (
-            renderBIT(bit as number[], key)
-          ))
-        ) : (
-          renderBIT(visualizationData.bit, 'BIT')
-        )}
-        {visualizationData.points && (
-          <>
-            <h4 className="font-semibold mt-4">Points:</h4>
-            {renderPoints(visualizationData.points, visualizationData.hull)}
-          </>
-        )}
-        {visualizationData.query && (
-          <p className="mt-4 text-sm text-gray-600">
-            Query: [{visualizationData.query.start}, {visualizationData.query.end}]
-          </p>
-        )}
-        {visualizationData.median !== undefined && (
-          <p className="mt-4 text-sm text-gray-600">
-            Median: {visualizationData.median}
-          </p>
-        )}
-        {visualizationData.lis !== undefined && (
-          <p className="mt-4 text-sm text-gray-600">
-            Longest Increasing Subsequence: {visualizationData.lis}
-          </p>
-        )}
-        {visualizationData.optimizedValue !== undefined && (
-          <p className="mt-4 text-sm text-gray-600">
-            Optimized Value: {visualizationData.optimizedValue}
-          </p>
-        )}
+        <h3 className="text-xl font-semibold mb-4">{bitAdvancedApplicationsAnimation.steps[step].title}</h3>
+        <p className="text-gray-600 mb-4">{bitAdvancedApplicationsAnimation.steps[step].description}</p>
+        {renderVisualization()}
       </div>
 
       <div className="flex justify-center gap-4">
@@ -200,7 +179,7 @@ const AdvancedApplicationsVisualizer: React.FC = () => {
           <RotateCcw className="w-5 h-5" />
         </button>
         <button
-          onClick={() => setStep(s => Math.min(advancedApplicationsAnimation.steps.length - 1, s + 1))}
+          onClick={() => setStep(s => Math.min(bitAdvancedApplicationsAnimation.steps.length - 1, s + 1))}
           className="w-12 h-12 rounded-full flex items-center justify-center bg-gray-200 hover:bg-gray-300 text-gray-700 transition-all duration-300"
         >
           <ChevronRight className="w-5 h-5" />
@@ -211,5 +190,4 @@ const AdvancedApplicationsVisualizer: React.FC = () => {
 };
 
 export default AdvancedApplicationsVisualizer;
-
 
