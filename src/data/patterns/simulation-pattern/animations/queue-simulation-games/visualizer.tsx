@@ -9,7 +9,22 @@ interface QueueState {
   current: number;
 }
 
-const QueueSimulationVisualizer = ({
+interface Phase {
+  counter: QueueState;
+  code: string;
+}
+
+interface QueueSimulationVisualizerProps {
+  data: number[];
+  activeStep: number;
+  phase: Phase | null;
+  onPrev: () => void;
+  onNext: () => void;
+  onPlay: () => void;
+  onReplay: () => void;
+}
+
+const QueueSimulationVisualizer: React.FC<QueueSimulationVisualizerProps> = ({
   data,
   activeStep,
   phase,
@@ -17,14 +32,6 @@ const QueueSimulationVisualizer = ({
   onNext,
   onPlay,
   onReplay
-}: {
-  data: number[];
-  activeStep: number;
-  phase: any;
-  onPrev: () => void;
-  onNext: () => void;
-  onPlay: () => void;
-  onReplay: () => void;
 }) => {
   const state: QueueState = phase?.counter || { queue: data, processed: 0, current: 0 };
 
