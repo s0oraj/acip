@@ -113,3 +113,4 @@ const TwoDOperationsVisualizer: React.FC = () => {
 };
 
 export default TwoDOperationsVisualizer;
+
