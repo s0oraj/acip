@@ -22,7 +22,7 @@ const Visualizer: React.FC = () => {
     const currentPhase = currentStep.phases[step];
 
     return (
-      <div className="space-y-4>
+      <div className="space-y-4">
         <div className="bg-blue-100 p-2 rounded">
           Input: {JSON.stringify(currentStep.input)}
         </div>
@@ -125,4 +125,3 @@ const Visualizer: React.FC = () => {
 };
 
 export default Visualizer;
-
