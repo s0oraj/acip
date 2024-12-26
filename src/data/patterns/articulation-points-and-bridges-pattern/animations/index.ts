@@ -1,23 +1,27 @@
+import { basicGraphCuttingAnimation } from './basic-graph-cutting/data';
+import BasicGraphCuttingVisualizer from './basic-graph-cutting/visualizer';
+import { gridConnectivityAnimation } from './grid-connectivity/data';
+import GridConnectivityVisualizer from './grid-connectivity/visualizer';
+import { directedComponentsAnimation } from './directed-components/data';
+import DirectedComponentsVisualizer from './directed-components/visualizer';
+import { componentAnalysisAnimation } from './component-analysis/data';
+import ComponentAnalysisVisualizer from './component-analysis/visualizer';
+import { advancedPatternsAnimation } from './advanced-patterns/data';
+import AdvancedPatternsVisualizer from './advanced-patterns/visualizer';
 
 export const visualizers = {
+  'basic-graph-cutting': BasicGraphCuttingVisualizer,
+  'grid-connectivity': GridConnectivityVisualizer,
+  'directed-components': DirectedComponentsVisualizer,
+  'component-analysis': ComponentAnalysisVisualizer,
+  'advanced-patterns': AdvancedPatternsVisualizer,
 };
 
-export const countingAnimations = {
-  "basic-counter-operations": placeholderAnimation,
-  "frequency-distribution": placeholderAnimation,
-  "window-based-counting": placeholderAnimation,
-  'state-based-counting': placeholderAnimation,
-  "population-tracking": placeholderAnimation,
-  "advanced-counting": placeholderAnimation
+export const articulationPointsAndBridgesAnimations = {
+  "basic-graph-cutting": basicGraphCuttingAnimation,
+  "grid-connectivity": gridConnectivityAnimation,
+  "directed-components": directedComponentsAnimation,
+  "component-analysis": componentAnalysisAnimation,
+  "advanced-patterns": advancedPatternsAnimation,
 };
-const placeholderAnimation = {
-  title: "Coming Soon",
-  steps: [{
-    description: "Animation under development",
-    code: "// TODO",
-    visualization: {
-      elements: [],
-      highlightIndices: []
-    }
-  }]
-};
+
