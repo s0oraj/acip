@@ -218,7 +218,7 @@ export const binaryIndexedTreePattern: Pattern = {
       ]
     },
     {
-      title: "Advanced Applications",
+      title: "Bit Advanced Applications",
       questions: [
         {
           id: 17,
