@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
 import { Play, Pause, RotateCcw, ChevronLeft, ChevronRight } from 'lucide-react';
 import { basicNodeCloningAnimation } from './data';
 
@@ -29,12 +28,12 @@ const BasicNodeCloningVisualizer: React.FC = () => {
       case 0:
         return (
           <div className="flex justify-around items-center h-64">
-            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="bg-blue-500 text-white p-4 rounded-full">
+            <div className="bg-blue-500 text-white p-4 rounded-full transition-opacity duration-500 opacity-100">
               {visualizationData.originalNode.value}
-            </motion.div>
-            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.5 }} className="bg-green-500 text-white p-4 rounded-full">
+            </div>
+            <div className="bg-green-500 text-white p-4 rounded-full transition-opacity duration-500 opacity-100">
               {visualizationData.clonedNode.value}
-            </motion.div>
+            </div>
           </div>
         );
       case 1:
@@ -42,16 +41,16 @@ const BasicNodeCloningVisualizer: React.FC = () => {
           <div className="flex flex-col items-center h-64">
             <div className="flex mb-8">
               {visualizationData.originalChain.map((value, index) => (
-                <motion.div key={`original-${index}`} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: index * 0.1 }} className="bg-blue-500 text-white p-4 rounded-full mr-2">
+                <div key={`original-${index}`} className="bg-blue-500 text-white p-4 rounded-full mr-2 transition-opacity duration-500 opacity-100" style={{transitionDelay: `${index * 100}ms`}}>
                   {value}
-                </motion.div>
+                </div>
               ))}
             </div>
             <div className="flex">
               {visualizationData.clonedChain.map((value, index) => (
-                <motion.div key={`cloned-${index}`} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.5 + index * 0.1 }} className="bg-green-500 text-white p-4 rounded-full mr-2">
+                <div key={`cloned-${index}`} className="bg-green-500 text-white p-4 rounded-full mr-2 transition-opacity duration-500 opacity-100" style={{transitionDelay: `${500 + index * 100}ms`}}>
                   {value}
-                </motion.div>
+                </div>
               ))}
             </div>
           </div>
@@ -61,18 +60,18 @@ const BasicNodeCloningVisualizer: React.FC = () => {
           <div className="flex flex-col items-center h-64">
             <div className="flex mb-8">
               {visualizationData.originalNodes.map((node, index) => (
-                <motion.div key={`original-${index}`} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: index * 0.1 }} className="bg-blue-500 text-white p-4 rounded-full mr-2">
+                <div key={`original-${index}`} className="bg-blue-500 text-white p-4 rounded-full mr-2 transition-opacity duration-500 opacity-100" style={{transitionDelay: `${index * 100}ms`}}>
                   {node.value}
                   <div className="text-xs">R: {node.random}</div>
-                </motion.div>
+                </div>
               ))}
             </div>
             <div className="flex">
               {visualizationData.clonedNodes.map((node, index) => (
-                <motion.div key={`cloned-${index}`} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.5 + index * 0.1 }} className="bg-green-500 text-white p-4 rounded-full mr-2">
+                <div key={`cloned-${index}`} className="bg-green-500 text-white p-4 rounded-full mr-2 transition-opacity duration-500 opacity-100" style={{transitionDelay: `${500 + index * 100}ms`}}>
                   {node.value}
                   <div className="text-xs">R: {node.random}</div>
-                </motion.div>
+                </div>
               ))}
             </div>
           </div>
@@ -80,34 +79,34 @@ const BasicNodeCloningVisualizer: React.FC = () => {
       case 3:
         return (
           <div className="flex flex-col items-center h-64">
-            <motion.div initial={{ rotate: 0 }} animate={{ rotate: 360 }} transition={{ duration: 2, repeat: Infinity, ease: "linear" }} className="relative w-48 h-48">
+            <div className="relative w-48 h-48 animate-spin" style={{animationDuration: '2s'}}>
               {visualizationData.originalChain.map((value, index) => (
-                <motion.div
+                <div
                   key={`original-${index}`}
-                  className="absolute bg-blue-500 text-white p-4 rounded-full"
+                  className="absolute bg-blue-500 text-white p-4 rounded-full transition-opacity duration-500 opacity-100"
                   style={{
                     top: `${50 - 40 * Math.cos(2 * Math.PI * index / visualizationData.originalChain.length)}%`,
                     left: `${50 + 40 * Math.sin(2 * Math.PI * index / visualizationData.originalChain.length)}%`,
                   }}
                 >
                   {value}
-                </motion.div>
+                </div>
               ))}
-            </motion.div>
-            <motion.div initial={{ rotate: 0 }} animate={{ rotate: 360 }} transition={{ duration: 2, repeat: Infinity, ease: "linear" }} className="relative w-48 h-48 mt-8">
+            </div>
+            <div className="relative w-48 h-48 mt-8 animate-spin" style={{animationDuration: '2s'}}>
               {visualizationData.clonedChain.map((value, index) => (
-                <motion.div
+                <div
                   key={`cloned-${index}`}
-                  className="absolute bg-green-500 text-white p-4 rounded-full"
+                  className="absolute bg-green-500 text-white p-4 rounded-full transition-opacity duration-500 opacity-100"
                   style={{
                     top: `${50 - 40 * Math.cos(2 * Math.PI * index / visualizationData.clonedChain.length)}%`,
                     left: `${50 + 40 * Math.sin(2 * Math.PI * index / visualizationData.clonedChain.length)}%`,
                   }}
                 >
                   {value}
-                </motion.div>
+                </div>
               ))}
-            </motion.div>
+            </div>
           </div>
         );
       default:
