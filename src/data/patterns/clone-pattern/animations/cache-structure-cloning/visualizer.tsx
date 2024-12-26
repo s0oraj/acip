@@ -1,12 +1,35 @@
 import React, { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
 import { Play, Pause, RotateCcw, ChevronLeft, ChevronRight } from 'lucide-react';
 import { cacheStructureCloningAnimation } from './data';
+
+const styles = `
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeInLeft {
+    from { opacity: 0; transform: translateX(-20px); }
+    to { opacity: 1; transform: translateX(0); }
+  }
+  @keyframes scaleIn {
+    from { opacity: 0; transform: scale(0.8); }
+    to { opacity: 1; transform: scale(1); }
+  }
+`;
 
 const CacheStructureCloningVisualizer: React.FC = () => {
   const [step, setStep] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
   const [activeTab, setActiveTab] = useState(0);
+
+  useEffect(() => {
+    const styleElement = document.createElement('style');
+    styleElement.textContent = styles;
+    document.head.appendChild(styleElement);
+    return () => {
+      document.head.removeChild(styleElement);
+    };
+  }, []);
 
   useEffect(() => {
     let timer: NodeJS.Timeout;
@@ -33,16 +56,14 @@ const CacheStructureCloningVisualizer: React.FC = () => {
           <div className="flex flex-col items-center">
             <div className="mb-2">Capacity: {visualizationData.capacity}</div>
             {visualizationData.cache.map((item, index) => (
-              <motion.div
+              <div
                 key={`${isClone ? 'clone-' : ''}cache-${index}`}
                 className={`${color} text-white p-2 m-1 w-64 text-center`}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.1 }}
+                style={{animation: `fadeInUp 0.5s ${index * 0.1}s forwards`}}
               >
                 {item.key}: {item.value}
                 {item.frequency !== undefined && ` (Freq: ${item.frequency})`}
-              </motion.div>
+              </div>
             ))}
           </div>
         );
@@ -51,27 +72,23 @@ const CacheStructureCloningVisualizer: React.FC = () => {
           <div className="flex flex-col items-center">
             <h5 className="font-semibold mb-2">L1 Cache</h5>
             {visualizationData.l1Cache.map((item, index) => (
-              <motion.div
+              <div
                 key={`${isClone ? 'clone-' : ''}l1-${index}`}
                 className={`${color} text-white p-2 m-1 w-32 text-center`}
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: index * 0.1 }}
+                style={{animation: `fadeInLeft 0.5s ${index * 0.1}s forwards`}}
               >
                 {item.key}: {item.value}
-              </motion.div>
+              </div>
             ))}
             <h5 className="font-semibold mt-4 mb-2">L2 Cache</h5>
             {visualizationData.l2Cache.map((item, index) => (
-              <motion.div
+              <div
                 key={`${isClone ? 'clone-' : ''}l2-${index}`}
                 className={`${color} text-white p-2 m-1 w-32 text-center`}
-                initial={{ opacity: 0, x: 20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: index * 0.1 }}
+                style={{animation: `fadeInLeft 0.5s ${index * 0.1}s forwards`}}
               >
                 {item.key}: {item.value}
-              </motion.div>
+              </div>
             ))}
           </div>
         );
@@ -82,15 +99,13 @@ const CacheStructureCloningVisualizer: React.FC = () => {
               <div key={`${isClone ? 'clone-' : ''}shard-${shardIndex}`} className="m-2">
                 <h5 className="font-semibold mb-2">{shard.id}</h5>
                 {shard.data.map((item, itemIndex) => (
-                  <motion.div
+                  <div
                     key={`${isClone ? 'clone-' : ''}shard-${shardIndex}-item-${itemIndex}`}
                     className={`${color} text-white p-2 m-1 w-32 text-center`}
-                    initial={{ opacity: 0, scale: 0.8 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    transition={{ delay: itemIndex * 0.1 }}
+                    style={{animation: `scaleIn 0.5s ${itemIndex * 0.1}s forwards`}}
                   >
                     {item.key}: {item.value}
-                  </motion.div>
+                  </div>
                 ))}
               </div>
             ))}
@@ -107,7 +122,7 @@ const CacheStructureCloningVisualizer: React.FC = () => {
         <h2 className="text-2xl font-bold mb-2">{cacheStructureCloningAnimation.title}</h2>
         <p className="text-gray-600">{cacheStructureCloningAnimation.description}</p>
       </div>
-      
+
       <div className="mb-4">
         <div className="flex space-x-2">
           {cacheStructureCloningAnimation.steps.map((s, index) => (
