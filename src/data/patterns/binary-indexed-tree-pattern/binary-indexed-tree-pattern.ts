@@ -112,7 +112,7 @@ export const binaryIndexedTreePattern: Pattern = {
       ]
     },
     {
-      title: "2D Operations",
+      title: "BIT 2D Operations",
       questions: [
         {
           id: 9,
