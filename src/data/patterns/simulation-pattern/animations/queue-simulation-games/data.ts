@@ -73,7 +73,17 @@ if (queueSimulationAnimation.steps.length === 0) {
     title: "Default Step",
     description: "No valid steps found",
     array: [],
-    phases: []
+    phases: [{
+      description: "Default phase",
+      activeIndex: 0,
+      highlightIndices: [],
+      counter: {
+        queue: [],
+        processed: 0,
+        current: 0
+      },
+      code: "// Default code"
+    }]
   }];
 }
 
