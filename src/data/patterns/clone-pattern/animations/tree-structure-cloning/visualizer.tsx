@@ -2,6 +2,18 @@ import React, { useState, useEffect } from 'react';
 import { Play, Pause, RotateCcw, ChevronLeft, ChevronRight } from 'lucide-react';
 import { treeStructureCloningAnimation } from './data';
 
+const fadeIn = {
+  opacity: 0,
+  animation: 'fadeIn 0.5s ease-out forwards',
+};
+
+const styles = `
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+`;
+
 const TreeStructureCloningVisualizer: React.FC = () => {
   const [step, setStep] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
@@ -25,7 +37,7 @@ const TreeStructureCloningVisualizer: React.FC = () => {
     const color = isClone ? 'bg-green-500' : 'bg-blue-500';
     return (
       <div
-        className="flex flex-col items-center opacity-0 animate-fade-in" style={{animationDelay: `${depth * 200}ms`}}
+        className="flex flex-col items-center" style={{...fadeIn, animationDelay: `${depth * 200}ms`}}
       >
         <div className={`${color} text-white p-2 rounded-full mb-2`}>
           {node.value}
@@ -65,6 +77,15 @@ const TreeStructureCloningVisualizer: React.FC = () => {
       </div>
     );
   };
+
+  useEffect(() => {
+    const styleElement = document.createElement('style');
+    styleElement.textContent = styles;
+    document.head.appendChild(styleElement);
+    return () => {
+      document.head.removeChild(styleElement);
+    };
+  }, []);
 
   return (
     <div className="p-6">
