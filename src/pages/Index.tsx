@@ -1,4 +1,3 @@
-// pages/Index.tsx
 import { Brain } from 'lucide-react';
 import { patterns } from "@/data/patterns";
 import { StatisticsSection } from "@/components/patterns/index-page-components/StatisticsSection";
@@ -9,7 +8,7 @@ const Index = () => {
     <div className="min-h-screen bg-white dark:bg-gray-900">
       <div className="relative">
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div className="absolute -top-40 -right-40 w-80 h-80 bg-gradient-to-br from-blue-50 via-white to-indigo-50 rounded-full blur-3xl opacity-80" />
+          <div className="absolute -top-40 -right-20 w-80 h-80 bg-gradient-to-br from-blue-50 via-white to-indigo-50 rounded-full blur-3xl opacity-80" />
           <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-gradient-to-br from-blue-50 via-white to-indigo-50 rounded-full blur-3xl opacity-80" />
         </div>
         
@@ -30,7 +29,6 @@ const Index = () => {
             
             <StatisticsSection />
           </div>
-
           <PatternGrid patterns={patterns} />
         </div>
       </div>
