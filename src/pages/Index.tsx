@@ -2,7 +2,7 @@ import { Banner } from "@/components/Banner";
 import { PatternGrid } from "@/components/patterns/index-page-components/PatternGrid";
 import { patterns } from "@/data/patterns";
 import { StatisticsSection } from "@/components/patterns/index-page-components/StatisticsSection";
-import { Footer } from "@/components/Footer";
+import { Footer } from "@/components/footer";
 
 const Index = () => {
   return (
