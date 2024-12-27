@@ -1,47 +1,60 @@
-import { ArrowLeft } from "lucide-react";
 import { Link } from "react-router-dom";
-import { Pattern } from "@/types";
-import { DifficultyBadge } from "@/components/DifficultyBadge";
-import { calculatePatternDifficulty, getDifficultyLevel } from "@/utils/difficultyUtils";
+import { ArrowLeft, BookOpen } from 'lucide-react';
+import { Button } from "@/components/ui/button";
+import { Pattern, Question } from "@/types";
 
 interface PatternHeaderProps {
   pattern: Pattern;
   completedQuestions: number[];
-  allQuestions: any[];
+  allQuestions: Question[];
 }
 
 export const PatternHeader = ({ pattern, completedQuestions, allQuestions }: PatternHeaderProps) => {
-  const difficultyValue = calculatePatternDifficulty(allQuestions.map(q => ({
-    difficulty: q.difficulty as 'easy' | 'medium' | 'hard'
-  })));
-  const difficultyLevel = getDifficultyLevel(difficultyValue);
+  const completionPercentage = allQuestions.length > 0
+    ? (completedQuestions.length / allQuestions.length) * 100
+    : 0;
 
   return (
-    <div className="mb-8">
-      <Link 
-        to="/" 
-        className="inline-flex items-center px-4 py-2 mb-6 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-lg transition-colors"
-      >
-        <ArrowLeft className="w-4 h-4 mr-2" />
-        Back to Patterns
+    <div className="space-y-6 mb-8">
+      <Link to="/">
+        <Button
+          variant="ghost"
+          className="hover:bg-pattern-100 hover:text-pattern-700 dark:hover:bg-pattern-900/50 dark:hover:text-pattern-300 transition-colors"
+        >
+          <ArrowLeft className="mr-2 h-4 w-4" />
+          Back to Patterns
+        </Button>
       </Link>
-      
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-        <div>
-          <h1 className="text-4xl md:text-5xl font-bold mb-4 text-gray-800 dark:text-white">
-            {pattern.title}
-          </h1>
-          <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl">
-            {pattern.description}
-          </p>
+
+      <div className="space-y-4">
+        <div className="flex items-start space-x-4">
+          <div className="bg-pattern-100 dark:bg-pattern-900/50 p-3 rounded-xl">
+            <BookOpen className="h-6 w-6 text-pattern-600 dark:text-pattern-400" />
+          </div>
+          <div className="flex-1">
+            <h1 className="text-4xl font-bold text-gray-800 dark:text-gray-100 mb-2">
+              {pattern.title}
+            </h1>
+            <p className="text-lg text-gray-600 dark:text-gray-300">
+              {pattern.description}
+            </p>
+          </div>
         </div>
-        
-        <div className="flex flex-col items-end gap-3">
-          <DifficultyBadge difficulty={difficultyLevel} />
-          <div className="text-gray-600 dark:text-gray-300">
-            <span className="font-semibold">{completedQuestions.length}</span>
-            <span className="mx-1">/</span>
-            <span>{allQuestions.length} completed</span>
+
+        <div className="bg-pattern-50 dark:bg-pattern-900/30 rounded-xl p-6">
+          <div className="flex items-center justify-between mb-3">
+            <span className="text-sm font-medium text-pattern-700 dark:text-pattern-300">
+              Progress: {completedQuestions.length}/{allQuestions.length} completed
+            </span>
+            <span className="text-sm font-medium text-pattern-700 dark:text-pattern-300">
+              {Math.round(completionPercentage)}%
+            </span>
+          </div>
+          <div className="h-2.5 bg-pattern-100 dark:bg-pattern-900/50 rounded-full overflow-hidden">
+            <div
+              className="h-full bg-gradient-to-r from-pattern-500 to-pattern-600 rounded-full transition-all duration-500 ease-out"
+              style={{ width: `${completionPercentage}%` }}
+            />
           </div>
         </div>
       </div>
