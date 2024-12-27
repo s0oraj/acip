@@ -1,0 +1,73 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 600">
+  <defs>
+    <!-- Premium Gradients -->
+    <linearGradient id="premium-bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#000000"/>
+      <stop offset="50%" stop-color="#1e1b4b"/>
+      <stop offset="100%" stop-color="#000000"/>
+    </linearGradient>
+    
+    <linearGradient id="neon-glow" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#3b82f6" stop-opacity="0"/>
+      <stop offset="50%" stop-color="#60a5fa" stop-opacity="1"/>
+      <stop offset="100%" stop-color="#3b82f6" stop-opacity="0"/>
+    </linearGradient>
+    <!-- Einstein's Field Equations Pattern -->
+    <pattern id="equations" width="200" height="200" patternUnits="userSpaceOnUse">
+      <text x="20" y="20" fill="#4f46e5" opacity="0.15" font-family="monospace">E = mc²</text>
+      <text x="100" y="60" fill="#4f46e5" opacity="0.15" font-family="monospace">Gμν = 8πTμν</text>
+      <text x="40" y="100" fill="#4f46e5" opacity="0.15" font-family="monospace">ψ = ℏ∂/∂t</text>
+      <text x="120" y="140" fill="#4f46e5" opacity="0.15" font-family="monospace">∇ × B = μ₀J</text>
+    </pattern>
+    <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="3"/>
+    </filter>
+  </defs>
+  <!-- Base Background -->
+  <rect width="1400" height="600" fill="url(#premium-bg)"/>
+  <rect width="1400" height="600" fill="url(#equations)" opacity="0.1"/>
+  <!-- Light Bending Visualization -->
+  <g transform="translate(700,300)">
+    <path d="M-600,-200 Q700,50 800,200" stroke="url(#neon-glow)" stroke-width="2" fill="none" filter="url(#glow)"/>
+    <path d="M-450,-200 Q700,80 950,200" stroke="url(#neon-glow)" stroke-width="2" fill="none" filter="url(#glow)"/>
+    <path d="M-300,-200 Q700,110 1100,200" stroke="url(#neon-glow)" stroke-width="2" fill="none" filter="url(#glow)"/>
+  </g>
+  <!-- Quantum Probability Clouds -->
+  <g transform="translate(700,300)">
+    <circle r="70" fill="none" stroke="#60a5fa" stroke-width="1" opacity="0.2" filter="url(#glow)"/>
+    <circle r="90" fill="none" stroke="#60a5fa" stroke-width="1" opacity="0.2" filter="url(#glow)"/>
+    <circle r="110" fill="none" stroke="#60a5fa" stroke-width="1" opacity="0.2" filter="url(#glow)"/>
+  </g>
+  <!-- Content Container -->
+  <g transform="translate(700,250)">
+    <rect x="-400" y="-60" width="800" height="180" fill="rgba(0,0,0,0.7)" rx="10"/>
+    <rect x="-400" y="-60" width="800" height="180" fill="none" stroke="url(#neon-glow)" stroke-width="2" rx="10" filter="url(#glow)"/>
+  </g>
+  <!-- Title -->
+  <g transform="translate(700,250)">
+    <text x="0" y="0" font-family="Arial" font-size="48" fill="#ffffff" text-anchor="middle" filter="url(#glow)">
+      Advanced Coding Patterns
+    </text>
+    <text x="0" y="50" font-family="Arial" font-size="24" fill="#93c5fd" text-anchor="middle">
+      Master 220+ coding interview questions in 11 patterns
+    </text>
+  </g>
+  <!-- Stats Display -->
+  <g transform="translate(700,400)">
+    <g transform="translate(-200,0)">
+      <circle r="40" fill="none" stroke="url(#neon-glow)" stroke-width="2" filter="url(#glow)"/>
+      <text x="0" y="0" font-family="Arial" font-size="24" fill="#ffffff" text-anchor="middle" dominant-baseline="middle">220+</text>
+      <text x="0" y="30" font-family="Arial" font-size="14" fill="#93c5fd" text-anchor="middle">Questions</text>
+    </g>
+    <g>
+      <circle r="40" fill="none" stroke="url(#neon-glow)" stroke-width="2" filter="url(#glow)"/>
+      <text x="0" y="0" font-family="Arial" font-size="24" fill="#ffffff" text-anchor="middle" dominant-baseline="middle">11</text>
+      <text x="0" y="30" font-family="Arial" font-size="14" fill="#93c5fd" text-anchor="middle">Patterns</text>
+    </g>
+    <g transform="translate(200,0)">
+      <circle r="40" fill="none" stroke="url(#neon-glow)" stroke-width="2" filter="url(#glow)"/>
+      <text x="0" y="0" font-family="Arial" font-size="24" fill="#ffffff" text-anchor="middle" dominant-baseline="middle">89%</text>
+      <text x="0" y="30" font-family="Arial" font-size="14" fill="#93c5fd" text-anchor="middle">Success</text>
+    </g>
+  </g>
+</svg>
