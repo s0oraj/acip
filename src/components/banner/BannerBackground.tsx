@@ -28,7 +28,7 @@ export const BannerBackground = () => {
       {/* Grid pattern */}
       <div className="absolute inset-0" 
         style={{
-          backgroundImage: `radial-gradient(circle at 1px 1px, rgba(99, 102, 241, 0.05) 1px, transparent 0)`,
+          backgroundImage: `radial-gradient(circle at 1px 1px, rgba(79, 70, 229, 0.05) 1px, transparent 0)`,
           backgroundSize: '50px 50px'
         }}
       />
