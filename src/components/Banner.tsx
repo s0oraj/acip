@@ -47,7 +47,7 @@ export const Banner = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease: "easeOut" }}
         >
-          Advanced Coding Patterns
+          Advanced Coding Interview Patterns
         </motion.h1>
         
         <motion.p
@@ -56,7 +56,7 @@ export const Banner = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
         >
-          Master 220+ coding interview questions organized in 11 essential patterns
+          Master 220 coding interview questions organized in 11 essential patterns
         </motion.p>
       </div>
     </div>
