@@ -8,9 +8,13 @@ const Index = () => {
     <div className="min-h-screen bg-background">
       <Banner />
       
-      <div className="max-w-7xl mx-auto px-4 py-12">
-        <StatisticsSection />
-        <PatternGrid patterns={patterns} />
+      <div className="bg-white dark:bg-gray-900">
+        <div className="max-w-7xl mx-auto px-4 py-16">
+          <StatisticsSection />
+          <div className="mt-16">
+            <PatternGrid patterns={patterns} />
+          </div>
+        </div>
       </div>
     </div>
   );
