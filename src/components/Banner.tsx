@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import { Binary, Network } from "lucide-react";
 
-const Banner = () => {
+export const Banner = () => {
   return (
     <div className="relative w-full h-[600px] overflow-hidden bg-gradient-to-br from-gray-900 via-indigo-950 to-gray-900">
       {/* Background Pattern */}
@@ -149,4 +149,3 @@ const Banner = () => {
   );
 };
 
-export default Banner;
