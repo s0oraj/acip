@@ -3,7 +3,7 @@ import { Binary, Network } from "lucide-react";
 
 const Banner = () => {
   return (
-    <div className="relative w-full h-[600px] overflow-hidden">
+    <div className="relative w-full h-[600px] overflow-hidden bg-gradient-to-br from-gray-900 via-indigo-950 to-gray-900">
       {/* Background Pattern */}
       <div className="absolute inset-0 bg-hero-pattern opacity-10" />
       
@@ -26,7 +26,7 @@ const Banner = () => {
 
             {/* Algorithm Pattern */}
             <pattern id="algo-pattern" width="200" height="200" patternUnits="userSpaceOnUse">
-              <text x="20" y="20" fill="#4f46e5" opacity="0.15" fontSize="12" fontFamily="monospace">while(l < r)</text>
+              <text x="20" y="20" fill="#4f46e5" opacity="0.15" fontSize="12" fontFamily="monospace">while(l &lt; r)</text>
               <text x="100" y="60" fill="#4f46e5" opacity="0.15" fontSize="12" fontFamily="monospace">O(log n)</text>
               <text x="40" y="100" fill="#4f46e5" opacity="0.15" fontSize="12" fontFamily="monospace">quickSort()</text>
               <text x="120" y="140" fill="#4f46e5" opacity="0.15" fontSize="12" fontFamily="monospace">BST.insert()</text>
