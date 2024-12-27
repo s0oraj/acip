@@ -1,132 +1,124 @@
-<svg
-  viewBox="0 0 1200 300"
-  xmlns="http://www.w3.org/2000/svg"
-  className="w-full h-auto"
-  aria-labelledby="advancedPatternsBannerTitle advancedPatternsBannerDesc"
->
+<svg viewBox="0 0 1200 300" xmlns="http://www.w3.org/2000/svg">
   <title id="advancedPatternsBannerTitle">Advanced Coding Patterns Banner</title>
   <desc id="advancedPatternsBannerDesc">
     A sophisticated visual representation of 11 advanced coding patterns, showcasing various data structures and algorithms.
   </desc>
   
-  {/* Background */}
   <defs>
     <linearGradient id="bg-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stopColor="#1a202c" />
-      <stop offset="100%" stopColor="#2d3748" />
+      <stop offset="0%" stop-color="#1a202c" />
+      <stop offset="100%" stop-color="#2d3748" />
     </linearGradient>
     <pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse">
-      <path d="M 20 0 L 0 0 0 20" fill="none" stroke="#4a5568" strokeWidth="0.5"/>
+      <path d="M 20 0 L 0 0 0 20" fill="none" stroke="#4a5568" stroke-width="0.5"/>
     </pattern>
   </defs>
+  
   <rect width="1200" height="300" fill="url(#bg-gradient)" />
   <rect width="1200" height="300" fill="url(#grid)" opacity="0.1" />
 
-  {/* Counting Pattern */}
   <g transform="translate(50, 50)">
     <rect width="80" height="120" fill="#4299e1" opacity="0.8" rx="5" />
-    <text x="40" y="140" textAnchor="middle" fill="#ebf8ff" fontSize="14">Counting</text>
+    <text x="40" y="140" text-anchor="middle" fill="#ebf8ff" font-size="14">Counting</text>
     <g transform="translate(10, 10)">
-      {[0, 1, 2, 3, 4].map((i) => (
-        <rect key={i} width={(i+1)*10} height="15" y={i*20} fill="#ebf8ff" opacity="0.6" />
-      ))}
+      <rect width="10" height="15" y="0" fill="#ebf8ff" opacity="0.6" />
+      <rect width="20" height="15" y="20" fill="#ebf8ff" opacity="0.6" />
+      <rect width="30" height="15" y="40" fill="#ebf8ff" opacity="0.6" />
+      <rect width="40" height="15" y="60" fill="#ebf8ff" opacity="0.6" />
+      <rect width="50" height="15" y="80" fill="#ebf8ff" opacity="0.6" />
     </g>
   </g>
 
-  {/* Monotonic Stack/Queue Pattern */}
   <g transform="translate(150, 50)">
     <path d="M0,0 L80,0 L80,120 L0,120 Z" fill="#ed8936" opacity="0.8" />
-    <text x="40" y="140" textAnchor="middle" fill="#fffaf0" fontSize="14">Monotonic</text>
-    <g transform="translate(10, 10)" fill="none" stroke="#fffaf0" strokeWidth="2">
-      {[0, 1, 2, 3, 4].map((i) => (
-        <path key={i} d={`M0,${i*20} L60,${i*20} L60,${(i+1)*20}`} />
-      ))}
+    <text x="40" y="140" text-anchor="middle" fill="#fffaf0" font-size="14">Monotonic</text>
+    <g transform="translate(10, 10)" fill="none" stroke="#fffaf0" stroke-width="2">
+      <path d="M0,0 L60,0 L60,20" />
+      <path d="M0,20 L60,20 L60,40" />
+      <path d="M0,40 L60,40 L60,60" />
+      <path d="M0,60 L60,60 L60,80" />
+      <path d="M0,80 L60,80 L60,100" />
     </g>
   </g>
 
-  {/* Simulation Pattern */}
   <g transform="translate(250, 50)">
     <circle cx="40" cy="60" r="60" fill="#48bb78" opacity="0.8" />
-    <text x="40" y="140" textAnchor="middle" fill="#f0fff4" fontSize="14">Simulation</text>
-    <g transform="translate(40, 60)" stroke="#f0fff4" strokeWidth="2" fill="none">
+    <text x="40" y="140" text-anchor="middle" fill="#f0fff4" font-size="14">Simulation</text>
+    <g transform="translate(40, 60)" stroke="#f0fff4" stroke-width="2" fill="none">
       <circle r="20" />
       <circle r="35" />
       <circle r="50" />
     </g>
   </g>
 
-  {/* Linear Sorting Pattern */}
   <g transform="translate(350, 50)">
     <rect width="80" height="120" fill="#9f7aea" opacity="0.8" rx="5" />
-    <text x="40" y="140" textAnchor="middle" fill="#faf5ff" fontSize="14">Linear Sort</text>
+    <text x="40" y="140" text-anchor="middle" fill="#faf5ff" font-size="14">Linear Sort</text>
     <g transform="translate(10, 10)">
-      {[4, 3, 2, 1, 0].map((i) => (
-        <rect key={i} width="12" height={100 - i*20} x={i*15} y={i*20} fill="#faf5ff" opacity="0.6" />
-      ))}
+      <rect width="12" height="100" x="0" y="0" fill="#faf5ff" opacity="0.6" />
+      <rect width="12" height="80" x="15" y="20" fill="#faf5ff" opacity="0.6" />
+      <rect width="12" height="60" x="30" y="40" fill="#faf5ff" opacity="0.6" />
+      <rect width="12" height="40" x="45" y="60" fill="#faf5ff" opacity="0.6" />
+      <rect width="12" height="20" x="60" y="80" fill="#faf5ff" opacity="0.6" />
     </g>
   </g>
 
-  {/* Meet in the Middle Pattern */}
   <g transform="translate(450, 50)">
     <rect width="80" height="120" fill="#f56565" opacity="0.8" rx="5" />
-    <text x="40" y="140" textAnchor="middle" fill="#fff5f5" fontSize="14">Meet in Middle</text>
-    <path d="M10,60 L70,60 M40,10 L40,110" stroke="#fff5f5" strokeWidth="2" />
+    <text x="40" y="140" text-anchor="middle" fill="#fff5f5" font-size="14">Meet in Middle</text>
+    <path d="M10,60 L70,60 M40,10 L40,110" stroke="#fff5f5" stroke-width="2" />
     <circle cx="40" cy="60" r="5" fill="#fff5f5" />
   </g>
 
-  {/* Mo's Algorithm Pattern */}
   <g transform="translate(550, 50)">
     <rect width="80" height="120" fill="#d69e2e" opacity="0.8" rx="5" />
-    <text x="40" y="140" textAnchor="middle" fill="#fffff0" fontSize="14">Mo's Algorithm</text>
-    <g transform="translate(10, 10)" fill="none" stroke="#fffff0" strokeWidth="2">
-      {[0, 1, 2, 3].map((i) => (
-        <rect key={i} width="60" height="20" y={i*25} rx="2" />
-      ))}
+    <text x="40" y="140" text-anchor="middle" fill="#fffff0" font-size="14">Mo's Algorithm</text>
+    <g transform="translate(10, 10)" fill="none" stroke="#fffff0" stroke-width="2">
+      <rect width="60" height="20" y="0" rx="2" />
+      <rect width="60" height="20" y="25" rx="2" />
+      <rect width="60" height="20" y="50" rx="2" />
+      <rect width="60" height="20" y="75" rx="2" />
     </g>
   </g>
 
-  {/* Serialize/Deserialize Pattern */}
   <g transform="translate(650, 50)">
     <rect width="80" height="120" fill="#38b2ac" opacity="0.8" rx="5" />
-    <text x="40" y="140" textAnchor="middle" fill="#e6fffa" fontSize="14">Serialize</text>
+    <text x="40" y="140" text-anchor="middle" fill="#e6fffa" font-size="14">Serialize</text>
     <g transform="translate(10, 30)">
       <circle cx="30" cy="0" r="10" fill="#e6fffa" />
       <circle cx="10" cy="30" r="10" fill="#e6fffa" />
       <circle cx="50" cy="30" r="10" fill="#e6fffa" />
-      <path d="M30,10 L10,20 M30,10 L50,20" stroke="#e6fffa" strokeWidth="2" />
+      <path d="M30,10 L10,20 M30,10 L50,20" stroke="#e6fffa" stroke-width="2" />
     </g>
-    <path d="M10,100 H70 M35,90 L10,100 L35,110" fill="none" stroke="#e6fffa" strokeWidth="2" />
+    <path d="M10,100 H70 M35,90 L10,100 L35,110" fill="none" stroke="#e6fffa" stroke-width="2" />
   </g>
 
-  {/* Clone Pattern */}
   <g transform="translate(750, 50)">
     <rect width="80" height="120" fill="#fc8181" opacity="0.8" rx="5" />
-    <text x="40" y="140" textAnchor="middle" fill="#fff5f5" fontSize="14">Clone</text>
+    <text x="40" y="140" text-anchor="middle" fill="#fff5f5" font-size="14">Clone</text>
     <g transform="translate(10, 20)">
       <rect width="25" height="35" x="5" y="5" fill="#fff5f5" opacity="0.6" />
       <rect width="25" height="35" x="40" y="40" fill="#fff5f5" opacity="0.6" />
-      <path d="M30,40 L40,40 L40,75 L65,75 L65,65" fill="none" stroke="#fff5f5" strokeWidth="2" />
+      <path d="M30,40 L40,40 L40,75 L65,75 L65,65" fill="none" stroke="#fff5f5" stroke-width="2" />
     </g>
   </g>
 
-  {/* Articulation Points and Bridges Pattern */}
   <g transform="translate(850, 50)">
     <rect width="80" height="120" fill="#4fd1c5" opacity="0.8" rx="5" />
-    <text x="40" y="140" textAnchor="middle" fill="#e6fffa" fontSize="14">Articulation</text>
+    <text x="40" y="140" text-anchor="middle" fill="#e6fffa" font-size="14">Articulation</text>
     <g transform="translate(10, 20)" fill="#e6fffa">
       <circle cx="10" cy="10" r="5" />
       <circle cx="60" cy="10" r="5" />
       <circle cx="10" cy="60" r="5" />
       <circle cx="60" cy="60" r="5" />
-      <path d="M10,10 L60,10 L60,60 L10,60 L10,10 M10,60 L60,10" fill="none" stroke="#e6fffa" strokeWidth="2" />
+      <path d="M10,10 L60,10 L60,60 L10,60 L10,10 M10,60 L60,10" fill="none" stroke="#e6fffa" stroke-width="2" />
     </g>
   </g>
 
-  {/* Segment Tree Pattern */}
   <g transform="translate(950, 50)">
     <rect width="80" height="120" fill="#9f7aea" opacity="0.8" rx="5" />
-    <text x="40" y="140" textAnchor="middle" fill="#faf5ff" fontSize="14">Segment Tree</text>
-    <g transform="translate(10, 10)" fill="none" stroke="#faf5ff" strokeWidth="2">
+    <text x="40" y="140" text-anchor="middle" fill="#faf5ff" font-size="14">Segment Tree</text>
+    <g transform="translate(10, 10)" fill="none" stroke="#faf5ff" stroke-width="2">
       <path d="M30,0 L0,30 L60,30 Z M30,30 L15,60 M30,30 L45,60" />
       <circle cx="30" cy="0" r="3" fill="#faf5ff" />
       <circle cx="15" cy="60" r="3" fill="#faf5ff" />
@@ -134,11 +126,10 @@
     </g>
   </g>
 
-  {/* Binary Indexed Tree Pattern */}
   <g transform="translate(1050, 50)">
     <rect width="80" height="120" fill="#ed64a6" opacity="0.8" rx="5" />
-    <text x="40" y="140" textAnchor="middle" fill="#fff5f7" fontSize="14">Binary Indexed</text>
-    <g transform="translate(10, 20)" fill="none" stroke="#fff5f7" strokeWidth="2">
+    <text x="40" y="140" text-anchor="middle" fill="#fff5f7" font-size="14">Binary Indexed</text>
+    <g transform="translate(10, 20)" fill="none" stroke="#fff5f7" stroke-width="2">
       <path d="M0,60 H60 M20,60 V0 M40,60 V30 M50,60 V45" />
       <circle cx="20" cy="0" r="3" fill="#fff5f7" />
       <circle cx="40" cy="30" r="3" fill="#fff5f7" />
@@ -146,19 +137,24 @@
     </g>
   </g>
 
-  {/* Title */}
   <g transform="translate(600, 220)">
     <rect width="600" height="60" fill="#2d3748" opacity="0.8" rx="10" />
-    <text x="300" y="40" textAnchor="middle" fill="#f7fafc" fontSize="32" fontWeight="bold">
+    <text x="300" y="40" text-anchor="middle" fill="#f7fafc" font-size="32" font-weight="bold">
       Advanced Coding Patterns
     </text>
   </g>
 
-  {/* Connecting Lines */}
-  <g stroke="#718096" strokeWidth="1" opacity="0.3">
+  <g stroke="#718096" stroke-width="1" opacity="0.3">
     <path d="M90,170 Q 600,200 1110,170" fill="none" />
-    {[130, 230, 330, 430, 530, 630, 730, 830, 930, 1030].map((x, i) => (
-      <path key={i} d={`M${x},170 V200`} />
-    ))}
+    <path d="M130,170 V200" />
+    <path d="M230,170 V200" />
+    <path d="M330,170 V200" />
+    <path d="M430,170 V200" />
+    <path d="M530,170 V200" />
+    <path d="M630,170 V200" />
+    <path d="M730,170 V200" />
+    <path d="M830,170 V200" />
+    <path d="M930,170 V200" />
+    <path d="M1030,170 V200" />
   </g>
 </svg>
