@@ -1,4 +1,5 @@
 import { Brain } from 'lucide-react';
+import { StatisticsSection } from "@/components/patterns/index-page-components/StatisticsSection";
 
 export const Banner = () => {
   return (
@@ -31,9 +32,6 @@ export const Banner = () => {
           <p className="text-xl text-gray-200 max-w-2xl mx-auto mb-12 animate-fade-in">
             Master 220 coding interview questions organized in 11 essential patterns
           </p>
-
-          {/* Statistics Section */}
-          <StatisticsSection />
         </div>
       </div>
 
@@ -42,3 +40,4 @@ export const Banner = () => {
     </div>
   );
 };
+
