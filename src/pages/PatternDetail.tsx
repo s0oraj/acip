@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { PatternHeader } from "@/components/patterns/pattern-detail-components/PatternHeader";
 import { QuestionsList } from "@/components/patterns/pattern-detail-components/questions-list/QuestionsList";
 import { toast } from "@/components/ui/use-toast";
+import { footer} from "@/components/footer.tsx";
 
 const PatternDetail = () => {
   const { id } = useParams();
@@ -104,6 +105,7 @@ const PatternDetail = () => {
           />
         </div>
       </div>
+      <Footer />
     </div>
   );
 };
