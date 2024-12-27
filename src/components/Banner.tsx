@@ -1,14 +1,17 @@
 import { motion } from "framer-motion";
-import { Binary, Network, Code2, Braces, Terminal } from "lucide-react";
+import { Binary, Network, Code2 } from 'lucide-react';
 import { BannerBackground } from "./banner/BannerBackground";
 import { BinaryTreeSvg } from "./banner/BinaryTreeSvg";
 import { BannerPatternVisuals } from "./banner/BannerPatternVisuals";
 
 export const Banner = () => {
   return (
-    <div className="relative w-full h-[600px] overflow-hidden bg-gradient-to-br from-gray-900 via-indigo-950 to-gray-900">
+    <div className="relative w-full h-[600px] overflow-hidden bg-gray-900">
       {/* Background Pattern */}
       <div className="absolute inset-0 bg-hero-pattern opacity-10" />
+      
+      {/* Inner Gradient */}
+      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-indigo-950/50 to-transparent" />
       
       {/* Enhanced Background Elements */}
       <BannerBackground />
@@ -42,7 +45,7 @@ export const Banner = () => {
         </motion.div>
 
         <motion.h1
-          className="text-5xl md:text-7xl font-bold mb-6 bg-clip-text text-white bg-gradient-to-r from-blue-400 to-purple-500"
+          className="text-5xl md:text-7xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-500"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease: "easeOut" }}
