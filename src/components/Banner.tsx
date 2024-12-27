@@ -10,9 +10,6 @@ export const Banner = () => {
       {/* Background Pattern */}
       <div className="absolute inset-0 bg-hero-pattern opacity-10" />
       
-      {/* Inner Gradient */}
-      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-indigo-950/50 to-transparent" />
-      
       {/* Enhanced Background Elements */}
       <BannerBackground />
       <BannerPatternVisuals />
@@ -67,3 +64,4 @@ export const Banner = () => {
 };
 
 export default Banner;
+
