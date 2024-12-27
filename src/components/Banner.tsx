@@ -43,7 +43,7 @@ export const Banner = () => {
         </motion.h1>
         
         <motion.p
-          className="text-xl md:text-2xl text-transparent mb-12 max-w-3xl leading-relaxed"
+          className="text-xl md:text-2xl text-gray-300/90 mb-12 max-w-3xl leading-relaxed"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
