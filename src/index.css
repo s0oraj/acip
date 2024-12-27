@@ -183,3 +183,24 @@
 .animate-fade-in {
   animation: fade-in 0.3s ease-out;
 }
+/* Add to your existing animations */
+@keyframes fade-slide-up {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in {
+  animation: fade-slide-up 0.5s ease-out forwards;
+}
+
+/* Background grid pattern */
+.bg-grid-pattern {
+  background-image: radial-gradient(circle, rgba(255,255,255,0.1) 1px, transparent 1px);
+  background-size: 30px 30px;
+}
