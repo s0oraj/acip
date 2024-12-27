@@ -1,11 +1,6 @@
-# Welcome to your Lovable project
-
-## Project info
-
-**URL**: https://lovable.dev/projects/7b6ccac2-1914-43be-984d-0686426984d6
 
 # Advanced Coding Interview Patterns Platform - Technical Documentation
-
+**URL**: [https://lovable.dev/projects/7b6ccac2-1914-43be-984d-0686426984d6](https://acip.vercel.app/)
 ## Table of Contents
 
 1. [Architecture Overview](#architecture-overview)
