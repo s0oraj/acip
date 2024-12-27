@@ -6,17 +6,16 @@ import { BannerPatternVisuals } from "./banner/BannerPatternVisuals";
 
 export const Banner = () => {
   return (
-    <div className="relative w-full h-[600px] overflow-hidden bg-[#000000]">
-      {/* Background Pattern */}
-      <div className="absolute inset-0 bg-hero-pattern opacity-10" />
-      
-      {/* Enhanced Background Elements */}
-      <BannerBackground />
-      <BannerPatternVisuals />
-      
-      {/* Main SVG Visualization */}
+    <div className="relative w-full h-[600px] overflow-hidden">
+      {/* Main SVG Visualization with Background */}
       <div className="absolute inset-0 flex items-center justify-center">
         <BinaryTreeSvg />
+      </div>
+      
+      {/* Enhanced Background Elements */}
+      <div className="absolute inset-0 pointer-events-none">
+        <BannerBackground />
+        <BannerPatternVisuals />
       </div>
 
       {/* Content Section */}
