@@ -1,6 +1,7 @@
 import { Banner } from "@/components/Banner";
 import { PatternGrid } from "@/components/patterns/index-page-components/PatternGrid";
 import { patterns } from "@/data/patterns";
+import { StatisticsSection } from "@/components/patterns/index-page-components/StatisticsSection";
 
 const Index = () => {
   return (
@@ -8,6 +9,7 @@ const Index = () => {
       <Banner />
       
       <div className="max-w-7xl mx-auto px-4 py-12">
+        <StatisticsSection />
         <PatternGrid patterns={patterns} />
       </div>
     </div>
@@ -15,3 +17,4 @@ const Index = () => {
 };
 
 export default Index;
+
