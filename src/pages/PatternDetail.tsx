@@ -1,81 +1,68 @@
-// PatternDetail.tsx
-import { useParams } from "react-router-dom";
-import { patterns } from "@/data/patterns";
-import { useEffect, useState } from "react";
-import { PatternHeader } from "@/components/patterns/pattern-detail-components/PatternHeader";
-import { QuestionsList } from "@/components/patterns/pattern-detail-components/questions-list/QuestionsList";
-import { toast } from "@/components/ui/use-toast";
+import React, { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
+import { Pattern } from '@/types';
+import { patterns } from '@/data/patterns';
+import { PatternHeader } from '@/components/patterns/pattern-detail-components/PatternHeader';
+import { QuestionsList } from '@/components/patterns/pattern-detail-components/questions-list/QuestionsList';
 
 const PatternDetail = () => {
-  const { id } = useParams();
-  const pattern = patterns.find((p) => p.id === Number(id));
+  const { patternId } = useParams();
+  const [pattern, setPattern] = useState<Pattern | null>(null);
   const [completedQuestions, setCompletedQuestions] = useState<number[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const loadProgress = async () => {
-      try {
-        const stored = localStorage.getItem(`pattern-${id}-completed`);
-        if (stored) {
-          setCompletedQuestions(JSON.parse(stored));
-        }
-      } catch (error) {
-        toast({
-          title: "Error loading progress",
-          description: "Your progress couldn't be loaded",
-          variant: "destructive",
-        });
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    loadProgress();
-  }, [id]);
+    // Load pattern data
+    const currentPattern = patterns.find(p => p.id === patternId);
+    if (currentPattern) {
+      setPattern(currentPattern);
+      // Load completed questions from localStorage
+      const stored = localStorage.getItem(`pattern-${patternId}-completed`);
+      setCompletedQuestions(stored ? JSON.parse(stored) : []);
+    }
+    setLoading(false);
+  }, [patternId]);
 
   const toggleQuestion = (questionId: number) => {
-    setCompletedQuestions((prev) => {
+    setCompletedQuestions(prev => {
       const newCompleted = prev.includes(questionId)
-        ? prev.filter((id) => id !== questionId)
+        ? prev.filter(id => id !== questionId)
         : [...prev, questionId];
       
-      try {
-        localStorage.setItem(`pattern-${id}-completed`, JSON.stringify(newCompleted));
-        toast({
-          title: prev.includes(questionId) ? "Question unmarked" : "Question completed",
-          description: prev.includes(questionId) 
-            ? "Progress has been updated"
-            : "Keep up the great work!",
-          variant: prev.includes(questionId) ? "default" : "destructive",
-        });
-      } catch (error) {
-        toast({
-          title: "Error saving progress",
-          description: "Your progress couldn't be saved",
-          variant: "destructive",
-        });
-      }
+      // Save to localStorage
+      localStorage.setItem(
+        `pattern-${patternId}-completed`,
+        JSON.stringify(newCompleted)
+      );
       
       return newCompleted;
     });
   };
 
-  if (isLoading) {
+  if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-pattern-50 to-white dark:from-gray-900 dark:to-gray-800">
-        <div className="animate-pulse text-pattern-600 dark:text-pattern-400">Loading...</div>
+      <div className="min-h-screen bg-white dark:bg-gray-900 p-8">
+        <div className="animate-pulse">
+          <div className="h-8 bg-gray-200 dark:bg-gray-700 rounded w-1/4 mb-4" />
+          <div className="h-16 bg-gray-200 dark:bg-gray-700 rounded w-3/4 mb-8" />
+          <div className="space-y-4">
+            {[1, 2, 3].map(i => (
+              <div key={i} className="h-32 bg-gray-200 dark:bg-gray-700 rounded" />
+            ))}
+          </div>
+        </div>
       </div>
     );
   }
 
   if (!pattern) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-pattern-50 to-white dark:from-gray-900 dark:to-gray-800">
-        <div className="text-center space-y-4 bg-white dark:bg-gray-800 rounded-xl p-8 shadow-lg">
-          <h2 className="text-2xl font-bold text-pattern-800 dark:text-pattern-200">
-            Pattern Not Found
-          </h2>
-          <p className="text-pattern-600 dark:text-pattern-400">
+      <div className="min-h-screen bg-white dark:bg-gray-900 p-8">
+        <div className="text-center">
+          <h1 className="text-2xl font-bold text-gray-800 dark:text-gray-200">
+            Pattern not found
+          </h1>
+          <p className="text-gray-600 dark:text-gray-400 mt-2">
             The pattern you're looking for doesn't exist.
           </p>
         </div>
@@ -84,24 +71,31 @@ const PatternDetail = () => {
   }
 
   const allQuestions = pattern.subpatterns
-    ? pattern.subpatterns.flatMap(subpattern => subpattern.questions)
+    ? pattern.subpatterns.flatMap(sp => sp.questions)
     : pattern.questions;
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-pattern-50 to-white dark:from-gray-900 dark:to-gray-800">
-      <div className="max-w-5xl mx-auto px-4 py-8 animate-pattern-fade">
-        <PatternHeader 
-          pattern={pattern}
-          completedQuestions={completedQuestions}
-          allQuestions={allQuestions}
-        />
-        
-        <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8 animate-pattern-slide">
-          <QuestionsList
+    <div className="min-h-screen bg-white dark:bg-gray-900">
+      <div className="relative">
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          <div className="absolute -top-40 right-0 w-80 h-80 bg-gradient-to-br from-purple-50 via-white to-indigo-50 rounded-full blur-3xl opacity-80" />
+          <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-gradient-to-br from-purple-50 via-white to-indigo-50 rounded-full blur-3xl opacity-80" />
+        </div>
+
+        <div className="max-w-7xl mx-auto px-4 py-12 relative">
+          <PatternHeader 
             pattern={pattern}
             completedQuestions={completedQuestions}
-            toggleQuestion={toggleQuestion}
+            allQuestions={allQuestions}
           />
+
+          <div className="mt-12">
+            <QuestionsList
+              pattern={pattern}
+              completedQuestions={completedQuestions}
+              toggleQuestion={toggleQuestion}
+            />
+          </div>
         </div>
       </div>
     </div>
