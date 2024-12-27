@@ -107,6 +107,7 @@ const PatternDetail = () => {
       </div>
     </div>
     <Footer />
+    </>
   );
 };
 
