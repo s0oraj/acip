@@ -4,12 +4,6 @@ export const BinaryTreeSvg = () => {
   return (
     <svg className="w-full h-full" viewBox="0 0 1400 600" xmlns="http://www.w3.org/2000/svg">
       <defs>
-        <linearGradient id="premium-bg" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stopColor="#000000"/>
-          <stop offset="50%" stopColor="#1e1b4b"/>
-          <stop offset="100%" stopColor="#000000"/>
-        </linearGradient>
-        
         <linearGradient id="neon-glow" x1="0%" y1="0%" x2="100%" y2="0%">
           <stop offset="0%" stopColor="#3b82f6" stopOpacity="0"/>
           <stop offset="50%" stopColor="#60a5fa" stopOpacity="1"/>
@@ -29,7 +23,6 @@ export const BinaryTreeSvg = () => {
       </defs>
 
       {/* Base Background */}
-      <rect width="1400" height="600" fill="url(#premium-bg)"/>
       <rect width="1400" height="600" fill="url(#algo-pattern)" opacity="0.1"/>
 
       {/* Binary Tree Visualization */}
@@ -104,3 +97,4 @@ export const BinaryTreeSvg = () => {
     </svg>
   );
 };
+
