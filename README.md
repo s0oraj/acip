@@ -1,6 +1,7 @@
 
 # Advanced Coding Interview Patterns Platform - Technical Documentation
 **URL**: [https://acip.vercel.app/](https://acip.vercel.app/)
+
 ![Advanced Coding Patterns Banner](./public/advanced-patterns-banner.svg)
 ## Table of Contents
 
