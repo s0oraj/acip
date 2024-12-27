@@ -6,7 +6,7 @@ import { BannerPatternVisuals } from "./banner/BannerPatternVisuals";
 
 export const Banner = () => {
   return (
-    <div className="relative w-full h-[600px] overflow-hidden bg-gray-900">
+    <div className="relative w-full h-[600px] overflow-hidden bg-[#000000]">
       {/* Background Pattern */}
       <div className="absolute inset-0 bg-hero-pattern opacity-10" />
       
@@ -16,7 +16,7 @@ export const Banner = () => {
       
       {/* Main SVG Visualization */}
       <div className="absolute inset-0 flex items-center justify-center">
-        <BinaryTreeSvg />
+        <BinaryTreeSvg disableBackground />
       </div>
 
       {/* Content Section */}
