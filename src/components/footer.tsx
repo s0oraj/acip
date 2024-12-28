@@ -29,7 +29,7 @@ export const Footer = () => {
           <div className="space-y-2">
             <h3 className="text-lg font-semibold text-white">Connect</h3>
             <div className="flex items-center space-x-4">
-              <a href="https://github.com/s0oraj/acip" target="_blank" rel="noopener noreferrer" className="hover:text-blue-400 transition-colors">
+              <a href="https://github.com/s0oraj/" target="_blank" rel="noopener noreferrer" className="hover:text-blue-400 transition-colors">
                 <Github className="w-5 h-5" />
               </a>
               <a href="https://www.linkedin.com/in/s0oraj/" target="_blank" rel="noopener noreferrer" className="hover:text-blue-400 transition-colors">
