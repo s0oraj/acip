@@ -22,7 +22,7 @@ export const PatternHeader = ({ pattern, completedQuestions, allQuestions }: Pat
         <div className="absolute inset-0 bg-grid-pattern opacity-10" />
         
         {/* Content Container */}
-        <div className="max-w-5xl mx-auto px-4 py-8">
+        <div className="max-w-5xl mx-auto px-4 py-8 relative z-10">
           {/* Back Button */}
           <Link to="/">
             <Button
