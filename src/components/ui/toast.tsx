@@ -30,7 +30,7 @@ const toastVariants = cva(
         default: "border bg-background text-foreground",
         destructive:
           "destructive group border-destructive bg-destructive text-destructive-foreground",
-        indigo: "border-indigo-950 bg-gradient-to-br from-black via-indigo-950 to-black text-white", // New indigo variant
+        indigo: "border-indigo-950 bg-indigo-950 text-white", // New indigo variant
       },
     },
     defaultVariants: {
