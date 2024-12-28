@@ -55,63 +55,59 @@ The frontend is built using React 18 and Next.js 13, taking advantage of the lat
 ## Project Structure
 
 ```mermaid
-flowchart TB
-    %% Main Containers
-    Root([ACIP Project])
-    Src[src/]
-    Components[components/]
-    Pages[pages/]
-    Data[data/]
-    Lib[lib/]
+graph TD
+    %% Main structure
+    Root[("🌲 ACIP<br/>Root")]
+    Src["📁 src"]
+    Components["📁 components"]
+    Pages["📁 pages"]
+    Data["📁 data"]
+    Lib["📁 lib"]
 
-    %% Components Section
-    SharedComps[[Shared Components]]
-    Banner["Banner.tsx"]
-    DiffBadge["DifficultyBadge.tsx"]
-    ErrorBound["ErrorBoundary.tsx"]
-    PatternCard["PatternCard.tsx"]
-    Footer["footer.tsx"]
-    Layout["layout.tsx"]
+    %% Components directory contents
+    Banner["📄 Banner.tsx"]
+    DifficultyBadge["📄 DifficultyBadge.tsx"]
+    ErrorBoundary["📄 ErrorBoundary.tsx"]
+    PatternCard["📄 PatternCard.tsx"]
+    Footer["📄 footer.tsx"]
+    Patterns["📁 patterns"]
+    UI["📁 ui"]
+    Layout["📄 layout.tsx"]
 
-    %% Patterns Section
-    Patterns[patterns/]
-    IndexPage[index-page-components/]
-    PatternDetail[pattern-detail-components/]
+    %% Pattern components
+    IndexPage["📁 index-page<br/>components"]
+    PatternDetail["📁 pattern-detail<br/>components"]
+    
+    %% Index page components
+    IndexComps["📑 PatternGrid.tsx<br/>StatisticsSection.tsx"]
+    
+    %% Pattern detail components
+    DetailHeader["📄 PatternHeader.tsx"]
+    Questions["📁 questions-list"]
+    QuestionsComps["📑 QuestionsList.tsx<br/>Question.tsx<br/>Subpattern.tsx<br/>PatternSummary.tsx<br/>QuestionDetails.tsx<br/>AnimationDialog.tsx"]
 
-    %% Index Components
-    PGrid["PatternGrid.tsx"]
-    Stats["StatisticsSection.tsx"]
-
-    %% Pattern Detail Components
-    PHeader["PatternHeader.tsx"]
-    QList[questions-list/]
-    Questions["QuestionsList.tsx"]
-    Question["Question.tsx"]
-    Subpattern["Subpattern.tsx"]
-    PSummary["PatternSummary.tsx"]
-    QDetails["QuestionDetails.tsx"]
-    ADialog["AnimationDialog.tsx"]
-
-    %% UI Components
-    UI[ui/]
-    Button["button.tsx"]
-    Dialog["dialog.tsx"]
-    Card["card.tsx"]
+    %% UI components
+    UIComps["📑 button.tsx<br/>dialog.tsx<br/>card.tsx"]
 
     %% Pages
-    IndexPage_["index.tsx"]
-    PDPage["PatternDetail.tsx"]
+    PageComps["📑 index.tsx<br/>PatternDetail.tsx"]
 
-    %% Data Section
-    Types["types.ts"]
-    PatternsData[patterns/]
-    Registry["Registry Files"]
-    PatternImpl["Pattern Implementations"]
+    %% Data structure
+    Types["📄 types.ts"]
+    PatternsData["📁 patterns"]
+    Registry["📑 index.ts<br/>pattern-mapping.ts<br/>visualizers-registry.ts"]
 
-    %% Pattern Examples
-    CP["counting-pattern/"]
-    AP["articulation-points/"]
-    SP["serialize-deserialize/"]
+    %% Pattern examples
+    PatternExamples["📁 Pattern Examples"]
+    CountingPattern["📁 counting-pattern"]
+    ArticulationPattern["📁 articulation-points"]
+    SerializePattern["📁 serialize-deserialize"]
+
+    %% Pattern structure
+    PatternStructure["📑 pattern definition<br/>+ animations folder<br/>+ visualizers"]
+
+    %% Utils
+    Utils["📄 utils.ts"]
 
     %% Connections
     Root --> Src
@@ -120,57 +116,53 @@ flowchart TB
     Src --> Data
     Src --> Lib
 
-    Components --> SharedComps
-    SharedComps --> Banner
-    SharedComps --> DiffBadge
-    SharedComps --> ErrorBound
-    SharedComps --> PatternCard
-    SharedComps --> Footer
-    SharedComps --> Layout
-
+    Components --> Banner
+    Components --> DifficultyBadge
+    Components --> ErrorBoundary
+    Components --> PatternCard
+    Components --> Footer
     Components --> Patterns
     Components --> UI
+    Components --> Layout
 
     Patterns --> IndexPage
     Patterns --> PatternDetail
 
-    IndexPage --> PGrid
-    IndexPage --> Stats
+    IndexPage --> IndexComps
+    PatternDetail --> DetailHeader
+    PatternDetail --> Questions
+    Questions --> QuestionsComps
 
-    PatternDetail --> PHeader
-    PatternDetail --> QList
-    QList --> Questions
-    QList --> Question
-    QList --> Subpattern
-    QList --> PSummary
-    QList --> QDetails
-    QList --> ADialog
-
-    UI --> Button
-    UI --> Dialog
-    UI --> Card
-
-    Pages --> IndexPage_
-    Pages --> PDPage
+    UI --> UIComps
+    Pages --> PageComps
 
     Data --> Types
     Data --> PatternsData
     PatternsData --> Registry
-    PatternsData --> PatternImpl
-    PatternImpl --> CP
-    PatternImpl --> AP
-    PatternImpl --> SP
+    PatternsData --> PatternExamples
+
+    PatternExamples --> CountingPattern
+    PatternExamples --> ArticulationPattern
+    PatternExamples --> SerializePattern
+
+    CountingPattern --> PatternStructure
+    ArticulationPattern --> PatternStructure
+    SerializePattern --> PatternStructure
+
+    Lib --> Utils
 
     %% Styling
-    classDef container fill:#f4f4f4,stroke:#666,stroke-width:2px;
-    classDef folder fill:#e3f2fd,stroke:#1565c0,stroke-width:2px;
-    classDef file fill:#fff,stroke:#333,stroke-width:1px;
+    classDef root fill:#f9f9f9,stroke:#2e7d32,stroke-width:3px;
+    classDef directory fill:#e3f2fd,stroke:#1565c0,stroke-width:2px;
+    classDef file fill:#ffffff,stroke:#333,stroke-width:1px;
     classDef component fill:#e8f5e9,stroke:#2e7d32,stroke-width:2px;
+    classDef pattern fill:#fff3e0,stroke:#f57c00,stroke-width:2px;
 
-    class Root,Src container;
-    class Components,Pages,Data,Lib,Patterns,UI,QList,PatternsData folder;
-    class Banner,DiffBadge,ErrorBound,PatternCard,Footer,Layout,PGrid,Stats,PHeader,Questions,Question,Subpattern,PSummary,QDetails,ADialog,Button,Dialog,Card,IndexPage_,PDPage,Types file;
-    class IndexPage,PatternDetail,SharedComps component;
+    class Root root;
+    class Src,Components,Pages,Data,Lib,Patterns,UI,Questions,PatternsData directory;
+    class Banner,DifficultyBadge,ErrorBoundary,PatternCard,Footer,Layout,UIComps,IndexComps,DetailHeader,QuestionsComps,PageComps,Types,Registry,Utils file;
+    class IndexPage,PatternDetail component;
+    class PatternExamples,CountingPattern,ArticulationPattern,SerializePattern,PatternStructure pattern;
 ```
 
 ### Code Structure:
