@@ -24,7 +24,7 @@ export const PatternHeader = ({ pattern, completedQuestions, allQuestions }: Pat
         {/* Content Container */}
         <div className="max-w-5xl mx-auto px-4 py-8">
           {/* Back Button */}
-          <Link to="/">
+          <Link to="/patterns">
             <Button
               variant="ghost"
               className="text-gray-300 hover:text-blue-400 transition-colors mb-8"
