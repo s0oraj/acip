@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { ArrowLeft, BookOpen } from 'lucide-react';
+import { ArrowLeft, BookOpen, Binary, Network } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import { Pattern, Question } from "@/types";
 
@@ -15,49 +15,68 @@ export const PatternHeader = ({ pattern, completedQuestions, allQuestions }: Pat
     : 0;
 
   return (
-    <div className="space-y-6 mb-8">
-      <Link to="/">
-        <Button
-          variant="ghost"
-          className="hover:bg-pattern-100 hover:text-pattern-700 dark:hover:bg-pattern-900/50 dark:hover:text-pattern-300 transition-colors"
-        >
-          <ArrowLeft className="mr-2 h-4 w-4" />
-          Back to Patterns
-        </Button>
-      </Link>
+    <div className="w-full bg-gradient-to-br from-black via-indigo-950 to-black">
+      <div className="max-w-5xl mx-auto px-4 py-12 relative">
+        {/* Background Pattern */}
+        <div className="absolute inset-0 bg-grid-pattern opacity-10" />
+        
+        {/* Content */}
+        <div className="relative space-y-8">
+          {/* Back Button */}
+          <Link to="/">
+            <Button
+              variant="ghost"
+              className="text-gray-300 hover:text-blue-400 transition-colors"
+            >
+              <ArrowLeft className="mr-2 h-4 w-4" />
+              Back to Patterns
+            </Button>
+          </Link>
 
-      <div className="space-y-4">
-        <div className="flex items-start space-x-4">
-          <div className="bg-pattern-100 dark:bg-pattern-900/50 p-3 rounded-xl">
-            <BookOpen className="h-6 w-6 text-pattern-600 dark:text-pattern-400" />
+          {/* Title Section */}
+          <div className="flex items-start gap-6">
+            <div className="flex gap-4">
+              <div className="relative">
+                <BookOpen className="w-12 h-12 text-blue-400" />
+                <div className="absolute inset-0 bg-blue-400/20 blur-xl" />
+              </div>
+              <div className="relative">
+                <Binary className="w-12 h-12 text-purple-400" />
+                <div className="absolute inset-0 bg-purple-400/20 blur-xl" />
+              </div>
+            </div>
+            
+            <div className="flex-1 space-y-3">
+              <h1 className="text-4xl font-bold text-white">
+                {pattern.title}
+              </h1>
+              <p className="text-lg text-gray-300/90">
+                {pattern.description}
+              </p>
+            </div>
           </div>
-          <div className="flex-1">
-            <h1 className="text-4xl font-bold text-gray-800 dark:text-gray-100 mb-2">
-              {pattern.title}
-            </h1>
-            <p className="text-lg text-gray-600 dark:text-gray-300">
-              {pattern.description}
-            </p>
-          </div>
-        </div>
 
-        <div className="bg-pattern-50 dark:bg-pattern-900/30 rounded-xl p-6">
-          <div className="flex items-center justify-between mb-3">
-            <span className="text-sm font-medium text-pattern-700 dark:text-pattern-300">
-              Progress: {completedQuestions.length}/{allQuestions.length} completed
-            </span>
-            <span className="text-sm font-medium text-pattern-700 dark:text-pattern-300">
-              {Math.round(completionPercentage)}%
-            </span>
-          </div>
-          <div className="h-2.5 bg-pattern-100 dark:bg-pattern-900/50 rounded-full overflow-hidden">
-            <div
-              className="h-full bg-gradient-to-r from-pattern-500 to-pattern-600 rounded-full transition-all duration-500 ease-out"
-              style={{ width: `${completionPercentage}%` }}
-            />
+          {/* Progress Bar */}
+          <div className="glass p-6 rounded-xl space-y-3">
+            <div className="flex items-center justify-between">
+              <span className="text-sm font-medium text-gray-300">
+                Progress: {completedQuestions.length}/{allQuestions.length} completed
+              </span>
+              <span className="text-sm font-medium text-gray-300">
+                {Math.round(completionPercentage)}%
+              </span>
+            </div>
+            <div className="h-2.5 bg-black/30 rounded-full overflow-hidden">
+              <div
+                className="h-full bg-gradient-to-r from-blue-400 to-purple-500 rounded-full transition-all duration-500 ease-out"
+                style={{ width: `${completionPercentage}%` }}
+              />
+            </div>
           </div>
         </div>
       </div>
     </div>
   );
 };
+
+export default PatternHeader;
