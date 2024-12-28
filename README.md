@@ -49,6 +49,129 @@ The frontend is built using React 18 and Next.js 13, taking advantage of the lat
 - **React 18**: Leveraging concurrent rendering and automatic batching for improved performance.
 - **Tailwind CSS**: For responsive design and consistent styling across the application.
 
+### Code flow
+# Advanced Coding Interview Patterns (ACIP)
+
+## Project Structure
+
+```mermaid
+flowchart TB
+    %% Main Containers
+    Root([ACIP Project])
+    Src[src/]
+    Components[components/]
+    Pages[pages/]
+    Data[data/]
+    Lib[lib/]
+
+    %% Components Section
+    SharedComps[[Shared Components]]
+    Banner["Banner.tsx"]
+    DiffBadge["DifficultyBadge.tsx"]
+    ErrorBound["ErrorBoundary.tsx"]
+    PatternCard["PatternCard.tsx"]
+    Footer["footer.tsx"]
+    Layout["layout.tsx"]
+
+    %% Patterns Section
+    Patterns[patterns/]
+    IndexPage[index-page-components/]
+    PatternDetail[pattern-detail-components/]
+
+    %% Index Components
+    PGrid["PatternGrid.tsx"]
+    Stats["StatisticsSection.tsx"]
+
+    %% Pattern Detail Components
+    PHeader["PatternHeader.tsx"]
+    QList[questions-list/]
+    Questions["QuestionsList.tsx"]
+    Question["Question.tsx"]
+    Subpattern["Subpattern.tsx"]
+    PSummary["PatternSummary.tsx"]
+    QDetails["QuestionDetails.tsx"]
+    ADialog["AnimationDialog.tsx"]
+
+    %% UI Components
+    UI[ui/]
+    Button["button.tsx"]
+    Dialog["dialog.tsx"]
+    Card["card.tsx"]
+
+    %% Pages
+    IndexPage_["index.tsx"]
+    PDPage["PatternDetail.tsx"]
+
+    %% Data Section
+    Types["types.ts"]
+    PatternsData[patterns/]
+    Registry["Registry Files"]
+    PatternImpl["Pattern Implementations"]
+
+    %% Pattern Examples
+    CP["counting-pattern/"]
+    AP["articulation-points/"]
+    SP["serialize-deserialize/"]
+
+    %% Connections
+    Root --> Src
+    Src --> Components
+    Src --> Pages
+    Src --> Data
+    Src --> Lib
+
+    Components --> SharedComps
+    SharedComps --> Banner
+    SharedComps --> DiffBadge
+    SharedComps --> ErrorBound
+    SharedComps --> PatternCard
+    SharedComps --> Footer
+    SharedComps --> Layout
+
+    Components --> Patterns
+    Components --> UI
+
+    Patterns --> IndexPage
+    Patterns --> PatternDetail
+
+    IndexPage --> PGrid
+    IndexPage --> Stats
+
+    PatternDetail --> PHeader
+    PatternDetail --> QList
+    QList --> Questions
+    QList --> Question
+    QList --> Subpattern
+    QList --> PSummary
+    QList --> QDetails
+    QList --> ADialog
+
+    UI --> Button
+    UI --> Dialog
+    UI --> Card
+
+    Pages --> IndexPage_
+    Pages --> PDPage
+
+    Data --> Types
+    Data --> PatternsData
+    PatternsData --> Registry
+    PatternsData --> PatternImpl
+    PatternImpl --> CP
+    PatternImpl --> AP
+    PatternImpl --> SP
+
+    %% Styling
+    classDef container fill:#f4f4f4,stroke:#666,stroke-width:2px;
+    classDef folder fill:#e3f2fd,stroke:#1565c0,stroke-width:2px;
+    classDef file fill:#fff,stroke:#333,stroke-width:1px;
+    classDef component fill:#e8f5e9,stroke:#2e7d32,stroke-width:2px;
+
+    class Root,Src container;
+    class Components,Pages,Data,Lib,Patterns,UI,QList,PatternsData folder;
+    class Banner,DiffBadge,ErrorBound,PatternCard,Footer,Layout,PGrid,Stats,PHeader,Questions,Question,Subpattern,PSummary,QDetails,ADialog,Button,Dialog,Card,IndexPage_,PDPage,Types file;
+    class IndexPage,PatternDetail,SharedComps component;
+
 ### Code Structure:
 
 ```
