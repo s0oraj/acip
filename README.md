@@ -171,6 +171,7 @@ flowchart TB
     class Components,Pages,Data,Lib,Patterns,UI,QList,PatternsData folder;
     class Banner,DiffBadge,ErrorBound,PatternCard,Footer,Layout,PGrid,Stats,PHeader,Questions,Question,Subpattern,PSummary,QDetails,ADialog,Button,Dialog,Card,IndexPage_,PDPage,Types file;
     class IndexPage,PatternDetail,SharedComps component;
+```
 
 ### Code Structure:
 
