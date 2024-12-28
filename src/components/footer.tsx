@@ -1,4 +1,4 @@
-import { Github, Twitter } from "lucide-react";
+import { Github, Linkedin  } from "lucide-react";
 import { Link } from "react-router-dom";
 
 export const Footer = () => {
@@ -32,8 +32,8 @@ export const Footer = () => {
               <a href="https://github.com/s0oraj/acip" target="_blank" rel="noopener noreferrer" className="hover:text-blue-400 transition-colors">
                 <Github className="w-5 h-5" />
               </a>
-              <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" className="hover:text-blue-400 transition-colors">
-                <Twitter className="w-5 h-5" />
+              <a href="https://www.linkedin.com/in/s0oraj/" target="_blank" rel="noopener noreferrer" className="hover:text-blue-400 transition-colors">
+                <Linkedin  className="w-5 h-5" />
               </a>
             </div>
           </div>
