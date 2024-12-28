@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { PatternHeader } from "@/components/patterns/pattern-detail-components/PatternHeader";
 import { QuestionsList } from "@/components/patterns/pattern-detail-components/questions-list/QuestionsList";
 import { toast } from "@/components/ui/use-toast";
-import { Footer} from "@/components/footer.tsx";
+import { Footer} from "@/components/footer";
 
 const PatternDetail = () => {
   const { id } = useParams();
@@ -30,7 +30,6 @@ const PatternDetail = () => {
         setIsLoading(false);
       }
     };
-
     loadProgress();
   }, [id]);
 
@@ -89,20 +88,24 @@ const PatternDetail = () => {
     : pattern.questions;
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-pattern-50 to-white dark:from-gray-900 dark:to-gray-800">
-      <div className="max-w-5xl mx-auto px-4 py-8 animate-pattern-fade">
-        <PatternHeader 
-          pattern={pattern}
-          completedQuestions={completedQuestions}
-          allQuestions={allQuestions}
-        />
-        
-        <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8 animate-pattern-slide">
-          <QuestionsList
-            pattern={pattern}
-            completedQuestions={completedQuestions}
-            toggleQuestion={toggleQuestion}
-          />
+    <div className="min-h-screen flex flex-col">
+      {/* Header outside the main content container */}
+      <PatternHeader 
+        pattern={pattern}
+        completedQuestions={completedQuestions}
+        allQuestions={allQuestions}
+      />
+      
+      {/* Main content with max-width container */}
+      <div className="flex-1 bg-gradient-to-b from-pattern-50 to-white dark:from-gray-900 dark:to-gray-800">
+        <div className="max-w-5xl mx-auto px-4 py-8 animate-pattern-fade">
+          <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8 animate-pattern-slide">
+            <QuestionsList
+              pattern={pattern}
+              completedQuestions={completedQuestions}
+              toggleQuestion={toggleQuestion}
+            />
+          </div>
         </div>
       </div>
       <Footer />
