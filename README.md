@@ -17,6 +17,15 @@
 10. [Deployment and CI/CD](#deployment-and-cicd)
 11. [Future Enhancements](#future-enhancements)
 
+## 0. Project Overview
+- The project is a front-end application built with Vite.
+- It consists of two main pages: index and patterndetails.
+- The index page displays 11 patterns.
+- Clicking on a pattern leads to the patterndetails page.
+- The patterndetails page shows subpatterns.
+- Clicking on a subpattern creates a dropdown effect (similar to neetcode.io).
+- Each subpattern contains 3-5 questions.
+
 ## 1. Architecture Overview
 
 The Advanced Coding Interview Patterns Platform is built on a modern, scalable architecture designed to provide a seamless and interactive learning experience. The application is primarily client-side rendered, leveraging the power of React and Next.js for optimal performance and SEO benefits.
@@ -103,6 +112,15 @@ src/
 └── lib/
     └── utils.ts                           # Utility functions
 ```
+### Key Features of the Project Structure:
+
+1. Next.js App Router: Utilizes file-system based routing (`pages/` directory).
+2. React Hooks and Context API: Used for local and global state management.
+3. Tailwind CSS: Employed for styling and responsive design.
+4. Static Data: Pattern data stored in `data/patterns/` for Static Site Generation.
+5. Animations: Custom SVG-based animations for each pattern/subpattern.
+6. Performance Optimizations: Implements code splitting, lazy loading, and memoization.
+7. Shared UI Components: Leverages shadcn/ui library in the `components/ui/` directory.
 
 ## 3. State Management
 
