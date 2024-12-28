@@ -1,43 +1,73 @@
-import { Github, Twitter } from "lucide-react";
-import { Link } from "react-router-dom";
+// src/components/layout/Footer.tsx
+import Link from 'next/link';
+import { GitHub } from 'lucide-react';
+
 export const Footer = () => {
   const currentYear = new Date().getFullYear();
+
   return (
-    <footer className="w-full bg-gradient-to-br from-black via-indigo-950 to-black text-gray-300">
-      <div className="max-w-7xl mx-auto px-4 py-12">
+    <footer className="w-full bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-800">
+      <div className="max-w-7xl mx-auto px-4 py-8">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          <div className="space-y-4">
-            <h3 className="text-xl font-semibold text-white">Interview Patterns</h3>
-            <p className="text-gray-400">Master coding interviews with our comprehensive pattern-based approach.</p>
+          {/* Project Info */}
+          <div className="flex flex-col space-y-2">
+            <h3 className="font-semibold text-gray-900 dark:text-white">ACIP</h3>
+            <p className="text-sm text-gray-600 dark:text-gray-400">
+              Algorithm Patterns with Interactive Visualizations
+            </p>
+            <Link 
+              href="https://github.com/s0oraj/acip"
+              className="flex items-center space-x-2 text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <GitHub className="w-4 h-4" />
+              <span className="text-sm">View on GitHub</span>
+            </Link>
           </div>
-          
-          <div className="space-y-4">
-            <h3 className="text-xl font-semibold text-white">Quick Links</h3>
-            <ul className="space-y-2">
-              <li>
-                <Link to="/" className="hover:text-blue-400 transition-colors">Home</Link>
-              </li>
-              <li>
-                <Link to="/patterns" className="hover:text-blue-400 transition-colors">All Patterns</Link>
-              </li>
-            </ul>
+
+          {/* Quick Links */}
+          <div className="flex flex-col space-y-2">
+            <h3 className="font-semibold text-gray-900 dark:text-white">Quick Links</h3>
+            <Link 
+              href="/patterns"
+              className="text-sm text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400"
+            >
+              Patterns
+            </Link>
+            <Link 
+              href="/visualizer"
+              className="text-sm text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400"
+            >
+              Visualizer
+            </Link>
           </div>
-          
-          <div className="space-y-4">
-            <h3 className="text-xl font-semibold text-white">Connect</h3>
-            <div className="flex space-x-4">
-              <a href="https://github.com" target="_blank" rel="noopener noreferrer" className="hover:text-blue-400 transition-colors">
-                <Github className="w-6 h-6" />
-              </a>
-              <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" className="hover:text-blue-400 transition-colors">
-                <Twitter className="w-6 h-6" />
-              </a>
-            </div>
+
+          {/* License */}
+          <div className="flex flex-col space-y-2">
+            <h3 className="font-semibold text-gray-900 dark:text-white">License</h3>
+            <p className="text-sm text-gray-600 dark:text-gray-400">
+              © {currentYear} ACIP. All rights reserved.
+            </p>
+            <p className="text-sm text-gray-600 dark:text-gray-400">
+              Licensed under the{' '}
+              <Link
+                href="https://opensource.org/licenses/MIT"
+                className="text-blue-600 dark:text-blue-400 hover:underline"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                MIT License
+              </Link>
+            </p>
+            <p className="text-xs text-gray-500 dark:text-gray-400 mt-2">
+              Permission is hereby granted, free of charge, to any person obtaining a copy
+              of this software and associated documentation files, to deal in the Software
+              without restriction, including without limitation the rights to use, copy,
+              modify, merge, publish, distribute, sublicense, and/or sell copies of the
+              Software, subject to the conditions of the MIT License.
+            </p>
           </div>
-        </div>
-        
-        <div className="mt-12 pt-8 border-t border-gray-800 text-center text-gray-400">
-          <p>&copy; {currentYear} Interview Patterns. All rights reserved.</p>
         </div>
       </div>
     </footer>
