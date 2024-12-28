@@ -1,3 +1,4 @@
+// PatternHeader.tsx
 import { Link } from "react-router-dom";
 import { ArrowLeft, BookOpen, Binary, Network } from 'lucide-react';
 import { Button } from "@/components/ui/button";
@@ -15,28 +16,25 @@ export const PatternHeader = ({ pattern, completedQuestions, allQuestions }: Pat
     : 0;
 
   return (
-    <div className="w-full bg-gradient-to-br from-black via-indigo-950 to-black mb-8">
-      {/* Back Button - Outside main content for full-width padding */}
-      <div className="max-w-5xl mx-auto px-4 pt-4">
-        <Link to="/">
-          <Button
-            variant="ghost"
-            className="text-gray-300 hover:text-blue-400 transition-colors"
-          >
-            <ArrowLeft className="mr-2 h-4 w-4" />
-            Back to Patterns
-          </Button>
-        </Link>
-      </div>
-
-      {/* Main Header Content */}
-      <div className="w-full relative">
+    <div className="w-full bg-gradient-to-br from-black via-indigo-950 to-black">
+      <div className="relative">
         {/* Background Pattern */}
         <div className="absolute inset-0 bg-grid-pattern opacity-10" />
         
         {/* Content Container */}
-        <div className="max-w-5xl mx-auto px-4 py-12">
-          <div className="relative space-y-8">
+        <div className="max-w-5xl mx-auto px-4 py-8">
+          {/* Back Button */}
+          <Link to="/">
+            <Button
+              variant="ghost"
+              className="text-gray-300 hover:text-blue-400 transition-colors mb-8"
+            >
+              <ArrowLeft className="mr-2 h-4 w-4" />
+              Back to Patterns
+            </Button>
+          </Link>
+
+          <div className="space-y-8">
             {/* Title Section */}
             <div className="flex items-start gap-6">
               <div className="flex gap-4">
