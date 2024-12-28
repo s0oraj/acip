@@ -43,45 +43,65 @@ The frontend is built using React 18 and Next.js 13, taking advantage of the lat
 ### Code Structure:
 
 ```
+# Advanced Coding Interview Patterns (ACIP)
+
 src/
 ├── components/
+│   ├── Banner.tsx                           # Page 1: Header Component
+│   ├── DifficultyBadge.tsx                 # Shared: Shows difficulty level
+│   ├── ErrorBoundary.tsx                   # Shared: Error handling wrapper
+│   ├── PatternCard.tsx                     # Shared: Card component for patterns
+│   ├── footer.tsx                          # Shared: Footer component
 │   ├── patterns/
-│   │   ├── index-page-components/
-│   │   │   ├── PatternGrid.tsx
-│   │   │   └── StatisticsSection.tsx
-│   │   └── pattern-detail-components/
-│   │       ├── PatternHeader.tsx
-│   │       ├── QuestionsList.tsx
-│   │       └── AnimationDialog.tsx
-│   ├── ui/
-│   │   ├── Button.tsx
-│   │   ├── Card.tsx
-│   │   └── Dialog.tsx
-│   └── layout/
-│       ├── Header.tsx
-│       └── Footer.tsx
-├── pages/
-│   ├── index.tsx
-│   └── pattern/
-│       └── [id].tsx
+│   │   ├── index-page-components/          # Page 1: Main landing page components
+│   │   │   ├── PatternGrid.tsx            # Grid layout of pattern cards
+│   │   │   └── StatisticsSection.tsx      # Statistics display section
+│   │   └── pattern-detail-components/      # Page 2: Pattern detail components
+│   │       ├── PatternHeader.tsx          # Header for pattern details
+│   │       └── questions-list/            # Questions section components
+│   │           ├── QuestionsList.tsx      # Entry point - manages questions data
+│   │           ├── Question.tsx           # Individual question component
+│   │           ├── Subpattern.tsx        # Subpattern section component
+│   │           ├── PatternSummary.tsx     # Pattern summary section
+│   │           ├── QuestionDetails.tsx    # Detailed question view
+│   │           └── AnimationDialog.tsx    # Animation modal component
+│   ├── ui/                                 # Shared UI components
+│   │   ├── button.tsx
+│   │   ├── dialog.tsx
+│   │   └── card.tsx
+│   └── layout.tsx                          # Main layout wrapper
+├── pages/                                  # Main application pages
+│   ├── index.tsx                          # Page 1: Landing page
+│   └── PatternDetail.tsx                   # Page 2: Pattern details page
 ├── data/
-│   └── patterns/
-│       ├── index.ts
-│       ├── counting-pattern/
-│       │   ├── counting-pattern.ts
+│   ├── types.ts                           # Type definitions for patterns & components
+│   └── patterns/                          # Pattern definitions and data
+│       ├── index.ts                       # Entry point for patterns
+│       ├── pattern-mapping.ts             # Pattern path mappings
+│       ├── visualizers-registry.ts        # Animation visualizers registry
+│       ├── counting-pattern/              # Example pattern
+│       │   ├── counting-pattern.ts        # Pattern definition
+│       │   └── animations/                # Pattern animations
+│       │       ├── index.ts               # Entry point for animations
+│       │       └── basic-counting/        # Subpattern animations
+│       │           ├── data.ts            # Animation data
+│       │           └── visualizer.tsx     # Animation component
+│       ├── articulation-points-and-bridges-pattern/
+│       │   ├── articulation-points-pattern.ts
 │       │   └── animations/
 │       │       ├── index.ts
-│       │       └── basic-counter-operations/
+│       │       └── [subpattern-folders]/
 │       │           ├── data.ts
 │       │           └── visualizer.tsx
-│       └── ...
-├── types/
-│   └── index.ts
-├── utils/
-│   ├── difficultyUtils.ts
-│   └── animationUtils.ts
-└── styles/
-    └── globals.css
+│       └── serialize-deserialize-pattern/
+           ├── serialize-deserialize-pattern.ts
+           └── animations/
+               ├── index.ts
+               └── [subpattern-folders]/
+                   ├── data.ts
+                   └── visualizer.tsx
+└── lib/
+    └── utils.ts                           # Utility functions
 ```
 
 ## 3. State Management
