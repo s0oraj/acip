@@ -39,7 +39,7 @@ export const StatisticsSection = () => {
     { 
       icon: BookOpen, 
       label: "Curated Problems", 
-      value: "220+", 
+      value: "220", 
       color: "from-indigo-500 to-indigo-600" 
     },
     { 
