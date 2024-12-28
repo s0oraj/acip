@@ -27,13 +27,13 @@ export const PatternHeader = ({ pattern, completedQuestions, allQuestions }: Pat
           <Link to="/">
             <Button
               variant="ghost"
-              className="text-gray-300 hover:text-blue-400 transition-colors mb-8"
+              className="text-gray-300 hover:text-blue-400 transition-all duration-200 mb-8 
+                         hover:bg-white/10 backdrop-blur-sm hover:backdrop-blur-lg"
             >
               <ArrowLeft className="mr-2 h-4 w-4" />
               Back to Patterns
             </Button>
           </Link>
-
           <div className="space-y-8">
             {/* Title Section */}
             <div className="flex items-start gap-6">
@@ -57,7 +57,6 @@ export const PatternHeader = ({ pattern, completedQuestions, allQuestions }: Pat
                 </p>
               </div>
             </div>
-
             {/* Progress Bar */}
             <div className="glass p-6 rounded-xl space-y-3">
               <div className="flex items-center justify-between">
