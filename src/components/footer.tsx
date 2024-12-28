@@ -1,6 +1,6 @@
 // src/components/layout/Footer.tsx
+import { Github } from 'lucide-react'; // Changed from GitHub to Github
 import { Link } from 'react-router-dom';
-import { GitHub } from 'lucide-react';
 
 export const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -21,7 +21,7 @@ export const Footer = () => {
               target="_blank"
               rel="noopener noreferrer"
             >
-              <GitHub className="w-4 h-4" />
+              <Github className="w-4 h-4" /> {/* Changed from GitHub to Github */}
               <span className="text-sm">View on GitHub</span>
             </a>
           </div>
