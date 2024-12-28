@@ -1,5 +1,5 @@
 // src/components/layout/Footer.tsx
-import Link from 'next/link';
+import { Link } from 'react-router-dom';
 import { GitHub } from 'lucide-react';
 
 export const Footer = () => {
@@ -15,7 +15,7 @@ export const Footer = () => {
             <p className="text-sm text-gray-600 dark:text-gray-400">
               Algorithm Patterns with Interactive Visualizations
             </p>
-            <Link 
+            <a 
               href="https://github.com/s0oraj/acip"
               className="flex items-center space-x-2 text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400"
               target="_blank"
@@ -23,20 +23,20 @@ export const Footer = () => {
             >
               <GitHub className="w-4 h-4" />
               <span className="text-sm">View on GitHub</span>
-            </Link>
+            </a>
           </div>
 
           {/* Quick Links */}
           <div className="flex flex-col space-y-2">
             <h3 className="font-semibold text-gray-900 dark:text-white">Quick Links</h3>
             <Link 
-              href="/patterns"
+              to="/patterns"
               className="text-sm text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400"
             >
               Patterns
             </Link>
             <Link 
-              href="/visualizer"
+              to="/visualizer"
               className="text-sm text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400"
             >
               Visualizer
@@ -51,14 +51,14 @@ export const Footer = () => {
             </p>
             <p className="text-sm text-gray-600 dark:text-gray-400">
               Licensed under the{' '}
-              <Link
+              <a
                 href="https://opensource.org/licenses/MIT"
                 className="text-blue-600 dark:text-blue-400 hover:underline"
                 target="_blank"
                 rel="noopener noreferrer"
               >
                 MIT License
-              </Link>
+              </a>
             </p>
             <p className="text-xs text-gray-500 dark:text-gray-400 mt-2">
               Permission is hereby granted, free of charge, to any person obtaining a copy
