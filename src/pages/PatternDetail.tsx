@@ -46,7 +46,7 @@ const PatternDetail = () => {
           description: prev.includes(questionId) 
             ? "Progress has been updated"
             : "Keep up the great work!",
-          variant: prev.includes(questionId) ? "default" : "destructive",
+          variant: prev.includes(questionId) ? "default",
         });
       } catch (error) {
         toast({
