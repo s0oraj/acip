@@ -1,10 +1,14 @@
 import { motion } from "framer-motion";
-import { Binary, Network, Code2 } from 'lucide-react';
+import { Binary, Network, Code2, Rocket } from 'lucide-react';
 import { BannerBackground } from "./banner/BannerBackground";
 import { BinaryTreeSvg } from "./banner/BinaryTreeSvg";
 import { BannerPatternVisuals } from "./banner/BannerPatternVisuals";
+import { useNavigationStore } from "@/store/navigationStore";
+import { Button } from "@/components/ui/button";
 
 export const Banner = () => {
+  const { setCurrentScene } = useNavigationStore();
+
   return (
     <div className="relative w-full h-[600px] overflow-hidden bg-gradient-to-br from-black via-indigo-950 to-black">
       <div className="absolute inset-0 pointer-events-none">
@@ -43,13 +47,29 @@ export const Banner = () => {
         </motion.h1>
         
         <motion.p
-          className="text-xl md:text-2xl text-gray-300/90 mb-12 max-w-3xl leading-relaxed"
+          className="text-xl md:text-2xl text-gray-300/90 mb-8 max-w-3xl leading-relaxed"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
         >
           Master 220 coding interview questions organized in 11 essential patterns
         </motion.p>
+
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.4, ease: "easeOut" }}
+        >
+          <Button
+            variant="outline"
+            size="lg"
+            onClick={() => setCurrentScene('galaxy')}
+            className="bg-transparent border-2 border-purple-500 hover:bg-purple-500/20 text-white font-semibold text-lg px-8 py-6 rounded-full transition-all duration-300 flex items-center gap-3 group"
+          >
+            <Rocket className="w-6 h-6 group-hover:translate-x-1 transition-transform" />
+            Enter the Roadmap Galaxy
+          </Button>
+        </motion.div>
       </div>
     </div>
   );
