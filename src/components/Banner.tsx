@@ -65,7 +65,7 @@ export const Banner = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.4, ease: "easeOut" }}
-          style={{ marginTop: "32px" }}
+          style={{ marginTop: "48px" }}
         >
           <Button
             variant="outline"
