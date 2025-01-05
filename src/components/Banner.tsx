@@ -1,10 +1,11 @@
 import { motion } from "framer-motion";
-import { Binary, Network, Code2 } from 'lucide-react';
+import { Binary, Network, Code2, Rocket } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-import { useNavigationStore } from '@/store/navigationStore';
 import { BannerBackground } from "./banner/BannerBackground";
 import { BinaryTreeSvg } from "./banner/BinaryTreeSvg";
 import { BannerPatternVisuals } from "./banner/BannerPatternVisuals";
+import { useNavigationStore } from "@/store/navigationStore";
+import { Button } from "@/components/ui/button";
 
 export const Banner = () => {
   const navigate = useNavigate();
@@ -14,70 +15,57 @@ export const Banner = () => {
     setCurrentScene('galaxy');
     navigate('/galaxy');
   };
+
   return (
-    <div className="relative w-full h-[600px] overflow-hidden bg-gradient-to-br from-black via-indigo-950 to-black">
-      <div className="absolute inset-0 pointer-events-none">
-        <BannerBackground />
-        <BannerPatternVisuals />
-      </div>
-      
+    <div className="relative w-full h-screen flex items-center justify-center overflow-hidden">
+      <BannerBackground />
       <BinaryTreeSvg />
-      <div className="relative z-10 container mx-auto h-full flex flex-col items-center justify-center text-center px-4">
+      <BannerPatternVisuals />
+
+      <div className="relative z-10 text-center translate-y-[15%]">
         <motion.div
-          className="flex items-center gap-6 mb-8"
-          initial={{ scale: 0 }}
-          animate={{ scale: 1 }}
-          transition={{ duration: 0.8, ease: "backOut" }}
-        >
-          <motion.div whileHover={{ scale: 1.1 }} className="relative">
-            <Binary className="w-12 h-12 text-blue-400 animate-pulse" />
-            <div className="absolute inset-0 bg-blue-400/20 blur-xl" />
-          </motion.div>
-          <motion.div whileHover={{ scale: 1.1 }} className="relative">
-            <Network className="w-12 h-12 text-purple-400 animate-pulse" />
-            <div className="absolute inset-0 bg-purple-400/20 blur-xl" />
-          </motion.div>
-          <motion.div whileHover={{ scale: 1.1 }} className="relative">
-            <Code2 className="w-12 h-12 text-indigo-400 animate-pulse" />
-            <div className="absolute inset-0 bg-indigo-400/20 blur-xl" />
-          </motion.div>
-        </motion.div>
-        <motion.h1
-          className="text-5xl md:text-7xl font-bold mb-6 bg-clip-text text-white bg-gradient-to-r from-blue-400 to-purple-500"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, ease: "easeOut" }}
+          transition={{ duration: 0.8 }}
+          className="flex justify-center space-x-12 mb-12"
+        >
+          <Binary className="w-16 h-16 text-purple-500" />
+          <Network className="w-16 h-16 text-blue-500" />
+          <Code2 className="w-16 h-16 text-green-500" />
+        </motion.div>
+        <motion.h1
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.2 }}
+          className="text-5xl font-bold text-white mb-6"
         >
           Advanced Coding Interview Patterns
         </motion.h1>
-        
         <motion.p
-          className="text-xl md:text-2xl text-gray-300/90 mb-8 max-w-3xl leading-relaxed"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
+          transition={{ duration: 0.8, delay: 0.4 }}
+          className="text-xl text-gray-300 mb-12"
         >
           Master 220 coding interview questions organized in 11 essential patterns
         </motion.p>
-
-        <motion.button
-          onClick={handleEnterGalaxy}
-          className="mt-8 px-8 py-3 text-lg font-semibold rounded-full 
-                     bg-gradient-to-r from-blue-500 to-purple-600 
-                     text-white shadow-lg hover:shadow-xl
-                     transform hover:scale-105 transition-all
-                     duration-300 ease-out"
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
+        <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.4 }}
+          transition={{ duration: 0.8, delay: 0.6 }}
         >
-          Enter the Roadmap Galaxy
-        </motion.button>
+          <Button
+            onClick={handleEnterGalaxy}
+            className="bg-transparent border-2 border-purple-500 hover:bg-purple-500/20 text-white font-semibold text-lg px-8 py-6 rounded-full transition-all duration-300 flex items-center gap-3 group"
+          >
+            <Rocket className="w-6 h-6 group-hover:translate-x-1 transition-transform" />
+            Enter the Roadmap Galaxy
+          </Button>
+        </motion.div>
       </div>
     </div>
   );
 };
 
 export default Banner;
+
