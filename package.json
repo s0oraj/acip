@@ -85,7 +85,22 @@
     "zod": "^3.23.8",
     "react-intersection-observer": "^9.4.2",
     "@radix-ui/react-dialog": "^1.0.5",
-    "@tailwindcss/aspect-ratio": "^0.4.2"
+    "@tailwindcss/aspect-ratio": "^0.4.2",
+    
+    // Add 3D/Visualization libraries
+    "@react-three/drei": "^9.120.4",
+    "@react-three/fiber": "8.2.2",
+    "@react-three/postprocessing": "^2.15.1",
+    "framer-motion-3d": "^11.15.0",
+    "@types/three": "^0.161.2",
+    "three": "^0.161.0",
+    "react-use-measure": "^2.1.1",
+        
+    // State management additions
+    "zustand": "^4.5.0",
+    "reselect": "^5.0.1",
+    "gl-matrix": "^3.4.3",
+    "@xyflow/react": "^12.3.6"
   },
   "devDependencies": {
     "@eslint/js": "^9.9.0",
@@ -104,6 +119,8 @@
     "tailwindcss": "^3.4.11",
     "typescript": "^5.5.3",
     "typescript-eslint": "^8.0.1",
-    "vite": "^5.4.1"
+    "vite": "^5.4.1",
+    "prettier": "^3.1.0",
+    "prettier-plugin-tailwindcss": "^0.5.7"
   }
 }
