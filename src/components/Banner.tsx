@@ -1,11 +1,5 @@
 import { motion } from "framer-motion";
-<<<<<<< HEAD
-import { Binary, Network, Code2 } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
-import { useNavigationStore } from '@/store/navigationStore';
-=======
 import { Binary, Network, Code2, Rocket } from 'lucide-react';
->>>>>>> ea9cf41020b14efc9807cf9fd0e00e0b44f03387
 import { BannerBackground } from "./banner/BannerBackground";
 import { BinaryTreeSvg } from "./banner/BinaryTreeSvg";
 import { BannerPatternVisuals } from "./banner/BannerPatternVisuals";
@@ -13,19 +7,8 @@ import { useNavigationStore } from "@/store/navigationStore";
 import { Button } from "@/components/ui/button";
 
 export const Banner = () => {
-<<<<<<< HEAD
-  const navigate = useNavigate();
   const { setCurrentScene } = useNavigationStore();
 
-  const handleEnterGalaxy = () => {
-    setCurrentScene('galaxy');
-    navigate('/galaxy');
-  };
-
-=======
-  const { setCurrentScene } = useNavigationStore();
-
->>>>>>> ea9cf41020b14efc9807cf9fd0e00e0b44f03387
   return (
     <div className="relative w-full h-[600px] overflow-hidden bg-gradient-to-br from-black via-indigo-950 to-black">
       <div className="absolute inset-0 pointer-events-none">
@@ -72,23 +55,6 @@ export const Banner = () => {
           Master 220 coding interview questions organized in 11 essential patterns
         </motion.p>
 
-<<<<<<< HEAD
-        <motion.button
-          onClick={handleEnterGalaxy}
-          className="mt-8 px-8 py-3 text-lg font-semibold rounded-full 
-                     bg-gradient-to-r from-blue-500 to-purple-600 
-                     text-white shadow-lg hover:shadow-xl
-                     transform hover:scale-105 transition-all
-                     duration-300 ease-out"
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.4 }}
-        >
-          Enter the Roadmap Galaxy
-        </motion.button>
-=======
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -104,7 +70,6 @@ export const Banner = () => {
             Enter the Roadmap Galaxy
           </Button>
         </motion.div>
->>>>>>> ea9cf41020b14efc9807cf9fd0e00e0b44f03387
       </div>
     </div>
   );
