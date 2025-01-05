@@ -22,12 +22,12 @@ export const Banner = () => {
       <BinaryTreeSvg />
       <BannerPatternVisuals />
 
-      <div className="relative z-10 text-center translate-y-[15%]">
+      <div className="relative z-10 text-center">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
-          className="flex justify-center space-x-12 mb-12"
+          className="flex justify-center space-x-8 mb-8"
         >
           <Binary className="w-16 h-16 text-purple-500" />
           <Network className="w-16 h-16 text-blue-500" />
@@ -37,7 +37,7 @@ export const Banner = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.2 }}
-          className="text-5xl font-bold text-white mb-6"
+          className="text-5xl font-bold text-white mb-4"
         >
           Advanced Coding Interview Patterns
         </motion.h1>
@@ -45,7 +45,7 @@ export const Banner = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.4 }}
-          className="text-xl text-gray-300 mb-12"
+          className="text-xl text-gray-300 mb-8"
         >
           Master 220 coding interview questions organized in 11 essential patterns
         </motion.p>
