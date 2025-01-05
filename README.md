@@ -17,6 +17,15 @@
 10. [Deployment and CI/CD](#deployment-and-cicd)
 11. [Future Enhancements](#future-enhancements)
 
+## 0. Project Overview
+- The project is a front-end application built with Vite.
+- It consists of two main pages: index and patterndetails.
+- The index page displays 11 patterns.
+- Clicking on a pattern leads to the patterndetails page.
+- The patterndetails page shows subpatterns.
+- Clicking on a subpattern creates a dropdown effect (similar to neetcode.io).
+- Each subpattern contains 3-5 questions.
+
 ## 1. Architecture Overview
 
 The Advanced Coding Interview Patterns Platform is built on a modern, scalable architecture designed to provide a seamless and interactive learning experience. The application is primarily client-side rendered, leveraging the power of React and Next.js for optimal performance and SEO benefits.
@@ -40,49 +49,194 @@ The frontend is built using React 18 and Next.js 13, taking advantage of the lat
 - **React 18**: Leveraging concurrent rendering and automatic batching for improved performance.
 - **Tailwind CSS**: For responsive design and consistent styling across the application.
 
+### Code flow
+# Advanced Coding Interview Patterns (ACIP)
+
+## Project Structure
+
+```mermaid
+graph TD
+    %% Main structure
+    Root[("🌲 ACIP<br/>Root")]
+    Src["📁 src"]
+    Components["📁 components"]
+    Pages["📁 pages"]
+    Data["📁 data"]
+    Lib["📁 lib"]
+
+    %% Components directory contents
+    Banner["📄 Banner.tsx"]
+    DifficultyBadge["📄 DifficultyBadge.tsx"]
+    ErrorBoundary["📄 ErrorBoundary.tsx"]
+    PatternCard["📄 PatternCard.tsx"]
+    Footer["📄 footer.tsx"]
+    Patterns["📁 patterns"]
+    UI["📁 ui"]
+    Layout["📄 layout.tsx"]
+
+    %% Pattern components
+    IndexPage["📁 index-page<br/>components"]
+    PatternDetail["📁 pattern-detail<br/>components"]
+    
+    %% Index page components
+    IndexComps["📑 PatternGrid.tsx<br/>StatisticsSection.tsx"]
+    
+    %% Pattern detail components
+    DetailHeader["📄 PatternHeader.tsx"]
+    Questions["📁 questions-list"]
+    QuestionsComps["📑 QuestionsList.tsx<br/>Question.tsx<br/>Subpattern.tsx<br/>PatternSummary.tsx<br/>QuestionDetails.tsx<br/>AnimationDialog.tsx"]
+
+    %% UI components
+    UIComps["📑 button.tsx<br/>dialog.tsx<br/>card.tsx"]
+
+    %% Pages
+    PageComps["📑 index.tsx<br/>PatternDetail.tsx"]
+
+    %% Data structure
+    Types["📄 types.ts"]
+    PatternsData["📁 patterns"]
+    Registry["📑 index.ts<br/>pattern-mapping.ts<br/>visualizers-registry.ts"]
+
+    %% Pattern examples
+    PatternExamples["📁 Pattern Examples"]
+    CountingPattern["📁 counting-pattern"]
+    ArticulationPattern["📁 articulation-points"]
+    SerializePattern["📁 serialize-deserialize"]
+
+    %% Pattern structure
+    PatternStructure["📑 pattern definition<br/>+ animations folder<br/>+ visualizers"]
+
+    %% Utils
+    Utils["📄 utils.ts"]
+
+    %% Connections
+    Root --> Src
+    Src --> Components
+    Src --> Pages
+    Src --> Data
+    Src --> Lib
+
+    Components --> Banner
+    Components --> DifficultyBadge
+    Components --> ErrorBoundary
+    Components --> PatternCard
+    Components --> Footer
+    Components --> Patterns
+    Components --> UI
+    Components --> Layout
+
+    Patterns --> IndexPage
+    Patterns --> PatternDetail
+
+    IndexPage --> IndexComps
+    PatternDetail --> DetailHeader
+    PatternDetail --> Questions
+    Questions --> QuestionsComps
+
+    UI --> UIComps
+    Pages --> PageComps
+
+    Data --> Types
+    Data --> PatternsData
+    PatternsData --> Registry
+    PatternsData --> PatternExamples
+
+    PatternExamples --> CountingPattern
+    PatternExamples --> ArticulationPattern
+    PatternExamples --> SerializePattern
+
+    CountingPattern --> PatternStructure
+    ArticulationPattern --> PatternStructure
+    SerializePattern --> PatternStructure
+
+    Lib --> Utils
+
+    %% Styling
+    classDef root fill:#f9f9f9,stroke:#2e7d32,stroke-width:3px;
+    classDef directory fill:#e3f2fd,stroke:#1565c0,stroke-width:2px;
+    classDef file fill:#ffffff,stroke:#333,stroke-width:1px;
+    classDef component fill:#e8f5e9,stroke:#2e7d32,stroke-width:2px;
+    classDef pattern fill:#fff3e0,stroke:#f57c00,stroke-width:2px;
+
+    class Root root;
+    class Src,Components,Pages,Data,Lib,Patterns,UI,Questions,PatternsData directory;
+    class Banner,DifficultyBadge,ErrorBoundary,PatternCard,Footer,Layout,UIComps,IndexComps,DetailHeader,QuestionsComps,PageComps,Types,Registry,Utils file;
+    class IndexPage,PatternDetail component;
+    class PatternExamples,CountingPattern,ArticulationPattern,SerializePattern,PatternStructure pattern;
+```
+
 ### Code Structure:
 
 ```
+# Advanced Coding Interview Patterns (ACIP)
+
 src/
 ├── components/
+│   ├── Banner.tsx                           # Page 1: Header Component
+│   ├── DifficultyBadge.tsx                 # Shared: Shows difficulty level
+│   ├── ErrorBoundary.tsx                   # Shared: Error handling wrapper
+│   ├── PatternCard.tsx                     # Shared: Card component for patterns
+│   ├── footer.tsx                          # Shared: Footer component
 │   ├── patterns/
-│   │   ├── index-page-components/
-│   │   │   ├── PatternGrid.tsx
-│   │   │   └── StatisticsSection.tsx
-│   │   └── pattern-detail-components/
-│   │       ├── PatternHeader.tsx
-│   │       ├── QuestionsList.tsx
-│   │       └── AnimationDialog.tsx
-│   ├── ui/
-│   │   ├── Button.tsx
-│   │   ├── Card.tsx
-│   │   └── Dialog.tsx
-│   └── layout/
-│       ├── Header.tsx
-│       └── Footer.tsx
-├── pages/
-│   ├── index.tsx
-│   └── pattern/
-│       └── [id].tsx
+│   │   ├── index-page-components/          # Page 1: Main landing page components
+│   │   │   ├── PatternGrid.tsx            # Grid layout of pattern cards
+│   │   │   └── StatisticsSection.tsx      # Statistics display section
+│   │   └── pattern-detail-components/      # Page 2: Pattern detail components
+│   │       ├── PatternHeader.tsx          # Header for pattern details
+│   │       └── questions-list/            # Questions section components
+│   │           ├── QuestionsList.tsx      # Entry point - manages questions data
+│   │           ├── Question.tsx           # Individual question component
+│   │           ├── Subpattern.tsx        # Subpattern section component
+│   │           ├── PatternSummary.tsx     # Pattern summary section
+│   │           ├── QuestionDetails.tsx    # Detailed question view
+│   │           └── AnimationDialog.tsx    # Animation modal component
+│   ├── ui/                                 # Shared UI components
+│   │   ├── button.tsx
+│   │   ├── dialog.tsx
+│   │   └── card.tsx
+│   └── layout.tsx                          # Main layout wrapper
+├── pages/                                  # Main application pages
+│   ├── index.tsx                          # Page 1: Landing page
+│   └── PatternDetail.tsx                   # Page 2: Pattern details page
 ├── data/
-│   └── patterns/
-│       ├── index.ts
-│       ├── counting-pattern/
-│       │   ├── counting-pattern.ts
+│   ├── types.ts                           # Type definitions for patterns & components
+│   └── patterns/                          # Pattern definitions and data
+│       ├── index.ts                       # Entry point for patterns
+│       ├── pattern-mapping.ts             # Pattern path mappings
+│       ├── visualizers-registry.ts        # Animation visualizers registry
+│       ├── counting-pattern/              # Example pattern
+│       │   ├── counting-pattern.ts        # Pattern definition
+│       │   └── animations/                # Pattern animations
+│       │       ├── index.ts               # Entry point for animations
+│       │       └── basic-counting/        # Subpattern animations
+│       │           ├── data.ts            # Animation data
+│       │           └── visualizer.tsx     # Animation component
+│       ├── articulation-points-and-bridges-pattern/
+│       │   ├── articulation-points-pattern.ts
 │       │   └── animations/
 │       │       ├── index.ts
-│       │       └── basic-counter-operations/
+│       │       └── [subpattern-folders]/
 │       │           ├── data.ts
 │       │           └── visualizer.tsx
-│       └── ...
-├── types/
-│   └── index.ts
-├── utils/
-│   ├── difficultyUtils.ts
-│   └── animationUtils.ts
-└── styles/
-    └── globals.css
+│       └── serialize-deserialize-pattern/
+           ├── serialize-deserialize-pattern.ts
+           └── animations/
+               ├── index.ts
+               └── [subpattern-folders]/
+                   ├── data.ts
+                   └── visualizer.tsx
+└── lib/
+    └── utils.ts                           # Utility functions
 ```
+### Key Features of the Project Structure:
+
+1. Next.js App Router: Utilizes file-system based routing (`pages/` directory).
+2. React Hooks and Context API: Used for local and global state management.
+3. Tailwind CSS: Employed for styling and responsive design.
+4. Static Data: Pattern data stored in `data/patterns/` for Static Site Generation.
+5. Animations: Custom SVG-based animations for each pattern/subpattern.
+6. Performance Optimizations: Implements code splitting, lazy loading, and memoization.
+7. Shared UI Components: Leverages shadcn/ui library in the `components/ui/` directory.
 
 ## 3. State Management
 
