@@ -10,7 +10,6 @@ import { Button } from "@/components/ui/button";
 export const Banner = () => {
   const navigate = useNavigate();
   const { setCurrentScene } = useNavigationStore();
-
   const handleEnterGalaxy = () => {
     setCurrentScene('galaxy');
     navigate('/galaxy');
