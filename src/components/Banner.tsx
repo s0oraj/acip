@@ -1,14 +1,19 @@
 import { motion } from "framer-motion";
-import { Binary, Network, Code2, Rocket } from 'lucide-react';
+import { Binary, Network, Code2 } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import { useNavigationStore } from '@/store/navigationStore';
 import { BannerBackground } from "./banner/BannerBackground";
 import { BinaryTreeSvg } from "./banner/BinaryTreeSvg";
 import { BannerPatternVisuals } from "./banner/BannerPatternVisuals";
-import { useNavigationStore } from "@/store/navigationStore";
-import { Button } from "@/components/ui/button";
 
 export const Banner = () => {
+  const navigate = useNavigate();
   const { setCurrentScene } = useNavigationStore();
 
+  const handleEnterGalaxy = () => {
+    setCurrentScene('galaxy');
+    navigate('/galaxy');
+  };
   return (
     <div className="relative w-full h-[600px] overflow-hidden bg-gradient-to-br from-black via-indigo-950 to-black">
       <div className="absolute inset-0 pointer-events-none">
@@ -55,21 +60,21 @@ export const Banner = () => {
           Master 220 coding interview questions organized in 11 essential patterns
         </motion.p>
 
-        <motion.div
+        <motion.button
+          onClick={handleEnterGalaxy}
+          className="mt-8 px-8 py-3 text-lg font-semibold rounded-full 
+                     bg-gradient-to-r from-blue-500 to-purple-600 
+                     text-white shadow-lg hover:shadow-xl
+                     transform hover:scale-105 transition-all
+                     duration-300 ease-out"
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.4, ease: "easeOut" }}
+          transition={{ duration: 0.5, delay: 0.4 }}
         >
-          <Button
-            variant="outline"
-            size="lg"
-            onClick={() => setCurrentScene('galaxy')}
-            className="bg-transparent border-2 border-purple-500 hover:bg-purple-500/20 text-white font-semibold text-lg px-8 py-6 rounded-full transition-all duration-300 flex items-center gap-3 group"
-          >
-            <Rocket className="w-6 h-6 group-hover:translate-x-1 transition-transform" />
-            Enter the Roadmap Galaxy
-          </Button>
-        </motion.div>
+          Enter the Roadmap Galaxy
+        </motion.button>
       </div>
     </div>
   );
