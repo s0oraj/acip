@@ -60,9 +60,8 @@ export const Banner = () => {
         >
           Master 220 coding interview questions organized in 11 essential patterns
         </motion.p>
-// You can adjust this value (mt-32, mt-40, mt-48 etc.) to get the exact positioning you want
-        <motion.div 
-          className="mt-32"  
+
+        <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.4, ease: "easeOut" }}
