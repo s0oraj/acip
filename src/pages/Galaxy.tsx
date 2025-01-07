@@ -34,10 +34,11 @@ const Galaxy = () => {
 
   return (
     <div className="h-screen w-full bg-loading-black">
-      <div className="absolute inset-0">
-        <Scene isReady={isSceneReady} />
-      </div>
-      
+      {!isLoading && (
+        <div className="absolute inset-0">
+          <Scene isReady={isSceneReady} />
+        </div>
+      )}
       <AnimatePresence mode="wait">
         {isLoading && (
           <motion.div
