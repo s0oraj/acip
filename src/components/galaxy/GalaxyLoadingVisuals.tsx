@@ -8,9 +8,23 @@ interface GalaxyLoadingVisualsProps {
 
 const GalaxyLoadingVisuals = ({ isLoading }: GalaxyLoadingVisualsProps) => {
   const containerRef = useRef<HTMLDivElement>(null);
+  const sceneRef = useRef<{
+    scene: THREE.Scene;
+    camera: THREE.PerspectiveCamera;
+    renderer: THREE.WebGLRenderer;
+    geometry: THREE.IcosahedronGeometry;
+    material: THREE.MeshPhongMaterial;
+    glowGeometry: THREE.IcosahedronGeometry;
+    glowMaterial: THREE.MeshPhongMaterial;
+    sphere: THREE.Mesh;
+    glowSphere: THREE.Mesh;
+    lights: THREE.PointLight[];
+    ambientLight: THREE.AmbientLight;
+    animationFrameId?: number;
+  }>();
 
   useEffect(() => {
-    if (!containerRef.current) return;
+    if (!containerRef.current || !isLoading) return;
 
     // Scene setup
     const scene = new THREE.Scene();
@@ -25,7 +39,6 @@ const GalaxyLoadingVisuals = ({ isLoading }: GalaxyLoadingVisualsProps) => {
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     containerRef.current.appendChild(renderer.domElement);
 
-    // Geometry and materials
     const geometry = new THREE.IcosahedronGeometry(2, 3);
     const material = new THREE.MeshPhongMaterial({
       color: 0x2D5B8E,
@@ -40,7 +53,6 @@ const GalaxyLoadingVisuals = ({ isLoading }: GalaxyLoadingVisualsProps) => {
     const sphere = new THREE.Mesh(geometry, material);
     scene.add(sphere);
 
-    // Glow effect
     const glowGeometry = new THREE.IcosahedronGeometry(2.2, 3);
     const glowMaterial = new THREE.MeshPhongMaterial({
       color: 0xFFB454,
@@ -50,7 +62,6 @@ const GalaxyLoadingVisuals = ({ isLoading }: GalaxyLoadingVisualsProps) => {
     const glowSphere = new THREE.Mesh(glowGeometry, glowMaterial);
     scene.add(glowSphere);
 
-    // Lighting
     const ambientLight = new THREE.AmbientLight(0x404040, 2.5);
     scene.add(ambientLight);
 
@@ -67,12 +78,26 @@ const GalaxyLoadingVisuals = ({ isLoading }: GalaxyLoadingVisualsProps) => {
 
     camera.position.z = 5;
 
-    // Animation
+    // Store everything in the ref for cleanup
+    sceneRef.current = {
+      scene,
+      camera,
+      renderer,
+      geometry,
+      material,
+      glowGeometry,
+      glowMaterial,
+      sphere,
+      glowSphere,
+      lights,
+      ambientLight
+    };
+
     let time = 0;
-    let animationFrameId: number;
 
     const animate = () => {
-      animationFrameId = requestAnimationFrame(animate);
+      if (!isLoading) return;
+      
       time += 0.01;
       
       sphere.rotation.x = Math.sin(time * 0.5) * 0.2 + time * 0.2;
@@ -82,13 +107,13 @@ const GalaxyLoadingVisuals = ({ isLoading }: GalaxyLoadingVisualsProps) => {
       glowSphere.rotation.y = sphere.rotation.y;
       
       renderer.render(scene, camera);
+      sceneRef.current!.animationFrameId = requestAnimationFrame(animate);
     };
 
     animate();
 
-    // Responsive handling
     const handleResize = () => {
-      if (!containerRef.current) return;
+      if (!containerRef.current || !sceneRef.current) return;
       
       camera.aspect = window.innerWidth / window.innerHeight;
       camera.updateProjectionMatrix();
@@ -97,29 +122,38 @@ const GalaxyLoadingVisuals = ({ isLoading }: GalaxyLoadingVisualsProps) => {
 
     window.addEventListener('resize', handleResize);
 
-    // Cleanup
     return () => {
       window.removeEventListener('resize', handleResize);
-      cancelAnimationFrame(animationFrameId);
-      
-      geometry.dispose();
-      material.dispose();
-      glowGeometry.dispose();
-      glowMaterial.dispose();
-      
-      lights.forEach(light => {
-        scene.remove(light);
-        light.dispose();
-      });
-      
-      scene.remove(sphere);
-      scene.remove(glowSphere);
-      scene.remove(ambientLight);
-      
-      renderer.dispose();
-      
-      if (containerRef.current?.contains(renderer.domElement)) {
-        containerRef.current.removeChild(renderer.domElement);
+    };
+  }, [isLoading]);
+
+  // Separate cleanup effect
+  useEffect(() => {
+    return () => {
+      if (sceneRef.current) {
+        if (sceneRef.current.animationFrameId) {
+          cancelAnimationFrame(sceneRef.current.animationFrameId);
+        }
+        
+        sceneRef.current.geometry.dispose();
+        sceneRef.current.material.dispose();
+        sceneRef.current.glowGeometry.dispose();
+        sceneRef.current.glowMaterial.dispose();
+        
+        sceneRef.current.lights.forEach(light => {
+          sceneRef.current!.scene.remove(light);
+          light.dispose();
+        });
+        
+        sceneRef.current.scene.remove(sceneRef.current.sphere);
+        sceneRef.current.scene.remove(sceneRef.current.glowSphere);
+        sceneRef.current.scene.remove(sceneRef.current.ambientLight);
+        
+        sceneRef.current.renderer.dispose();
+        
+        if (containerRef.current?.contains(sceneRef.current.renderer.domElement)) {
+          containerRef.current.removeChild(sceneRef.current.renderer.domElement);
+        }
       }
     };
   }, []);
@@ -130,7 +164,7 @@ const GalaxyLoadingVisuals = ({ isLoading }: GalaxyLoadingVisualsProps) => {
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       transition={{ 
-        duration: 1,
+        duration: 0.5, // Reduced from 1s to 0.5s for faster transition
         ease: "easeInOut"
       }}
       className="fixed inset-0 bg-loading-black flex items-center justify-center"
@@ -140,7 +174,7 @@ const GalaxyLoadingVisuals = ({ isLoading }: GalaxyLoadingVisualsProps) => {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         exit={{ opacity: 0, y: -20 }}
-        transition={{ duration: 0.5 }}
+        transition={{ duration: 0.3 }} // Reduced from 0.5s to 0.3s
         className="absolute z-10 flex flex-col items-center space-y-4"
       >
         <motion.div 
