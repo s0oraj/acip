@@ -10,7 +10,11 @@ const Galaxy = () => {
     setCurrentScene('galaxy')
   }, [setCurrentScene])
 
-  return <Scene />
+  return (
+    <div className="h-screen w-full bg-black">
+      <Scene />
+    </div>
+  ) 
 }
 
 export default Galaxy

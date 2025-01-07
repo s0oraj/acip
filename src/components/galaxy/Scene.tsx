@@ -63,7 +63,6 @@ const Scene = () => {
   };
 
   return (
-    <div className="h-screen w-full bg-black">
       <Canvas
         camera={{
           position: [0, 3, 10],
@@ -106,7 +105,6 @@ const Scene = () => {
           onTargetClick={handleStarClick}
         />
       </Canvas>
-    </div>
   );
 };
 
