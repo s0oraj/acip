@@ -164,37 +164,37 @@ const GalaxyLoadingVisuals = ({ isLoading }: GalaxyLoadingVisualsProps) => {
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       transition={{ 
-        duration: 0.5, // Reduced from 1s to 0.5s for faster transition
+        duration: 0.5,
         ease: "easeInOut"
       }}
       className="fixed inset-0 bg-loading-black flex items-center justify-center"
     >
       <div ref={containerRef} className="absolute inset-0" />
       <motion.div 
-  initial={{ opacity: 0, y: 20 }}
-  animate={{ opacity: 1, y: 0 }}
-  exit={{ opacity: 0, y: -20 }}
-  transition={{ 
-    duration: 0.6,
-    ease: "easeOut",
-    opacity: { duration: 0.4 }, // Separate duration for opacity
-    y: { 
-      type: "spring", 
-      damping: 20, 
-      stiffness: 100 
-    }
-  }}
-  className="absolute z-10 flex flex-col items-center space-y-4"
->
-  <motion.div 
-    className="text-loading-gold text-3xl font-light tracking-[0.2em] uppercase"
-    animate={{ opacity: [1, 0.7, 1] }} // Made the opacity drop less dramatic
-    transition={{ 
-      duration: 2.5, 
-      repeat: Infinity,
-      ease: "easeInOut" // Added easing for smoother pulse
-    }}
-  >
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        exit={{ opacity: 0, y: -20 }}
+        transition={{ 
+          duration: 0.6,
+          ease: "easeOut",
+          opacity: { duration: 0.4 },
+          y: { 
+            type: "spring", 
+            damping: 20,
+            stiffness: 100
+          }
+        }}
+        className="absolute z-10 flex flex-col items-center space-y-4"
+      >
+        <motion.div 
+          className="text-loading-gold text-3xl font-light tracking-[0.2em] uppercase"
+          animate={{ opacity: [1, 0.7, 1] }}
+          transition={{ 
+            duration: 2.5, 
+            repeat: Infinity,
+            ease: "easeInOut"
+          }}
+        >
           Initializing Galaxy
         </motion.div>
         <div className="flex space-x-2">
