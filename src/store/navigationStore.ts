@@ -9,6 +9,7 @@ interface NavigationState {
   // Scene Management
   currentScene: SceneType
   isTransitioning: boolean
+  isSceneReady: boolean  // New property
   cursorStyle: 'default' | 'grab' | 'grabbing'
   
   // Level & Pattern Management
@@ -21,6 +22,7 @@ interface NavigationState {
   // Actions
   setCurrentScene: (scene: SceneType) => void
   setIsTransitioning: (isTransitioning: boolean) => void
+  setIsSceneReady: (isReady: boolean) => void  // New action
   setCursorStyle: (style: 'default' | 'grab' | 'grabbing') => void
   setSelectedLevel: (level: LevelNumber | null) => void
   setSelectedPatternId: (patternId: number | null) => void
@@ -32,6 +34,7 @@ export const useNavigationStore = create<NavigationState>()(
       // Initial State
       currentScene: 'main',
       isTransitioning: false,
+      isSceneReady: false,  // New initial state
       cursorStyle: 'default',
       selectedLevel: null,
       selectedPatternId: null,
@@ -47,6 +50,7 @@ export const useNavigationStore = create<NavigationState>()(
       // Actions
       setCurrentScene: (scene) => set({ currentScene: scene }),
       setIsTransitioning: (isTransitioning) => set({ isTransitioning }),
+      setIsSceneReady: (isReady) => set({ isSceneReady: isReady }), // New action
       setCursorStyle: (style) => set({ cursorStyle: style }),
       setSelectedLevel: (level) => set({ selectedLevel: level }),
       setSelectedPatternId: (patternId) => set({ selectedPatternId: patternId }),

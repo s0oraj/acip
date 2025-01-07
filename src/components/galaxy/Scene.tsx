@@ -8,6 +8,10 @@ import GalaxyParticles from './GalaxyParticles';
 import Background from './Background';
 import CameraController from './CameraController';
 
+interface SceneProps {
+  isReady: boolean;
+}
+
 const targetPoints = [
   {
     position: new THREE.Vector3(6.67, 0.2, 4), // Level 1 - Outer arm
@@ -27,7 +31,7 @@ const targetPoints = [
   }
 ];
 
-const Scene = () => {
+const Scene = ({ isReady }: SceneProps) => {
   const navigate = useNavigate();
   const [selectedTargetIndex, setSelectedTargetIndex] = useState<number | null>(null);
   const { 
@@ -59,52 +63,53 @@ const Scene = () => {
     setIsTransitioning(false);
     navigate('/roadmap');
     setCurrentScene('roadmap');
-    
   };
 
   return (
-      <Canvas
-        camera={{
-          position: [0, 3, 10],
-          fov: 75,
-          near: 0.1,
-          far: 1000
-        }}
-        gl={{ 
-          antialias: true,
-          alpha: true,
-          preserveDrawingBuffer: true,
-          toneMapping: THREE.ACESFilmicToneMapping,
-          toneMappingExposure: 1.0
-        }}
-      >
-        <CameraController
-          targetPosition={selectedTargetIndex !== null 
-            ? targetPoints[selectedTargetIndex].position 
-            : targetPoints[0].position}
-          isTransitioning={isTransitioning}
-          onTransitionComplete={handleTransitionComplete}
-        />
+    <Canvas
+      style={{ opacity: isReady ? 1 : 0, transition: 'opacity 0.5s ease' }}
+      camera={{
+        position: [0, 3, 10],
+        fov: 75,
+        near: 0.1,
+        far: 1000
+      }}
+      gl={{ 
+        antialias: true,
+        alpha: true,
+        preserveDrawingBuffer: true,
+        toneMapping: THREE.ACESFilmicToneMapping,
+        toneMappingExposure: 1.0,
+        powerPreference: "high-performance"
+      }}
+    >
+      <CameraController
+        targetPosition={selectedTargetIndex !== null 
+          ? targetPoints[selectedTargetIndex].position 
+          : targetPoints[0].position}
+        isTransitioning={isTransitioning}
+        onTransitionComplete={handleTransitionComplete}
+      />
 
-        <OrbitControls
-          enabled={!isTransitioning}
-          enableZoom={true}
-          enablePan={true}
-          enableRotate={true}
-          zoomSpeed={0.5}
-          panSpeed={0.5}
-          rotateSpeed={0.5}
-          minPolarAngle={Math.PI * 0.25}
-          maxPolarAngle={Math.PI * 0.75}
-        />
-        
-        <Background />
+      <OrbitControls
+        enabled={!isTransitioning}
+        enableZoom={true}
+        enablePan={true}
+        enableRotate={true}
+        zoomSpeed={0.5}
+        panSpeed={0.5}
+        rotateSpeed={0.5}
+        minPolarAngle={Math.PI * 0.25}
+        maxPolarAngle={Math.PI * 0.75}
+      />
+      
+      <Background />
 
-        <GalaxyParticles
-          targets={targetPoints}
-          onTargetClick={handleStarClick}
-        />
-      </Canvas>
+      <GalaxyParticles
+        targets={targetPoints}
+        onTargetClick={handleStarClick}
+      />
+    </Canvas>
   );
 };
 

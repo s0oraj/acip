@@ -5,27 +5,28 @@ import GalaxyLoadingVisuals from '../components/galaxy/GalaxyLoadingVisuals'
 import { AnimatePresence, motion } from 'framer-motion'
 
 const Galaxy = () => {
-  const { setCurrentScene } = useNavigationStore()
+  const { setCurrentScene, setIsSceneReady, isSceneReady } = useNavigationStore()
   const [isLoading, setIsLoading] = useState(true)
-  const [isSceneReady, setIsSceneReady] = useState(false)
   
   useEffect(() => {
     setCurrentScene('galaxy')
+    setIsSceneReady(false) // Reset on mount
     
-    // Slightly reduced loading time
     const loadTimer = setTimeout(() => {
       setIsSceneReady(true)
     }, 800)
 
-    return () => clearTimeout(loadTimer)
-  }, [setCurrentScene])
+    return () => {
+      clearTimeout(loadTimer)
+      setIsSceneReady(false) // Clean up on unmount
+    }
+  }, [setCurrentScene, setIsSceneReady])
 
   useEffect(() => {
     if (isSceneReady) {
-      // Reduced transition buffer
       const transitionTimer = setTimeout(() => {
         setIsLoading(false)
-      }, 300)
+      }, 500)
 
       return () => clearTimeout(transitionTimer)
     }
@@ -33,32 +34,26 @@ const Galaxy = () => {
 
   return (
     <div className="h-screen w-full bg-loading-black">
+      <div className="absolute inset-0">
+        <Scene isReady={isSceneReady} />
+      </div>
+      
       <AnimatePresence mode="wait">
         {isLoading && (
           <motion.div
             key="loading"
             initial={{ opacity: 1 }}
+            animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.5, ease: "easeInOut" }}
-            className="absolute inset-0 z-10"
+            transition={{ duration: 0.8, ease: "easeInOut" }}
+            className="absolute inset-0 z-10 bg-loading-black"
           >
             <GalaxyLoadingVisuals isLoading={isLoading} />
           </motion.div>
         )}
-        
-        <motion.div
-          key="scene"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: isSceneReady ? 1 : 0 }}
-          transition={{ duration: 0.5 }}
-          className="absolute inset-0"
-        >
-          <Scene />
-        </motion.div>
       </AnimatePresence>
     </div>
   )
 }
-
 
 export default Galaxy
