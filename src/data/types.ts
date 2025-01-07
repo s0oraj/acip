@@ -5,6 +5,7 @@ export interface QuestionDetails {
   optimization: string;
 }
 
+
 export interface Question {
   id: number;
   title: string;
