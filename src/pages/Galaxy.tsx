@@ -51,6 +51,7 @@ const Galaxy = () => {
     { text: "Knock, knock, Neo.", duration: Infinity }
   ]
 
+  
   const introMessages = [
     { text: "Welcome to the Galaxy Map", duration: 3000 },
     { text: "Each bright point represents a level", duration: 3000 },
