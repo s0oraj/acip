@@ -3,135 +3,116 @@ import { Node, Edge } from '@xyflow/react'
 export const initialNodes: Node[] = [
   { 
     id: 'start',
-    data: { label: 'Level 1: Foundation' },
+    data: { label: 'Level 4: Expert' },
     position: { x: 0, y: 240 },
     className: 'start-node'
   },
   { 
     id: 'p1',
-    data: { label: '1. Counting Pattern' },
+    data: { label: '10. Segment Tree Pattern' },
     position: { x: -160, y: 160 },
     className: 'pattern-node'
   },
   { 
     id: 'p2',
-    data: { label: '2. Monotonic Stack/Queue' },
+    data: { label: '11. Binary Indexed Tree Pattern' },
     position: { x: 160, y: 160 },
     className: 'pattern-node'
   },
+  // Segment Tree Pattern subpatterns
   { 
-    id: 'c1',
-    data: { label: '1A.1 Single Value Counter' },
+    id: 'st1',
+    data: { label: '10A.1 Range Sum Query' },
     position: { x: -320, y: 80 },
     className: 'subpattern-node'
   },
   { 
-    id: 'c2',
-    data: { label: '1A.2 Conditional Counter' },
+    id: 'st2',
+    data: { label: '10A.2 Range Maximum Query' },
     position: { x: -360, y: 0 },
     className: 'subpattern-node'
   },
   { 
-    id: 'c3',
-    data: { label: '1A.3 Multi-Value Counter' },
+    id: 'st3',
+    data: { label: '10A.3 Range XOR Query' },
     position: { x: -320, y: -80 },
     className: 'subpattern-node'
   },
   { 
-    id: 'f1',
-    data: { label: '1B.1 Frequency Map' },
+    id: 'lp1',
+    data: { label: '10B.1 Range Update Operation' },
     position: { x: -160, y: 80 },
     className: 'subpattern-node'
   },
   { 
-    id: 'f2',
-    data: { label: '1B.2 Group Frequency' },
+    id: 'lp2',
+    data: { label: '10B.2 Range Addition Query' },
     position: { x: -240, y: 0 },
     className: 'subpattern-node'
   },
   { 
-    id: 'f3',
-    data: { label: '1B.3 Freq of Frequencies' },
+    id: 'lp3',
+    data: { label: '10B.3 Range Set Query' },
     position: { x: -200, y: -80 },
     className: 'subpattern-node'
   },
+  // Binary Indexed Tree Pattern subpatterns
   { 
-    id: 'w1',
-    data: { label: '1C.1 Fixed Window' },
-    position: { x: 0, y: 80 },
-    className: 'subpattern-node'
-  },
-  { 
-    id: 'w2',
-    data: { label: '1C.2 Dynamic Window' },
-    position: { x: -120, y: 0 },
-    className: 'subpattern-node'
-  },
-  { 
-    id: 'w3',
-    data: { label: '1C.3 Multi-Condition' },
-    position: { x: -80, y: -80 },
-    className: 'subpattern-node'
-  },
-  { 
-    id: 'n1',
-    data: { label: '2A.1 Next Greater Element' },
+    id: 'bit1',
+    data: { label: '11A.1 Range Sum Query' },
     position: { x: 160, y: 80 },
     className: 'subpattern-node'
   },
   { 
-    id: 'n2',
-    data: { label: '2A.2 Previous Greater' },
+    id: 'bit2',
+    data: { label: '11A.2 Count of Smaller Numbers' },
     position: { x: 120, y: 0 },
     className: 'subpattern-node'
   },
   { 
-    id: 'n3',
-    data: { label: '2A.3 Circular Array' },
+    id: 'bit3',
+    data: { label: '11A.3 Range Frequency Query' },
     position: { x: 80, y: -80 },
     className: 'subpattern-node'
   },
   { 
-    id: 'm1',
-    data: { label: '2B.1 Sliding Window Max' },
+    id: 'os1',
+    data: { label: '11B.1 Kth Smallest Element' },
     position: { x: 320, y: 80 },
     className: 'subpattern-node'
   },
   { 
-    id: 'm2',
-    data: { label: '2B.2 Window Difference' },
+    id: 'os2',
+    data: { label: '11B.2 Counting Inversions' },
     position: { x: 360, y: 0 },
     className: 'subpattern-node'
   },
   { 
-    id: 'm3',
-    data: { label: '2B.3 Dynamic Window Sum' },
+    id: 'os3',
+    data: { label: '11B.3 Next Greater Element' },
     position: { x: 320, y: -80 },
     className: 'subpattern-node'
-  },
+  }
 ]
 
-// Edges remain the same as they reference the node IDs which haven't changed
 export const initialEdges: Edge[] = [
   { id: 'e-start-p1', source: 'start', target: 'p1', animated: true },
   { id: 'e-start-p2', source: 'start', target: 'p2', animated: true },
-  { id: 'e-p1-c1', source: 'p1', target: 'c1' },
-  { id: 'e-p1-f1', source: 'p1', target: 'f1' },
-  { id: 'e-p1-w1', source: 'p1', target: 'w1' },
-  { id: 'e-c1-c2', source: 'c1', target: 'c2' },
-  { id: 'e-c2-c3', source: 'c2', target: 'c3' },
-  { id: 'e-f1-f2', source: 'f1', target: 'f2' },
-  { id: 'e-f2-f3', source: 'f2', target: 'f3' },
-  { id: 'e-w1-w2', source: 'w1', target: 'w2' },
-  { id: 'e-w2-w3', source: 'w2', target: 'w3' },
-  { id: 'e-p2-n1', source: 'p2', target: 'n1' },
-  { id: 'e-p2-m1', source: 'p2', target: 'm1' },
-  { id: 'e-n1-n2', source: 'n1', target: 'n2' },
-  { id: 'e-n2-n3', source: 'n2', target: 'n3' },
-  { id: 'e-m1-m2', source: 'm1', target: 'm2' },
-  { id: 'e-m2-m3', source: 'm2', target: 'm3' },
-  { id: 'e-w2-m1', source: 'w2', target: 'm1' },
-  { id: 'e-f2-n1', source: 'f2', target: 'n1' },
-  { id: 'e-c2-f2', source: 'c2', target: 'f2' },
-  { id: 'e-w2-f3', source: 'w2', target: 'f3' },
+  { id: 'e-p1-st1', source: 'p1', target: 'st1' },
+  { id: 'e-p1-lp1', source: 'p1', target: 'lp1' },
+  { id: 'st1-st2', source: 'st1', target: 'st2' },
+  { id: 'st2-st3', source: 'st2', target: 'st3' },
+  { id: 'lp1-lp2', source: 'lp1', target: 'lp2' },
+  { id: 'lp2-lp3', source: 'lp2', target: 'lp3' },
+  { id: 'e-p2-bit1', source: 'p2', target: 'bit1' },
+  { id: 'e-p2-os1', source: 'p2', target: 'os1' },
+  { id: 'bit1-bit2', source: 'bit1', target: 'bit2' },
+  { id: 'bit2-bit3', source: 'bit2', target: 'bit3' },
+  { id: 'os1-os2', source: 'os1', target: 'os2' },
+  { id: 'os2-os3', source: 'os2', target: 'os3' },
+  // Cross pattern connections
+  { id: 'lp2-bit1', source: 'lp2', target: 'bit1' },
+  { id: 'st2-lp2', source: 'st2', target: 'lp2' },
+  { id: 'st3-os1', source: 'st3', target: 'os1' },
+  { id: 'lp3-os2', source: 'lp3', target: 'os2' }
 ]

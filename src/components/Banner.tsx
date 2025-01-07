@@ -5,7 +5,7 @@ import { BannerBackground } from "./banner/BannerBackground";
 import { BinaryTreeSvg } from "./banner/BinaryTreeSvg";
 import { BannerPatternVisuals } from "./banner/BannerPatternVisuals";
 import { useNavigationStore } from "@/store/navigationStore";
-import { Button } from "@/components/ui/button";
+import { SpaceButton } from './banner/SpaceButton';
 
 export const Banner = () => {
   const navigate = useNavigate();
@@ -23,6 +23,7 @@ export const Banner = () => {
       </div>
       
       <BinaryTreeSvg />
+      
       <div className="relative z-10 container mx-auto h-full flex flex-col items-center justify-center text-center px-4">
         <motion.div
           className="flex items-center gap-6 mb-8"
@@ -43,6 +44,7 @@ export const Banner = () => {
             <div className="absolute inset-0 bg-indigo-400/20 blur-xl" />
           </motion.div>
         </motion.div>
+
         <motion.h1
           className="text-5xl md:text-7xl font-bold mb-6 bg-clip-text text-white bg-gradient-to-r from-blue-400 to-purple-500"
           initial={{ opacity: 0, y: 20 }}
@@ -53,30 +55,23 @@ export const Banner = () => {
         </motion.h1>
         
         <motion.p
-          className="text-xl md:text-2xl text-gray-300/90 mb-8 max-w-3xl leading-relaxed"
+          className="text-xl md:text-2xl text-gray-300/90 mb-12 max-w-3xl leading-relaxed"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
         >
           Master 220 coding interview questions organized in 11 essential patterns
         </motion.p>
+      </div>
 
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.4, ease: "easeOut" }}
-          style={{ marginTop: "16px" }}
-        >
-          <Button
-            variant="outline"
-            size="lg"
-            onClick={handleEnterGalaxy}
-            className="bg-transparent border-2 border-purple-500 hover:bg-purple-500/20 text-white font-semibold text-lg px-8 py-6 rounded-full transition-all duration-300 flex items-center gap-3 group"
-          >
-            <Rocket className="w-6 h-6 group-hover:translate-x-1 transition-transform" />
-            Enter the Roadmap Galaxy
-          </Button>
-        </motion.div>
+      {/* Button positioned dynamically */}
+      <div 
+        className="absolute left-1/2 -translate-x-1/2 z-20"
+        style={{
+          top: "calc(50% + (600px / 4))"  // Places button halfway between center and bottom
+        }}
+      >
+        <SpaceButton onClick={handleEnterGalaxy} />
       </div>
     </div>
   );
