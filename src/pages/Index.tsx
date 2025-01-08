@@ -3,13 +3,16 @@ import { PatternGrid } from "@/components/patterns/index-page-components/Pattern
 import { patterns } from "@/data/patterns";
 import { StatisticsSection } from "@/components/patterns/index-page-components/StatisticsSection";
 import { Footer } from "@/components/footer";
-import { NavigationBar } from "@/components/NavigationBar";
+import { Navigation  } from "@/components/NavigationBar";
 
 const Index = () => {
   return (
     <div className="min-h-screen bg-background overflow-x-hidden">
-      <NavigationBar />
-      <Banner />
+      <div className="relative">  {/* Added wrapper to handle positioning */}
+        <Navigation />
+        <Banner />
+      </div>
+
       <div className="bg-white dark:bg-gray-900">
         <div className="max-w-7xl mx-auto px-4 py-16">
           <StatisticsSection />
@@ -23,4 +26,5 @@ const Index = () => {
     </div>
   );
 };
+
 export default Index;
