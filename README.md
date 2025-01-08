@@ -1,6 +1,6 @@
 
 # Advanced Coding Interview Patterns Platform - Technical Documentation
-**URL**: [https://acip.vercel.app/](https://acip.vercel.app/)
+**Website URL**: [https://acip.vercel.app/](https://acip.vercel.app/)
 
 **Backend-Repo**: [https://github.com/s0oraj/pattern-tracker](https://github.com/s0oraj/pattern-tracker)
 
