@@ -1,174 +1,233 @@
 "use client"
 
-import type React from "react"
-import { useState } from "react"
-import { motion, AnimatePresence } from "framer-motion"
-import { GitBranch, GitMerge, Network } from "lucide-react"
-import { patterns } from "./data"
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Card } from "@/components/ui/card"
+import { useState, useEffect, useRef } from "react"
+import { motion, useMotionValue, useTransform } from "framer-motion"
+import { Canvas, useFrame } from "@react-three/fiber"
+import { Text, OrbitControls } from "@react-three/drei"
+import { GitBranch, GitMerge, Hash, Play, Pause, RotateCcw, ChevronLeft, ChevronRight } from "lucide-react"
+import { patterns, stateCountingAnimation } from "./data"
 
-const Visualizer: React.FC = () => {
+const StateTransition3D = ({ char, count, maxCount }) => {
+  const meshRef = useRef()
+  const scale = useMotionValue(0)
+  const opacity = useTransform(scale, [0, 1], [0.3, 1])
+
+  useEffect(() => {
+    scale.set(count / maxCount)
+  }, [count, maxCount, scale]) // Added scale to dependencies
+
+  useFrame(() => {
+    if (meshRef.current) {
+      meshRef.current.rotation.y += 0.01
+    }
+  })
+
+  return (
+    <mesh ref={meshRef} position={[0, 0, 0]}>
+      <boxGeometry args={[1, 1, 1]} />
+      <meshStandardMaterial color="#2563EB" transparent opacity={opacity.get()} />
+      <Text position={[0, 0, 0.51]} fontSize={0.5} color="white" anchorX="center" anchorY="middle">
+        {char}
+      </Text>
+      <Text position={[0, -0.7, 0.51]} fontSize={0.2} color="white" anchorX="center" anchorY="middle">
+        {count}
+      </Text>
+    </mesh>
+  )
+}
+
+const Visualizer = () => {
   const [activePattern, setActivePattern] = useState("stateTransition")
   const [step, setStep] = useState(0)
   const [isPlaying, setIsPlaying] = useState(false)
 
-  const getIcon = (iconName: string) => {
+  const pattern = patterns[activePattern]
+  const animation = stateCountingAnimation.steps.find((s) => s.title.toLowerCase().includes(activePattern))
+  const maxSteps = animation ? animation.array.length : 0
+
+  useEffect(() => {
+    let timer
+    if (isPlaying && step < maxSteps - 1) {
+      timer = setTimeout(() => setStep((s) => s + 1), 1000)
+    } else if (step === maxSteps - 1) {
+      setIsPlaying(false)
+    }
+    return () => clearTimeout(timer)
+  }, [isPlaying, step, maxSteps])
+
+  const getIcon = (iconName) => {
     switch (iconName) {
       case "git-branch":
         return <GitBranch className="w-5 h-5" />
       case "git-merge":
         return <GitMerge className="w-5 h-5" />
-      case "network":
-        return <Network className="w-5 h-5" />
+      case "hash":
+        return <Hash className="w-5 h-5" />
       default:
-        return <GitBranch className="w-5 h-5" />
+        return <Hash className="w-5 h-5" />
     }
   }
 
-  const renderStateVisualization = () => {
-    const pattern = patterns[activePattern as keyof typeof patterns]
-
-    if (activePattern === "stateTransition") {
-      return (
-        <motion.div
-          layout
-          className="grid grid-cols-3 gap-4"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-        >
-          {Array.from(pattern.data)
-            .slice(0, step + 1)
-            .map((char, idx) => (
-              <motion.div
-                key={idx}
-                initial={{ scale: 0 }}
-                animate={{ scale: 1 }}
-                className="bg-white p-4 rounded-lg shadow-lg"
-              >
-                <div className="text-2xl font-bold text-center mb-2">{char}</div>
-                <div className="text-sm text-gray-600 text-center">
-                  Count: {(pattern.data.slice(0, step + 1).match(new RegExp(char, "g")) || []).length}
-                </div>
-              </motion.div>
-            ))}
-        </motion.div>
-      )
-    }
-
-    if (activePattern === "multiState") {
-      return (
-        <motion.div
-          layout
-          className="flex flex-col gap-4"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-        >
-          {pattern.states.map((state, idx) => (
-            <motion.div
-              key={state}
-              className="flex items-center gap-4 bg-white p-4 rounded-lg shadow-lg"
-              initial={{ x: -50, opacity: 0 }}
-              animate={{ x: 0, opacity: 1 }}
-              transition={{ delay: idx * 0.1 }}
-            >
-              <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center text-xl font-bold">
-                {state}
-              </div>
-              <div className="flex-1">
-                <div className="h-2 bg-gray-200 rounded-full">
-                  <motion.div
-                    className="h-full bg-primary rounded-full"
-                    initial={{ width: "0%" }}
-                    animate={{
-                      width: `${
-                        (pattern.data
-                          .slice(0, step + 1)
-                          .split("")
-                          .filter((c) => c === state).length /
-                          pattern.data.length) *
-                        100
-                      }%`,
-                    }}
-                  />
-                </div>
-              </div>
-            </motion.div>
-          ))}
-        </motion.div>
-      )
-    }
-
-    return null
+  const handleNext = () => {
+    const patternKeys = Object.keys(patterns)
+    const nextIndex = (patternKeys.indexOf(activePattern) + 1) % patternKeys.length
+    setActivePattern(patternKeys[nextIndex])
+    setStep(0)
+    setIsPlaying(false)
   }
 
   return (
-    <div className="p-6 max-w-4xl mx-auto">
-      <Tabs defaultValue={activePattern} onValueChange={setActivePattern}>
-        <TabsList className="grid grid-cols-3 mb-8">
-          {Object.entries(patterns).map(([key, { title, icon, color }]) => (
-            <TabsTrigger key={key} value={key} className="flex items-center gap-2 p-4">
+    <div className="p-6 bg-gray-100 min-h-screen">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
+        {Object.entries(patterns).map(([key, { icon, title, desc, color }]) => (
+          <motion.button
+            key={key}
+            onClick={() => {
+              setActivePattern(key)
+              setStep(0)
+              setIsPlaying(false)
+            }}
+            className={`p-4 rounded-xl transition-all ${
+              activePattern === key ? "bg-white shadow-lg scale-105" : "bg-gray-50 hover:bg-white hover:shadow"
+            }`}
+            whileHover={{ scale: activePattern === key ? 1.05 : 1.02 }}
+            whileTap={{ scale: 0.98 }}
+          >
+            <div className="flex items-center gap-3 mb-2">
               <div style={{ color }} className="p-2 rounded-lg bg-opacity-10 bg-current">
                 {getIcon(icon)}
               </div>
-              <span>{title}</span>
-            </TabsTrigger>
-          ))}
-        </TabsList>
-      </Tabs>
-
-      <Card className="p-6 mb-8">
-        <AnimatePresence mode="wait">{renderStateVisualization()}</AnimatePresence>
-      </Card>
-
-      <div className="flex justify-center gap-4 mt-8">
-        <motion.button
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-          onClick={() => setStep(Math.max(0, step - 1))}
-          className="px-4 py-2 rounded-lg bg-gray-200 hover:bg-gray-300"
-        >
-          Previous
-        </motion.button>
-
-        <motion.button
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-          onClick={() => {
-            setIsPlaying(!isPlaying)
-            if (!isPlaying && step < patterns[activePattern].data.length - 1) {
-              setStep(step + 1)
-            }
-          }}
-          className="px-4 py-2 rounded-lg bg-primary text-white"
-        >
-          {isPlaying ? "Pause" : "Play"}
-        </motion.button>
-
-        <motion.button
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-          onClick={() => setStep(Math.min(patterns[activePattern].data.length - 1, step + 1))}
-          className="px-4 py-2 rounded-lg bg-gray-200 hover:bg-gray-300"
-        >
-          Next
-        </motion.button>
+              <span className="font-semibold">{title}</span>
+            </div>
+            <p className="text-sm text-gray-600">{desc}</p>
+          </motion.button>
+        ))}
       </div>
 
-      <div className="mt-8 bg-gray-900 rounded-lg p-4">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-4">
+        <motion.div
+          className="bg-white p-5 rounded-xl shadow-sm"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+        >
+          <h3 className="text-lg font-semibold mb-3">Input Sequence</h3>
+          <div className="flex flex-wrap gap-2 mb-4">
+            {animation &&
+              animation.array.map((val, idx) => (
+                <motion.div
+                  key={idx}
+                  initial={{ scale: 0.8, opacity: 0 }}
+                  animate={{
+                    scale: idx === step ? 1.1 : 1,
+                    opacity: 1,
+                    backgroundColor: idx <= step ? "rgb(219 234 254)" : "rgb(243 244 246)",
+                  }}
+                  className={`min-w-12 h-12 px-3 flex items-center justify-center rounded-lg font-mono text-lg
+                  ${idx === step ? "ring-2 ring-blue-500 ring-offset-2" : ""}`}
+                >
+                  {val}
+                </motion.div>
+              ))}
+          </div>
+
+          <div className="mt-4">
+            <div className="flex justify-between text-sm text-gray-500 mb-1">
+              <span>Step {step + 1}</span>
+              <span>of {maxSteps}</span>
+            </div>
+            <motion.div
+              className="w-full bg-gray-200 rounded-full h-2 overflow-hidden"
+              initial={{ scaleX: 0 }}
+              animate={{ scaleX: 1 }}
+            >
+              <motion.div
+                className="bg-blue-500 h-full rounded-full"
+                initial={{ width: 0 }}
+                animate={{ width: `${((step + 1) / maxSteps) * 100}%` }}
+                transition={{ type: "spring", stiffness: 120, damping: 20 }}
+              />
+            </motion.div>
+          </div>
+        </motion.div>
+
+        <motion.div
+          className="bg-white p-5 rounded-xl shadow-sm"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+        >
+          <h3 className="text-lg font-semibold mb-3">State Visualization</h3>
+          <div className="h-64">
+            <Canvas>
+              <ambientLight intensity={0.5} />
+              <pointLight position={[10, 10, 10]} />
+              <OrbitControls />
+              {activePattern === "stateTransition" &&
+                Array.from(patterns.stateTransition.target).map((char, idx) => (
+                  <StateTransition3D
+                    key={char}
+                    char={char}
+                    count={animation.phases[step]?.counter.states[char] || 0}
+                    maxCount={maxSteps}
+                    position={[(idx - 1) * 2, 0, 0]}
+                  />
+                ))}
+            </Canvas>
+          </div>
+        </motion.div>
+      </div>
+
+      <motion.div
+        className="bg-gray-900 p-3 rounded-lg mb-4"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.2 }}
+      >
         <pre className="text-sm text-white overflow-x-auto">
-          <code>
-            {activePattern === "stateTransition"
-              ? `// LeetCode 2207: Maximize Number of Subsequences
-const states = {};
-states['${patterns.stateTransition.data[step] || "char"}'] += 1;`
-              : `// LeetCode 1419: Minimum Number of Frogs Croaking
-const states = {};
-states['${patterns.multiState.data[step] || "char"}'] += 1;`}
-          </code>
+          <code>{animation && animation.phases[step]?.code}</code>
         </pre>
+      </motion.div>
+
+      <div className="flex justify-center gap-4">
+        <motion.button
+          whileHover={{ scale: 1.1 }}
+          whileTap={{ scale: 0.9 }}
+          onClick={() => setStep(Math.max(0, step - 1))}
+          className="w-12 h-12 rounded-full flex items-center justify-center bg-gray-200 hover:bg-gray-300 text-gray-700"
+        >
+          <ChevronLeft className="w-5 h-5" />
+        </motion.button>
+
+        <motion.button
+          whileHover={{ scale: 1.1 }}
+          whileTap={{ scale: 0.9 }}
+          onClick={() => setIsPlaying(!isPlaying)}
+          className={`w-12 h-12 rounded-full flex items-center justify-center ${
+            isPlaying ? "bg-gray-200 hover:bg-gray-300 text-gray-700" : "bg-blue-500 hover:bg-blue-600 text-white"
+          }`}
+        >
+          {isPlaying ? <Pause className="w-5 h-5" /> : <Play className="w-5 h-5 ml-0.5" />}
+        </motion.button>
+
+        <motion.button
+          whileHover={{ scale: 1.1 }}
+          whileTap={{ scale: 0.9 }}
+          onClick={() => {
+            setStep(0)
+            setIsPlaying(false)
+          }}
+          className="w-12 h-12 rounded-full flex items-center justify-center bg-gray-200 hover:bg-gray-300 text-gray-700"
+        >
+          <RotateCcw className="w-5 h-5" />
+        </motion.button>
+
+        <motion.button
+          whileHover={{ scale: 1.1 }}
+          whileTap={{ scale: 0.9 }}
+          onClick={handleNext}
+          className="w-12 h-12 rounded-full flex items-center justify-center bg-gray-200 hover:bg-gray-300 text-gray-700"
+        >
+          <ChevronRight className="w-5 h-5" />
+        </motion.button>
       </div>
     </div>
   )
