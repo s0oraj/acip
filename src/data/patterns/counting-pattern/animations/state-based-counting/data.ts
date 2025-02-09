@@ -1,89 +1,77 @@
-import type { Animation } from "@/types"
+// data.ts
+import { Animation } from '@/types';
+import { ArrowUpCircle, Activity, GitMerge } from 'lucide-react';
 
 export const patterns = {
   stateTransition: {
     data: "abcabc",
     target: "abc",
-    icon: "git-branch",
+    icon: 'arrow-up-circle',
     title: "State Transition",
-    desc: "Track character state transitions",
+    desc: "Track single state changes",
     color: "#2563EB",
-    leetcode: "2207",
+    leetcode: "2207"
   },
   multiState: {
     data: "croak",
-    states: ["c", "r", "o", "a", "k"],
-    icon: "git-merge",
-    title: "Multiple States",
-    desc: "Track frog croaking states",
+    states: ['c', 'r', 'o', 'a', 'k'],
+    icon: 'activity',
+    title: "Multi-State",
+    desc: "Track multiple state changes",
     color: "#7C3AED",
-    leetcode: "1419",
+    leetcode: "1419"
   },
   patternState: {
-    data: [1, 2, 4, 8, 16],
-    icon: "hash",
-    title: "Pattern States",
-    desc: "Pattern formation states",
+    data: "abbcca",
+    pattern: "abc",
+    icon: 'git-merge',
+    title: "Pattern State",
+    desc: "Match complex patterns",
     color: "#059669",
-    codeforces: "1722G",
-  },
-}
+    codeforces: "1722G"
+  }
+};
 
-const getStateCount = (str: string, char: string, upTo: number): number => {
-  return str
-    .slice(0, upTo + 1)
-    .split("")
-    .filter((c) => c === char).length
-}
-
-export const stateCountingAnimation: Animation = {
-  id: "state-counting",
-  title: "State-Based Counting",
-  description: "Understanding state transitions and pattern formation",
+export const stateCounterAnimation: Animation = {
+  id: "state-counter",
+  title: "State-Based Counting Patterns",
+  description: "Understanding state transitions and pattern matching",
   steps: [
     {
       title: "State Transition Counter",
-      description: "LeetCode 2207: Maximize Number of Subsequences",
-      array: Array.from(patterns.stateTransition.data),
-      phases: Array.from(patterns.stateTransition.data).map((char, index) => ({
-        description: `Processing '${char}'`,
-        activeIndex: index,
-        highlightIndices: [index],
-        counter: {
-          states: Array.from(patterns.stateTransition.target).reduce(
-            (acc, c) => ({
-              ...acc,
-              [c]: getStateCount(patterns.stateTransition.data, c, index),
-            }),
-            {},
-          ),
-        },
-        code: `states['${char}'] += 1;`,
-      })),
+      description: "Track character state changes",
+      content: patterns.stateTransition.data,
+      phases: Array.from(patterns.stateTransition.data).map((char, idx) => ({
+        description: `Processing character: ${char}`,
+        activeChar: char,
+        position: idx,
+        states: (() => {
+          const states: Record<string, number> = {};
+          patterns.stateTransition.data.slice(0, idx + 1).forEach(c => {
+            states[c] = (states[c] || 0) + 1;
+          });
+          return states;
+        })(),
+        target: patterns.stateTransition.target
+      }))
     },
     {
       title: "Multiple State Counter",
-      description: "LeetCode 1419: Minimum Number of Frogs Croaking",
-      array: Array.from(patterns.multiState.data),
-      phases: Array.from(patterns.multiState.data).map((char, index) => ({
-        description: `Processing '${char}' in sequence`,
-        activeIndex: index,
-        highlightIndices: [index],
-        counter: {
-          states: patterns.multiState.states.reduce(
-            (acc, state) => ({
-              ...acc,
-              [state]: getStateCount(patterns.multiState.data, state, index),
-            }),
-            {},
-          ),
-        },
-        code: `states['${char}'] += 1;
-if (isValidTransition('${char}')) {
-  activeFrogs += 1;
-}`,
-      })),
-    },
-  ],
-}
-
+      description: "Track multiple state transitions",
+      content: patterns.multiState.data,
+      phases: Array.from(patterns.multiState.data).map((char, idx) => ({
+        description: `Transitioning state: ${char}`,
+        activeChar: char,
+        position: idx,
+        states: (() => {
+          const states: Record<string, number> = {};
+          patterns.multiState.states.forEach(s => states[s] = 0);
+          patterns.multiState.data.slice(0, idx + 1).forEach(c => {
+            states[c] = (states[c] || 0) + 1;
+          });
+          return states;
+        })()
+      }))
+    }
+  ]
+};
