@@ -1,98 +1,97 @@
-import { AnimationData } from '../types';
-import StateBasedCountingVisualizer from './visualizer';
+import { Animation } from '@/types';
 
-export interface StatePattern {
-  id: number;
-  state: string;
-  count: number;
-  transitions: string[];
-}
-
-export const statePatterns: StatePattern[] = [
-  {
-    id: 1,
-    state: 'Initial',
-    count: 0,
-    transitions: ['Processing']
+export const patterns = {
+  stateTransition: {
+    data: ['a', 'b', 'c', 'a', 'b', 'c'],
+    icon: 'transition',
+    title: "State Transition Counter",
+    desc: "Track state transitions and count occurrences",
+    color: "#4F46E5"
   },
-  {
-    id: 2,
-    state: 'Processing',
-    count: 0,
-    transitions: ['Success', 'Error']
+  multipleState: {
+    data: ['c', 'r', 'o', 'a', 'k', 'c', 'r', 'o', 'a', 'k'],
+    icon: 'cycle',
+    title: "Multiple State Counter",
+    desc: "Track cyclic state transitions",
+    color: "#7C3AED"
   },
-  {
-    id: 3,
-    state: 'Success',
-    count: 0,
-    transitions: ['Initial']
-  },
-  {
-    id: 4,
-    state: 'Error',
-    count: 0,
-    transitions: ['Initial']
+  patternState: {
+    data: ['x', 'y', 'z', 'x', 'y', 'z'],
+    icon: 'pattern',
+    title: "Pattern State Counter",
+    desc: "Validate patterns using state transitions",
+    color: "#2563EB"
   }
-];
+};
 
-export interface StateBasedCountingStep {
-  description: string;
-  code: string;
-  highlightedLines: number[];
-  currentState: string;
-  statePatterns: StatePattern[];
-}
-
-export const steps: StateBasedCountingStep[] = [
-  {
-    description: "Initialize state patterns with counts",
-    code: `states = {
-  'Initial': { count: 0, transitions: ['Processing'] },
-  'Processing': { count: 0, transitions: ['Success', 'Error'] },
-  'Success': { count: 0, transitions: ['Initial'] },
-  'Error': { count: 0, transitions: ['Initial'] }
-}`,
-    highlightedLines: [1, 2, 3, 4, 5],
-    currentState: 'Initial',
-    statePatterns: statePatterns.map(pattern => ({ ...pattern }))
-  },
-  {
-    description: "Transition to Processing state and increment count",
-    code: `current_state = 'Processing'
-states['Processing'].count += 1`,
-    highlightedLines: [1, 2],
-    currentState: 'Processing',
-    statePatterns: statePatterns.map(pattern => ({
-      ...pattern,
-      count: pattern.state === 'Processing' ? 1 : 0
-    }))
-  },
-  {
-    description: "Transition to Success state and increment count",
-    code: `current_state = 'Success'
-states['Success'].count += 1`,
-    highlightedLines: [1, 2],
-    currentState: 'Success',
-    statePatterns: statePatterns.map(pattern => ({
-      ...pattern,
-      count: pattern.state === 'Success' ? 1 : pattern.state === 'Processing' ? 1 : 0
-    }))
-  },
-  {
-    description: "Return to Initial state",
-    code: `current_state = 'Initial'
-# Counts persist across state transitions`,
-    highlightedLines: [1, 2],
-    currentState: 'Initial',
-    statePatterns: statePatterns.map(pattern => ({
-      ...pattern,
-      count: pattern.state === 'Success' ? 1 : pattern.state === 'Processing' ? 1 : 0
-    }))
-  }
-];
-
-export const stateBasedCountingAnimation: AnimationData = {
-  name: 'State-Based Counting',
-  description: 'Visualize state transitions and counting',
-  component: StateBasedCountingVisualizer,
+export const stateBasedCountingAnimation: Animation = {
+  id: "state-based-counting",
+  title: "State-Based Counting",
+  description: "Track and count state transitions in sequences",
+  steps: [
+    {
+      title: "State Transition Counter",
+      description: "Count state transitions in a sequence",
+      array: patterns.stateTransition.data,
+      phases: patterns.stateTransition.data.map((val, index) => ({
+        description: index === 0 
+          ? "Initialize state counter" 
+          : `Process '${val}' and update state`,
+        activeIndex: index,
+        highlightIndices: [index],
+        counter: patterns.stateTransition.data
+          .slice(0, index + 1)
+          .reduce((acc, curr) => {
+            acc[curr] = (acc[curr] || 0) + 1;
+            return acc;
+          }, {}),
+        code: index === 0 
+          ? "const stateCounter = {};" 
+          : `stateCounter['${val}']++;`
+      }))
+    },
+    {
+      title: "Multiple State Counter",
+      description: "Track cyclic state transitions",
+      array: patterns.multipleState.data,
+      phases: patterns.multipleState.data.map((val, index) => ({
+        description: index === 0 
+          ? "Initialize cyclic state counter" 
+          : `Process '${val}' and update cyclic state`,
+        activeIndex: index,
+        highlightIndices: [index],
+        counter: patterns.multipleState.data
+          .slice(0, index + 1)
+          .reduce((acc, curr) => {
+            acc[curr] = (acc[curr] || 0) + 1;
+            return acc;
+          }, {}),
+        code: index === 0 
+          ? "const cyclicStateCounter = {};" 
+          : `cyclicStateCounter['${val}']++;`
+      }))
+    },
+    {
+      title: "Pattern State Counter",
+      description: "Validate patterns using state transitions",
+      array: patterns.patternState.data,
+      phases: patterns.patternState.data.map((val, index) => ({
+        description: index === 0 
+          ? "Initialize pattern state counter" 
+          : `Process '${val}' and validate pattern`,
+        activeIndex: index,
+        highlightIndices: [index],
+        counter: patterns.patternState.data
+          .slice(0, index + 1)
+          .reduce((acc, curr) => {
+            acc[curr] = (acc[curr] || 0) + 1;
+            return acc;
+          }, {}),
+        code: index === 0 
+          ? "const patternStateCounter = {};" 
+          : `patternStateCounter['${val}']++;`
+      }))
+    }
+  ],
+  counters: []
 };
