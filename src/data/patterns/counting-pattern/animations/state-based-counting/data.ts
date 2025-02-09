@@ -1,73 +1,89 @@
-import { Animation } from '@/types';
-import { GitBranch, GitMerge, Network } from 'lucide-react';
+import type { Animation } from "@/types"
 
 export const patterns = {
   stateTransition: {
     data: "abcabc",
     target: "abc",
-    icon: 'git-branch',
+    icon: "git-branch",
     title: "State Transition",
     desc: "Track character state transitions",
     color: "#2563EB",
-    leetcode: "2207"
+    leetcode: "2207",
   },
   multiState: {
     data: "croak",
-    states: ['c', 'r', 'o', 'a', 'k'],
-    icon: 'git-merge',
+    states: ["c", "r", "o", "a", "k"],
+    icon: "git-merge",
     title: "Multiple States",
     desc: "Track frog croaking states",
     color: "#7C3AED",
-    leetcode: "1419"
+    leetcode: "1419",
   },
   patternState: {
     data: [1, 2, 4, 8, 16],
-    icon: 'network',
+    icon: "hash",
     title: "Pattern States",
     desc: "Pattern formation states",
     color: "#059669",
-    codeforces: "1722G"
-  }
-};
+    codeforces: "1722G",
+  },
+}
+
+const getStateCount = (str: string, char: string, upTo: number): number => {
+  return str
+    .slice(0, upTo + 1)
+    .split("")
+    .filter((c) => c === char).length
+}
 
 export const stateCountingAnimation: Animation = {
   id: "state-counting",
-  title: "State-Based Counting Patterns",
+  title: "State-Based Counting",
   description: "Understanding state transitions and pattern formation",
   steps: [
     {
       title: "State Transition Counter",
-      description: "Track character state transitions in a string",
-      data: patterns.stateTransition.data,
+      description: "LeetCode 2207: Maximize Number of Subsequences",
+      array: Array.from(patterns.stateTransition.data),
       phases: Array.from(patterns.stateTransition.data).map((char, index) => ({
-        description: `Processing character '${char}'`,
+        description: `Processing '${char}'`,
         activeIndex: index,
         highlightIndices: [index],
-        states: {
-          [char]: (patterns.stateTransition.data.slice(0, index + 1).match(new RegExp(char, 'g')) || []).length
+        counter: {
+          states: Array.from(patterns.stateTransition.target).reduce(
+            (acc, c) => ({
+              ...acc,
+              [c]: getStateCount(patterns.stateTransition.data, c, index),
+            }),
+            {},
+          ),
         },
-        code: `states['${char}'] += 1;`
-      }))
+        code: `states['${char}'] += 1;`,
+      })),
     },
     {
       title: "Multiple State Counter",
-      description: "Track multiple frog croaking states",
-      data: patterns.multiState.data,
+      description: "LeetCode 1419: Minimum Number of Frogs Croaking",
+      array: Array.from(patterns.multiState.data),
       phases: Array.from(patterns.multiState.data).map((char, index) => ({
-        description: `Processing '${char}' in croaking sequence`,
+        description: `Processing '${char}' in sequence`,
         activeIndex: index,
         highlightIndices: [index],
-        states: patterns.multiState.states.reduce((acc, state, i) => {
-          acc[state] = patterns.multiState.data.slice(0, index + 1)
-            .split('')
-            .filter(c => c === state).length;
-          return acc;
-        }, {} as Record<string, number>),
+        counter: {
+          states: patterns.multiState.states.reduce(
+            (acc, state) => ({
+              ...acc,
+              [state]: getStateCount(patterns.multiState.data, state, index),
+            }),
+            {},
+          ),
+        },
         code: `states['${char}'] += 1;
 if (isValidTransition('${char}')) {
   activeFrogs += 1;
-}`
-      }))
-    }
-  ]
-};
+}`,
+      })),
+    },
+  ],
+}
+
