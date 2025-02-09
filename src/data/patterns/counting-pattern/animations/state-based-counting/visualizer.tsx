@@ -1,146 +1,221 @@
-// src/data/patterns/counting-pattern/animations/state-based-counting/visualizer.tsx
 import React, { useState, useEffect } from 'react';
-import { ResponsiveContainer, LineChart, Line, XAxis, YAxis, Tooltip } from 'recharts';
-import { Play, Pause, RotateCcw } from 'lucide-react';
+import { Play, Pause, RotateCcw, ChevronLeft, ChevronRight } from 'lucide-react';
+import { motion, AnimatePresence, LayoutGroup, useAnimationControls } from 'framer-motion';
+import { patterns } from './data';
 
-const StateBasedCountingVisualizer: React.FC = () => {
-  const [activePattern, setActivePattern] = useState('basic');
+const StateBasedCountingVisualizer = () => {
+  const [activePattern, setActivePattern] = useState('stateTransition');
   const [step, setStep] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
-  const pattern = statePatterns[activePattern];
+  const controls = useAnimationControls();
 
   useEffect(() => {
     let timer: NodeJS.Timeout;
-    if (isPlaying && step < pattern.input.length) {
-      timer = setTimeout(() => setStep(s => s + 1), 1000);
+    if (isPlaying && step < patterns[activePattern].data.length) {
+      timer = setTimeout(() => {
+        setStep(s => s + 1);
+        controls.start({
+          scale: [1, 1.2, 1],
+          transition: { duration: 0.3 }
+        });
+      }, 1000);
     } else {
       setIsPlaying(false);
     }
     return () => clearTimeout(timer);
-  }, [isPlaying, step, activePattern, pattern.input.length]);
+  }, [isPlaying, step, activePattern]);
 
-  const getStateData = () => {
-    const states: Record<string, number> = {};
-    for (let i = 0; i < step; i++) {
-      const char = pattern.input[i];
-      pattern.states.forEach(state => {
-        states[state] = (states[state] || 0) + (char === state ? 1 : 0);
-      });
+  const getCounter = () => {
+    const curr = patterns[activePattern].data.slice(0, step);
+    return curr.reduce((acc, val) => {
+      acc[val] = (acc[val] || 0) + 1;
+      return acc;
+    }, {});
+  };
+
+  const containerVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { 
+      opacity: 1, 
+      y: 0,
+      transition: {
+        when: "beforeChildren",
+        staggerChildren: 0.1
+      }
     }
-    return pattern.states.map(state => ({
-      state,
-      count: states[state] || 0
-    }));
+  };
+
+  const itemVariants = {
+    hidden: { scale: 0, opacity: 0 },
+    visible: { 
+      scale: 1, 
+      opacity: 1,
+      transition: {
+        type: "spring",
+        stiffness: 260,
+        damping: 20
+      }
+    }
   };
 
   return (
-    <div className="p-6">
-      <div className="flex gap-2 mb-6">
-        {Object.entries(statePatterns).map(([key, { title }]) => (
-          <button
-            key={key}
-            onClick={() => {
-              setActivePattern(key);
+    <div className="p-6 bg-gradient-to-br from-blue-50/30 to-purple-50/30 min-h-screen">
+      <LayoutGroup>
+        {/* Pattern Selection Tabs */}
+        <motion.div 
+          className="flex space-x-2 mb-6 overflow-x-auto pb-2"
+          layout
+        >
+          <AnimatePresence mode="wait">
+            {Object.entries(patterns).map(([key, { title, desc, color }]) => (
+              <motion.button
+                key={key}
+                layoutId={`tab-${key}`}
+                onClick={() => {
+                  setActivePattern(key);
+                  setStep(0);
+                  setIsPlaying(false);
+                }}
+                className={`px-4 py-2 rounded-lg transition-all flex-shrink-0 backdrop-blur-md ${
+                  activePattern === key 
+                    ? 'bg-blue-500/90 text-white shadow-lg' 
+                    : 'bg-white/40 hover:bg-white/60'
+                }`}
+                whileHover={{ 
+                  scale: 1.05,
+                  transition: { type: "spring", stiffness: 400 }
+                }}
+                whileTap={{ scale: 0.95 }}
+              >
+                <div className="text-sm font-medium">{title}</div>
+                <div className="text-xs opacity-75">{desc}</div>
+              </motion.button>
+            ))}
+          </AnimatePresence>
+        </motion.div>
+
+        {/* Array Visualization */}
+        <motion.div 
+          variants={containerVariants}
+          initial="hidden"
+          animate="visible"
+          className="backdrop-blur-lg bg-white/30 p-5 rounded-xl shadow-lg border border-white/50 relative overflow-hidden"
+        >
+          <h3 className="text-lg font-semibold mb-3 relative">Input Sequence</h3>
+          <div className="flex flex-wrap gap-2 mb-4 relative">
+            <AnimatePresence mode="wait">
+              {patterns[activePattern].data.map((val, idx) => (
+                <motion.div
+                  key={`${idx}-${val}`}
+                  variants={itemVariants}
+                  className={`w-12 h-12 flex items-center justify-center rounded-lg font-mono text-lg transform transition-all duration-300 ${
+                    idx < step ? 'bg-blue-500/80 text-white shadow-lg' : 'bg-white/50'
+                  }`}
+                  whileHover={{
+                    scale: 1.1,
+                    transition: { type: "spring", stiffness: 400 }
+                  }}
+                >
+                  {val}
+                </motion.div>
+              ))}
+            </AnimatePresence>
+          </div>
+        </motion.div>
+
+        {/* Counter Visualization */}
+        <motion.div 
+          variants={containerVariants}
+          initial="hidden"
+          animate="visible"
+          className="backdrop-blur-lg bg-white/30 p-5 rounded-xl shadow-lg border border-white/50 mb-4 relative overflow-hidden"
+        >
+          <h3 className="text-lg font-semibold mb-3 relative">State Counter</h3>
+          <div className="flex flex-wrap gap-2 relative">
+            <AnimatePresence mode="wait">
+              {Object.entries(getCounter()).map(([key, value]) => (
+                <motion.div
+                  key={`counter-${key}`}
+                  variants={itemVariants}
+                  className="min-w-[3rem] px-3 h-12 flex items-center justify-center rounded-lg bg-green-500/80 text-white font-mono text-lg shadow-lg"
+                  whileHover={{
+                    scale: 1.1,
+                    transition: { type: "spring", stiffness: 400 }
+                  }}
+                >
+                  {key}: {value}
+                </motion.div>
+              ))}
+            </AnimatePresence>
+          </div>
+        </motion.div>
+
+        {/* Code Display */}
+        <motion.div 
+          variants={containerVariants}
+          initial="hidden"
+          animate="visible"
+          className="backdrop-blur-md bg-gray-900/90 p-3 rounded-lg mb-4 shadow-xl"
+        >
+          <motion.pre 
+            className="text-sm text-white overflow-x-auto"
+            animate={controls}
+          >
+            <code>
+              {step === 0 
+                ? "const stateCounter = {};" 
+                : `stateCounter['${patterns[activePattern].data[step - 1]}']++;`}
+            </code>
+          </motion.pre>
+        </motion.div>
+
+        {/* Controls */}
+        <motion.div 
+          className="flex justify-center gap-4"
+          variants={containerVariants}
+          initial="hidden"
+          animate="visible"
+        >
+          {[
+            { icon: ChevronLeft, action: () => {
+              const patternKeys = Object.keys(patterns);
+              const prevIndex = (patternKeys.indexOf(activePattern) - 1 + patternKeys.length) % patternKeys.length;
+              setActivePattern(patternKeys[prevIndex]);
+              setStep(0);
+              setIsPlaying(false);
+            }},
+            { icon: isPlaying ? Pause : Play, action: () => setIsPlaying(!isPlaying) },
+            { icon: RotateCcw, action: () => {
+              setStep(0);
+              setIsPlaying(false);
+            }},
+            { icon: ChevronRight, action: () => {
+              const patternKeys = Object.keys(patterns);
+              const nextIndex = (patternKeys.indexOf(activePattern) + 1) % patternKeys.length;
+              setActivePattern(patternKeys[nextIndex]);
               setStep(0);
               setIsPlaying(false);
             }}
-            className={`px-4 py-2 rounded-lg font-medium transition-all ${
-              activePattern === key
-                ? 'bg-blue-100 text-blue-800'
-                : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-            }`}
-          >
-            {title}
-          </button>
-        ))}
-      </div>
-
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-4">
-        <div className="bg-white p-5 rounded-xl shadow-sm">
-          <h3 className="text-lg font-semibold mb-3">Input String</h3>
-          <div className="flex flex-wrap gap-2">
-            {pattern.input.split('').map((char, idx) => (
-              <div
-                key={idx}
-                className={`w-12 h-12 flex items-center justify-center rounded-lg font-mono text-lg
-                  ${idx < step ? 'bg-blue-100 text-blue-800' : 'bg-gray-100'}`}
-              >
-                {char}
-              </div>
-            ))}
-          </div>
-        </div>
-
-        <div className="bg-white p-5 rounded-xl shadow-sm">
-          <h3 className="text-lg font-semibold mb-3">State Distribution</h3>
-          <ResponsiveContainer width="100%" height={180}>
-            <LineChart data={getStateData()}>
-              <XAxis dataKey="state" />
-              <YAxis />
-              <Tooltip />
-              {pattern.states.map((state, idx) => (
-                <Line
-                  key={state}
-                  type="monotone"
-                  dataKey="count"
-                  name={`State ${state}`}
-                  stroke={`hsl(${(idx * 360) / pattern.states.length}, 70%, 50%)`}
-                  strokeWidth={2}
-                />
-              ))}
-            </LineChart>
-          </ResponsiveContainer>
-        </div>
-      </div>
-
-      <div className="bg-white p-4 rounded-xl shadow-sm mb-4">
-        <div className="grid grid-cols-2 gap-4">
-          {pattern.states.map(state => {
-            const count = getStateData().find(s => s.state === state)?.count || 0;
-            return (
-              <div key={state} className="flex justify-between items-center">
-                <span className="text-gray-600">State '{state}':</span>
-                <span className="text-xl font-bold">{count}</span>
-              </div>
-            );
-          })}
-        </div>
-      </div>
-
-      <div className="flex justify-center gap-6 mb-4">
-        <button
-          onClick={() => setIsPlaying(!isPlaying)}
-          className={`w-12 h-12 rounded-full flex items-center justify-center transition-all duration-300 ${
-            isPlaying 
-            ? 'bg-gray-200 hover:bg-gray-300 text-gray-700'
-            : 'bg-blue-500 hover:bg-blue-600 text-white'
-          }`}
-        >
-          {isPlaying ? <Pause className="w-5 h-5" /> : <Play className="w-5 h-5 ml-0.5" />}
-        </button>
-        <button
-          onClick={() => {
-            setStep(0);
-            setIsPlaying(false);
-          }}
-          className="w-12 h-12 rounded-full flex items-center justify-center bg-gray-200 hover:bg-gray-300 text-gray-700 transition-all duration-300"
-        >
-          <RotateCcw className="w-5 h-5" />
-        </button>
-      </div>
-
-      <div className="max-w-2xl mx-auto">
-        <div className="flex justify-between text-sm text-gray-500">
-          <span>Step {step + 1}</span>
-          <span>of {pattern.input.length}</span>
-        </div>
-        <div className="w-full bg-gray-200 rounded-full h-2 mt-1">
-          <div
-            className="bg-blue-500 h-2 rounded-full transition-all duration-300"
-            style={{ width: `${((step + 1) / pattern.input.length) * 100}%` }}
-          />
-        </div>
-      </div>
+          ].map((button, index) => (
+            <motion.button
+              key={index}
+              onClick={button.action}
+              className={`w-12 h-12 rounded-full flex items-center justify-center backdrop-blur-md transition-all duration-300 ${
+                button.icon === (isPlaying ? Pause : Play)
+                  ? 'bg-blue-500/90 hover:bg-blue-600/90 text-white'
+                  : 'bg-white/40 hover:bg-white/60 text-gray-700'
+              } shadow-lg`}
+              whileHover={{ 
+                scale: 1.1,
+                transition: { type: "spring", stiffness: 400 }
+              }}
+              whileTap={{ scale: 0.9 }}
+            >
+              <button.icon className="w-5 h-5" />
+            </motion.button>
+          ))}
+        </motion.div>
+      </LayoutGroup>
     </div>
   );
 };
