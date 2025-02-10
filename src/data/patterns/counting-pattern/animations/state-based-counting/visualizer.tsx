@@ -58,62 +58,55 @@ const StateBasedCountingVisualizer = () => {
     }
   };
 
-  const stackItemVariants = {
-    hidden: { x: -100, opacity: 0 },
-    visible: { 
-      x: 0, 
-      opacity: 1,
-      transition: {
-        type: "spring",
-        stiffness: 200,
-        damping: 20
-      }
-    },
-    exit: { 
-      x: 100, 
-      opacity: 0,
-      transition: {
-        type: "spring",
-        stiffness: 300,
-        damping: 20
-      }
-    }
-  };
-
   return (
     <div className="p-6 bg-gradient-to-br from-blue-50/30 to-purple-50/30 min-h-screen">
       <LayoutGroup>
-        {/* Pattern Selection Tabs */}
+        {/* Updated Pattern Selection Tabs */}
         <motion.div 
-          className="flex space-x-2 mb-6 overflow-x-auto pb-2"
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6"
           layout
         >
-          <AnimatePresence mode="wait">
-            {Object.entries(patterns).map(([key, { title, desc, color }]) => (
-              <motion.button
-                key={key}
-                layoutId={`tab-${key}`}
-                onClick={() => {
-                  setActivePattern(key);
-                  setStep(0);
-                  setIsPlaying(false);
-                }}
-                className={`px-4 py-2 rounded-lg transition-all flex-shrink-0 backdrop-blur-md ${
-                  activePattern === key 
-                    ? 'bg-blue-500/90 text-white shadow-lg' 
-                    : 'bg-white/40 hover:bg-white/60'
-                }`}
-                whileHover={{ 
-                  scale: 1.05,
-                  transition: { type: "spring", stiffness: 400 }
-                }}
-                whileTap={{ scale: 0.95 }}
-              >
-                <div className="text-sm font-medium">{title}</div>
-                <div className="text-xs opacity-75">{desc}</div>
-              </motion.button>
-            ))}
-          </AnimatePresence>
+          {Object.entries(patterns).map(([key, { icon, title, desc, color }]) => (
+            <motion.button
+              key={key}
+              onClick={() => {
+                setActivePattern(key);
+                setStep(0);
+                setIsPlaying(false);
+              }}
+              className={`p-4 rounded-xl transition-all ${
+                activePattern === key 
+                  ? 'bg-white shadow-lg scale-105' 
+                  : 'bg-gray-50 hover:bg-white hover:shadow'
+              }`}
+              whileHover={{ 
+                scale: 1.02,
+                transition: { type: "spring", stiffness: 400 }
+              }}
+              whileTap={{ scale: 0.98 }}
+            >
+              <div className="flex items-center gap-3 mb-2">
+                <div style={{ color }} className="p-2 rounded-lg bg-opacity-10 bg-current">
+                  {icon === 'transition' ? (
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M8 3H4a2 2 0 0 0-2 2v4m6-6h10a2 2 0 0 1 2 2v4M8 3v18m0 0h10a2 2 0 0 0 2-2v-4M8 21H4a2 2 0 0 1-2-2v-4"/>
+                    </svg>
+                  ) : icon === 'cycle' ? (
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M21 12a9 9 0 1 1-9-9c2.52 0 4.93 1 6.74 2.74L21 8"/>
+                      <path d="M21 3v5h-5"/>
+                    </svg>
+                  ) : (
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M8 3H4a2 2 0 0 0-2 2v4m6-6h10a2 2 0 0 1 2 2v4M8 3v18m0 0h10a2 2 0 0 0 2-2v-4M8 21H4a2 2 0 0 1-2-2v-4"/>
+                    </svg>
+                  )}
+                </div>
+                <span className="font-semibold">{title}</span>
+              </div>
+              <p className="text-sm text-gray-600">{desc}</p>
+            </motion.button>
+          ))}
         </motion.div>
 
         {/* Array Visualization */}
@@ -123,20 +116,6 @@ const StateBasedCountingVisualizer = () => {
           animate="visible"
           className="backdrop-blur-lg bg-white/30 p-5 rounded-xl shadow-lg border border-white/50 relative overflow-hidden"
         >
-          <motion.div
-            className="absolute inset-0 bg-gradient-to-br from-blue-200/20 to-purple-200/20"
-            animate={{
-              background: [
-                "linear-gradient(to bottom right, rgba(191, 219, 254, 0.2), rgba(233, 213, 255, 0.2))",
-                "linear-gradient(to bottom right, rgba(233, 213, 255, 0.2), rgba(191, 219, 254, 0.2))"
-              ],
-              transition: {
-                duration: 3,
-                repeat: Infinity,
-                repeatType: "reverse"
-              }
-            }}
-          />
           <h3 className="text-lg font-semibold mb-3 relative">Input Sequence</h3>
           <div className="flex flex-wrap gap-2 mb-4 relative">
             <AnimatePresence mode="wait">
@@ -149,8 +128,6 @@ const StateBasedCountingVisualizer = () => {
                   }`}
                   whileHover={{
                     scale: 1.1,
-                    rotateX: 10,
-                    rotateY: 10,
                     transition: { type: "spring", stiffness: 400 }
                   }}
                 >
@@ -168,20 +145,6 @@ const StateBasedCountingVisualizer = () => {
           animate="visible"
           className="backdrop-blur-lg bg-white/30 p-5 rounded-xl shadow-lg border border-white/50 mb-4 relative overflow-hidden"
         >
-          <motion.div
-            className="absolute inset-0 bg-gradient-to-br from-green-200/20 to-blue-200/20"
-            animate={{
-              background: [
-                "linear-gradient(to bottom right, rgba(187, 247, 208, 0.2), rgba(191, 219, 254, 0.2))",
-                "linear-gradient(to bottom right, rgba(191, 219, 254, 0.2), rgba(187, 247, 208, 0.2))"
-              ],
-              transition: {
-                duration: 3,
-                repeat: Infinity,
-                repeatType: "reverse"
-              }
-            }}
-          />
           <h3 className="text-lg font-semibold mb-3 relative">State Counter</h3>
           <div className="flex flex-wrap gap-2 relative">
             <AnimatePresence mode="wait">
@@ -192,7 +155,6 @@ const StateBasedCountingVisualizer = () => {
                   className="min-w-[3rem] px-3 h-12 flex items-center justify-center rounded-lg bg-green-500/80 text-white font-mono text-lg shadow-lg"
                   whileHover={{
                     scale: 1.1,
-                    rotateX: 10,
                     transition: { type: "spring", stiffness: 400 }
                   }}
                 >
