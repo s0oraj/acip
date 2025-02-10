@@ -54,3 +54,4 @@ export const simulationAnimation: Animation = {
     }))
   }))
 };
+export default simulationAnimation;
