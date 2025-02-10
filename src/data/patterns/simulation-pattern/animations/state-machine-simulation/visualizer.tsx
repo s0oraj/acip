@@ -44,41 +44,18 @@ const Visualizer: React.FC = () => {
     setIsPlaying(false);
   };
 
-  const StateNode: React.FC<{ state: string; isActive: boolean; x: number; y: number }> = ({ state, isActive, x, y }) => (
+  const StateBox = ({ state, isActive, isNext }: { state: string; isActive: boolean; isNext: boolean }) => (
     <motion.div
-      className={`absolute rounded-lg p-4 ${
-        isActive ? 'bg-blue-500 text-white' : 'bg-white'
-      } shadow-lg`}
-      initial={{ opacity: 0, scale: 0 }}
-      animate={{ 
-        opacity: 1, 
-        scale: 1,
-        x,
-        y,
-        transition: { type: "spring", stiffness: 300, damping: 20 }
-      }}
+      className={`px-4 py-2 rounded-lg font-mono text-sm ${
+        isActive ? 'bg-blue-500 text-white' 
+        : isNext ? 'bg-blue-100 border border-blue-200' 
+        : 'bg-gray-100'
+      }`}
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: -20 }}
     >
       {state}
-    </motion.div>
-  );
-
-  const Transition: React.FC<{ from: { x: number; y: number }, to: { x: number; y: number }, label: string }> = 
-    ({ from, to, label }) => (
-    <motion.div
-      className="absolute h-px bg-gray-300"
-      style={{
-        width: Math.sqrt(Math.pow(to.x - from.x, 2) + Math.pow(to.y - from.y, 2)),
-        transform: `rotate(${Math.atan2(to.y - from.y, to.x - from.x)}rad)`,
-        transformOrigin: '0 0',
-        left: from.x,
-        top: from.y
-      }}
-      initial={{ scale: 0 }}
-      animate={{ scale: 1 }}
-    >
-      <span className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-3 text-xs text-gray-500">
-        {label}
-      </span>
     </motion.div>
   );
 
@@ -110,51 +87,110 @@ const Visualizer: React.FC = () => {
         ))}
       </div>
 
-      <div className="bg-white p-6 rounded-xl shadow-sm mb-6">
-        <div className="relative h-96">
-          <AnimatePresence>
-            {patterns[activePattern].states.map((state, index) => {
-              const radius = 150;
-              const angle = (2 * Math.PI * index) / patterns[activePattern].states.length;
-              const x = Math.cos(angle) * radius + radius + 50;
-              const y = Math.sin(angle) * radius + radius;
+      <div className="grid grid-cols-2 gap-6">
+        <div className="bg-white p-6 rounded-xl shadow-sm">
+          <h3 className="text-lg font-semibold mb-4">State Transitions</h3>
+          <div className="space-y-6">
+            {/* Current State Display */}
+            <div className="space-y-2">
+              <div className="text-sm text-gray-500">Current State</div>
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={step}
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: 20 }}
+                  className="bg-blue-500 text-white px-4 py-2 rounded-lg font-mono text-lg inline-block"
+                >
+                  {patterns[activePattern].states[step]}
+                </motion.div>
+              </AnimatePresence>
+            </div>
 
-              return (
-                <React.Fragment key={state}>
-                  <StateNode
+            {/* State Timeline */}
+            <div className="space-y-2">
+              <div className="text-sm text-gray-500">State Timeline</div>
+              <div className="flex items-center gap-2">
+                {patterns[activePattern].states.map((state, idx) => (
+                  <StateBox
+                    key={state + idx}
                     state={state}
-                    isActive={index === step}
-                    x={x}
-                    y={y}
+                    isActive={idx === step}
+                    isNext={idx === step + 1}
                   />
-                  {index > 0 && (
-                    <Transition
-                      from={{
-                        x: Math.cos((2 * Math.PI * (index - 1)) / patterns[activePattern].states.length) * radius + radius + 50,
-                        y: Math.sin((2 * Math.PI * (index - 1)) / patterns[activePattern].states.length) * radius + radius
-                      }}
-                      to={{ x, y }}
-                      label={patterns[activePattern].transitions[index - 1]}
-                    />
+                ))}
+              </div>
+            </div>
+
+            {/* Transition Display */}
+            <div className="space-y-2">
+              <div className="text-sm text-gray-500">Current Transition</div>
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={step}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -20 }}
+                  className="bg-gray-100 px-4 py-2 rounded-lg font-mono text-sm inline-block"
+                >
+                  {step > 0 ? patterns[activePattern].transitions[step - 1] : 'Initial State'}
+                </motion.div>
+              </AnimatePresence>
+            </div>
+          </div>
+
+          <div className="mt-6">
+            <div className="flex justify-between text-sm text-gray-500 mb-1">
+              <span>Step {step + 1}</span>
+              <span>of {patterns[activePattern].states.length}</span>
+            </div>
+            <div className="w-full bg-gray-200 rounded-full h-2">
+              <motion.div
+                className="bg-blue-500 h-2 rounded-full"
+                initial={{ width: 0 }}
+                animate={{ 
+                  width: `${((step + 1) / patterns[activePattern].states.length) * 100}%` 
+                }}
+                transition={{ duration: 0.3 }}
+              />
+            </div>
+          </div>
+        </div>
+
+        <div className="bg-white rounded-xl shadow-sm overflow-hidden">
+          <div className="bg-gray-800 p-4">
+            <h3 className="text-lg font-semibold text-white mb-2">State Machine Code</h3>
+            <div className="font-mono text-sm text-gray-300">
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={step}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  className="space-y-2"
+                >
+                  <div className="text-blue-400">// Current State</div>
+                  <div>const currentState = '{patterns[activePattern].states[step]}';</div>
+                  {step > 0 && (
+                    <>
+                      <div className="text-blue-400">// Last Transition</div>
+                      <div>const lastAction = '{patterns[activePattern].transitions[step - 1]}';</div>
+                      <div className="text-blue-400">// State History</div>
+                      <div>const history = [</div>
+                      {patterns[activePattern].states.slice(0, step + 1).map((s, i) => (
+                        <div key={i} className="ml-4">'{s}',</div>
+                      ))}
+                      <div>];</div>
+                    </>
                   )}
-                </React.Fragment>
-              );
-            })}
-          </AnimatePresence>
+                </motion.div>
+              </AnimatePresence>
+            </div>
+          </div>
         </div>
       </div>
 
-      <div className="bg-gray-800 p-3 rounded-lg mb-4">
-        <pre className="text-sm text-white overflow-x-auto">
-          <code>
-            {`// Current State: ${patterns[activePattern].states[step]}
-${step > 0 ? `// Transition: ${patterns[activePattern].transitions[step - 1]}` : ''}
-currentState = '${patterns[activePattern].states[step]}';`}
-          </code>
-        </pre>
-      </div>
-
-      <div className="flex justify-center gap-4">
+      <div className="flex justify-center gap-4 mt-6">
         <button
           onClick={handlePrevious}
           className="w-12 h-12 rounded-full flex items-center justify-center bg-gray-200 hover:bg-gray-300 text-gray-700 transition-all duration-300"
