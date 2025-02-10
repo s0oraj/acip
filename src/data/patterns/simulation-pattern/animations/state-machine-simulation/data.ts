@@ -36,7 +36,7 @@ export const patterns = {
   }
 };
 
-export const simulationAnimation: Animation = {
+export const stateMachineAnimation: Animation = {
   id: "state-machine",
   title: "State Machine Simulation",
   description: "Visualizing different state machine implementations",
@@ -54,4 +54,4 @@ export const simulationAnimation: Animation = {
     }))
   }))
 };
-export default simulationAnimation;
+export default stateMachineAnimation;
