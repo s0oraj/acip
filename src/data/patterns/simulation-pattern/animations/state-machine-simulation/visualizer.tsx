@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { History, Package, Edit, Cpu, Play, Pause, RotateCcw, ChevronLeft, ChevronRight } from 'lucide-react';
 import { patterns } from './data';
@@ -7,6 +7,7 @@ const Visualizer: React.FC = () => {
   const [activePattern, setActivePattern] = useState('commandProcessor');
   const [step, setStep] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
+  const svgRef = useRef<SVGSVGElement>(null);
 
   const getIcon = (iconName: string) => {
     switch (iconName) {
@@ -21,7 +22,7 @@ const Visualizer: React.FC = () => {
   useEffect(() => {
     let timer: NodeJS.Timeout;
     if (isPlaying && step < patterns[activePattern].states.length - 1) {
-      timer = setTimeout(() => setStep(s => s + 1), 1500);
+      timer = setTimeout(() => setStep(s => s + 1), 2000);
     } else {
       setIsPlaying(false);
     }
@@ -44,20 +45,34 @@ const Visualizer: React.FC = () => {
     setIsPlaying(false);
   };
 
-  const StateBox = ({ state, isActive, isNext }: { state: string; isActive: boolean; isNext: boolean }) => (
-    <motion.div
-      className={`px-4 py-2 rounded-lg font-mono text-sm ${
-        isActive ? 'bg-blue-500 text-white' 
-        : isNext ? 'bg-blue-100 border border-blue-200' 
-        : 'bg-gray-100'
-      }`}
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, y: -20 }}
-    >
-      {state}
-    </motion.div>
-  );
+  // Calculate positions for state nodes in a circle
+  const getNodePosition = (index: number, total: number, radius: number) => {
+    const angle = (2 * Math.PI * index) / total - Math.PI / 2;
+    return {
+      x: radius + radius * Math.cos(angle),
+      y: radius + radius * Math.sin(angle)
+    };
+  };
+
+  // Calculate path between two nodes
+  const getPathBetweenNodes = (startX: number, startY: number, endX: number, endY: number) => {
+    const dx = endX - startX;
+    const dy = endY - startY;
+    const dr = Math.sqrt(dx * dx + dy * dy);
+    const midX = (startX + endX) / 2;
+    const midY = (startY + endY) / 2;
+    const offset = 30;
+    
+    const controlX = midX - dy * offset / dr;
+    const controlY = midY + dx * offset / dr;
+    
+    return `M ${startX} ${startY} Q ${controlX} ${controlY} ${endX} ${endY}`;
+  };
+
+  const currentStates = patterns[activePattern].states;
+  const radius = 120;
+  const centerX = radius + 40;
+  const centerY = radius + 40;
 
   return (
     <div className="p-6">
@@ -87,106 +102,128 @@ const Visualizer: React.FC = () => {
         ))}
       </div>
 
-      <div className="grid grid-cols-2 gap-6">
-        <div className="bg-white p-6 rounded-xl shadow-sm">
-          <h3 className="text-lg font-semibold mb-4">State Transitions</h3>
-          <div className="space-y-6">
-            {/* Current State Display */}
-            <div className="space-y-2">
-              <div className="text-sm text-gray-500">Current State</div>
-              <AnimatePresence mode="wait">
-                <motion.div
-                  key={step}
-                  initial={{ opacity: 0, x: -20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  exit={{ opacity: 0, x: 20 }}
-                  className="bg-blue-500 text-white px-4 py-2 rounded-lg font-mono text-lg inline-block"
-                >
-                  {patterns[activePattern].states[step]}
-                </motion.div>
-              </AnimatePresence>
-            </div>
-
-            {/* State Timeline */}
-            <div className="space-y-2">
-              <div className="text-sm text-gray-500">State Timeline</div>
-              <div className="flex items-center gap-2">
-                {patterns[activePattern].states.map((state, idx) => (
-                  <StateBox
-                    key={state + idx}
-                    state={state}
-                    isActive={idx === step}
-                    isNext={idx === step + 1}
+      <div className="grid grid-cols-2 gap-6 h-[400px]">
+        <div className="bg-white p-6 rounded-xl shadow-sm relative overflow-hidden">
+          <svg ref={svgRef} width="100%" height="100%" viewBox="0 0 320 320">
+            {/* Draw connection paths */}
+            {currentStates.map((_, index) => {
+              const start = getNodePosition(index, currentStates.length, radius);
+              const end = getNodePosition((index + 1) % currentStates.length, currentStates.length, radius);
+              const path = getPathBetweenNodes(start.x, start.y, end.x, end.y);
+              const isActive = index === step;
+              
+              return (
+                <g key={`path-${index}`}>
+                  <path
+                    d={path}
+                    fill="none"
+                    stroke={isActive ? "#3B82F6" : "#E5E7EB"}
+                    strokeWidth="2"
+                    className="transition-colors duration-300"
                   />
-                ))}
-              </div>
-            </div>
+                  {isActive && step < currentStates.length - 1 && (
+                    <motion.circle
+                      r="4"
+                      fill="#3B82F6"
+                      initial={{ offset: 0 }}
+                      animate={{ offset: 1 }}
+                      transition={{
+                        duration: 1,
+                        ease: "linear",
+                        repeat: Infinity
+                      }}
+                    >
+                      <animateMotion
+                        dur="1s"
+                        repeatCount="indefinite"
+                        path={path}
+                      />
+                    </motion.circle>
+                  )}
+                  {/* Transition label */}
+                  <motion.text
+                    x={(start.x + end.x) / 2}
+                    y={(start.y + end.y) / 2}
+                    dy="-10"
+                    textAnchor="middle"
+                    className="text-xs fill-gray-500"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: isActive ? 1 : 0.3 }}
+                  >
+                    {patterns[activePattern].transitions[index]}
+                  </motion.text>
+                </g>
+              );
+            })}
 
-            {/* Transition Display */}
-            <div className="space-y-2">
-              <div className="text-sm text-gray-500">Current Transition</div>
-              <AnimatePresence mode="wait">
-                <motion.div
-                  key={step}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -20 }}
-                  className="bg-gray-100 px-4 py-2 rounded-lg font-mono text-sm inline-block"
-                >
-                  {step > 0 ? patterns[activePattern].transitions[step - 1] : 'Initial State'}
-                </motion.div>
-              </AnimatePresence>
-            </div>
-          </div>
+            {/* Draw state nodes */}
+            {currentStates.map((state, index) => {
+              const pos = getNodePosition(index, currentStates.length, radius);
+              const isActive = index === step;
+              const isPast = index < step;
 
-          <div className="mt-6">
-            <div className="flex justify-between text-sm text-gray-500 mb-1">
-              <span>Step {step + 1}</span>
-              <span>of {patterns[activePattern].states.length}</span>
-            </div>
-            <div className="w-full bg-gray-200 rounded-full h-2">
-              <motion.div
-                className="bg-blue-500 h-2 rounded-full"
-                initial={{ width: 0 }}
-                animate={{ 
-                  width: `${((step + 1) / patterns[activePattern].states.length) * 100}%` 
-                }}
-                transition={{ duration: 0.3 }}
-              />
-            </div>
-          </div>
+              return (
+                <g key={`state-${index}`}>
+                  <motion.circle
+                    cx={pos.x}
+                    cy={pos.y}
+                    r="30"
+                    fill={isActive ? "#3B82F6" : isPast ? "#93C5FD" : "#F3F4F6"}
+                    stroke={isActive ? "#2563EB" : "#E5E7EB"}
+                    strokeWidth="2"
+                    initial={{ scale: 0 }}
+                    animate={{ scale: 1 }}
+                    transition={{
+                      type: "spring",
+                      stiffness: 300,
+                      damping: 20,
+                      delay: index * 0.1
+                    }}
+                  />
+                  <motion.text
+                    x={pos.x}
+                    y={pos.y}
+                    textAnchor="middle"
+                    dy=".3em"
+                    className={`text-sm ${isActive ? 'fill-white' : 'fill-gray-700'}`}
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: index * 0.1 }}
+                  >
+                    {state}
+                  </motion.text>
+                </g>
+              );
+            })}
+          </svg>
         </div>
 
-        <div className="bg-white rounded-xl shadow-sm overflow-hidden">
-          <div className="bg-gray-800 p-4">
-            <h3 className="text-lg font-semibold text-white mb-2">State Machine Code</h3>
-            <div className="font-mono text-sm text-gray-300">
-              <AnimatePresence mode="wait">
-                <motion.div
-                  key={step}
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  className="space-y-2"
-                >
-                  <div className="text-blue-400">// Current State</div>
-                  <div>const currentState = '{patterns[activePattern].states[step]}';</div>
-                  {step > 0 && (
-                    <>
-                      <div className="text-blue-400">// Last Transition</div>
-                      <div>const lastAction = '{patterns[activePattern].transitions[step - 1]}';</div>
-                      <div className="text-blue-400">// State History</div>
-                      <div>const history = [</div>
-                      {patterns[activePattern].states.slice(0, step + 1).map((s, i) => (
-                        <div key={i} className="ml-4">'{s}',</div>
-                      ))}
-                      <div>];</div>
-                    </>
-                  )}
-                </motion.div>
-              </AnimatePresence>
-            </div>
-          </div>
+        <div className="bg-gray-800 rounded-xl shadow-sm p-6">
+          <h3 className="text-lg font-semibold text-white mb-4">State Machine Code</h3>
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={step}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              className="font-mono text-sm text-gray-300 space-y-2"
+            >
+              <div className="text-blue-400">// Current State</div>
+              <div>const currentState = '{currentStates[step]}';</div>
+              {step > 0 && (
+                <>
+                  <div className="text-blue-400 mt-4">// Last Transition</div>
+                  <div>const lastAction = '{patterns[activePattern].transitions[step - 1]}';</div>
+                  <div className="text-blue-400 mt-4">// State History</div>
+                  <div>const history = [</div>
+                  {currentStates.slice(0, step + 1).map((s, i) => (
+                    <div key={i} className="ml-4">'{s}',</div>
+                  ))}
+                  <div>];</div>
+                </>
+              )}
+            </motion.div>
+          </AnimatePresence>
         </div>
       </div>
 
