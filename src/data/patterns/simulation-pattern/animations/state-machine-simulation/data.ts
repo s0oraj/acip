@@ -1,57 +1,72 @@
 import { Animation } from '@/types';
-import { History, Package, Edit, Cpu, Database } from 'lucide-react';
 
 export const patterns = {
   commandProcessor: {
-    states: ['home', 'products', 'cart', 'checkout', 'home'],
-    transitions: ['visit', 'back', 'forward', 'visit'],
-    icon: 'history',
+    data: ['Home', 'About', 'Services', 'Contact'],
+    icon: 'command',
     title: "Command Processor",
-    desc: "Browser history simulation",
-    color: "#2563EB"
+    desc: "Simulate browser history navigation",
+    color: "#4F46E5"
   },
   vendingMachine: {
-    states: ['idle', 'selection', 'payment', 'dispensing', 'idle'],
-    transitions: ['insert_coin', 'select_item', 'process_payment', 'complete'],
-    icon: 'package',
+    data: ['Idle', 'SelectItem', 'DispenseItem', 'ReturnChange'],
+    icon: 'vending',
     title: "Vending Machine",
-    desc: "State transitions with validation",
+    desc: "Simulate vending machine states",
     color: "#7C3AED"
   },
   textEditor: {
-    states: ['editing', 'selecting', 'copying', 'pasting', 'editing'],
-    transitions: ['select', 'copy', 'paste', 'continue'],
-    icon: 'edit',
+    data: ['Insert', 'Delete', 'Undo', 'Redo'],
+    icon: 'text',
     title: "Text Editor",
-    desc: "History tracking states",
-    color: "#059669"
-  },
-  dualMachine: {
-    states: ['sync', 'async', 'updating', 'syncing', 'sync'],
-    transitions: ['split', 'process', 'update', 'merge'],
-    icon: 'cpu',
-    title: "Dual Controller",
-    desc: "Machine interaction states",
-    color: "#DC2626"
+    desc: "Simulate text editor states",
+    color: "#2563EB"
   }
 };
 
 export const stateMachineAnimation: Animation = {
   id: "state-machine",
   title: "State Machine Simulation",
-  description: "Visualizing different state machine implementations",
-  steps: Object.entries(patterns).map(([key, pattern]) => ({
-    title: pattern.title,
-    description: pattern.desc,
-    states: pattern.states,
-    phases: pattern.states.map((state, index) => ({
-      state,
-      transition: pattern.transitions[index],
-      description: `Transitioning to ${state} state`,
-      activeState: state,
-      previousState: index > 0 ? pattern.states[index - 1] : null,
-      code: `currentState = '${state}';`
-    }))
-  }))
+  description: "Simulate state transitions and interactions",
+  steps: [
+    {
+      title: "Command Processor",
+      description: "Simulate browser history navigation",
+      array: patterns.commandProcessor.data,
+      phases: patterns.commandProcessor.data.map((val, index) => ({
+        description: index === 0 
+          ? "Initialize browser history" 
+          : `Navigate to ${val}`,
+        activeIndex: index,
+        highlightIndices: [index],
+        counter: {
+          currentState: val,
+          history: patterns.commandProcessor.data.slice(0, index + 1)
+        },
+        code: index === 0 
+          ? "const history = ['Home'];" 
+          : `history.push('${val}');`
+      }))
+    },
+    {
+      title: "Vending Machine",
+      description: "Simulate vending machine states",
+      array: patterns.vendingMachine.data,
+      phases: patterns.vendingMachine.data.map((val, index) => ({
+        description: index === 0 
+          ? "Initialize vending machine" 
+          : `Transition to ${val}`,
+        activeIndex: index,
+        highlightIndices: [index],
+        counter: {
+          currentState: val,
+          transitions: patterns.vendingMachine.data.slice(0, index + 1)
+        },
+        code: index === 0 
+          ? "const states = ['Idle'];" 
+          : `states.push('${val}');`
+      }))
+    }
+  ],
+  counters: []
 };
-export default stateMachineAnimation;
