@@ -2,20 +2,20 @@
 import React, { useState, useEffect } from 'react';
 import { Play, Pause, RotateCcw, ChevronLeft, ChevronRight } from 'lucide-react';
 import { motion, AnimatePresence, LayoutGroup } from 'framer-motion';
-import { gridPatterns, gridMovementAnimation } from './data';
+import { patterns, gridMovementAnimation } from './data';
 
 const GridMovementVisualizer = () => {
   const [activePattern, setActivePattern] = useState('basicRobot');
   const [step, setStep] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
   
-  const currentPosition = calculatePosition(gridPatterns[activePattern].data.slice(0, step + 1));
+  const currentPosition = calculatePosition(patterns[activePattern].data.slice(0, step + 1));
   const currentDirection = gridMovementAnimation.steps
-    .find(s => s.title === gridPatterns[activePattern].title)?.phases[step]?.counter.dir || 0;
+    .find(s => s.title === patterns[activePattern].title)?.phases[step]?.counter.dir || 0;
 
   useEffect(() => {
     let timer: NodeJS.Timeout;
-    if (isPlaying && step < gridPatterns[activePattern].data.length) {
+    if (isPlaying && step < patterns[activePattern].data.length) {
       timer = setTimeout(() => setStep(s => s + 1), 1000);
     }
     return () => clearTimeout(timer);
@@ -47,7 +47,7 @@ const GridMovementVisualizer = () => {
     <div className="p-6 bg-gray-50">
       {/* Pattern Selection */}
       <div className="grid grid-cols-2 gap-4 mb-6">
-        {Object.entries(gridPatterns).map(([key, { title, desc, color }]) => (
+        {Object.entries(patterns).map(([key, { title, desc, color }]) => (
           <motion.button
             key={key}
             onClick={() => { setActivePattern(key); setStep(0); }}
