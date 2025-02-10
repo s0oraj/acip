@@ -1,168 +1,98 @@
-import React from 'react';
-import { Card } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { ArrowLeft, Play, RotateCcw, ArrowRight, ChevronUp, ChevronRight, ChevronDown, ChevronLeft } from 'lucide-react';
+// src/data/patterns/simulation-pattern/animations/grid-movement-simulation/visualizer.tsx
+import React, { useState, useEffect } from 'react';
+import { Play, Pause, RotateCcw, ChevronLeft, ChevronRight } from 'lucide-react';
+import { motion, AnimatePresence, LayoutGroup } from 'framer-motion';
+import { gridPatterns, gridMovementAnimation } from './data';
 
-const GRID_SIZE = 5;
-const CELL_SIZE = 50;
+const GridMovementVisualizer = () => {
+  const [activePattern, setActivePattern] = useState('basicRobot');
+  const [step, setStep] = useState(0);
+  const [isPlaying, setIsPlaying] = useState(false);
+  
+  const currentPosition = calculatePosition(gridPatterns[activePattern].data.slice(0, step + 1));
+  const currentDirection = gridMovementAnimation.steps
+    .find(s => s.title === gridPatterns[activePattern].title)?.phases[step]?.counter.dir || 0;
 
-interface Robot {
-  id: number;
-  pos: number[];
-  dir: number;
-  path: number[][];
-  color: string;
-}
+  useEffect(() => {
+    let timer: NodeJS.Timeout;
+    if (isPlaying && step < gridPatterns[activePattern].data.length) {
+      timer = setTimeout(() => setStep(s => s + 1), 1000);
+    }
+    return () => clearTimeout(timer);
+  }, [isPlaying, step]);
 
-interface RobotState {
-  robots: Robot[];
-}
-
-const DirectionArrow = ({ dir, color }: { dir: number, color: string }) => {
-  const arrows = [
-    <ChevronRight key="right" className="w-4 h-4" style={{ color }} />,
-    <ChevronUp key="up" className="w-4 h-4" style={{ color }} />,
-    <ChevronLeft key="left" className="w-4 h-4" style={{ color }} />,
-    <ChevronDown key="down" className="w-4 h-4" style={{ color }} />
-  ];
-  return arrows[dir] || null;
-};
-
-const GridMovementVisualizer = ({
-  data,
-  activeStep,
-  phase,
-  onPrev,
-  onNext,
-  onPlay,
-  onReplay
-}: {
-  data: any[];
-  activeStep: number;
-  phase: { counter: RobotState; code?: string } | null;
-  onPrev: () => void;
-  onNext: () => void;
-  onPlay: () => void;
-  onReplay: () => void;
-}) => {
-  const state: RobotState = phase?.counter || { robots: [] };
-
-  const renderGrid = () => {
-    const cells = [];
-    for (let i = 0; i < GRID_SIZE; i++) {
-      for (let j = 0; j < GRID_SIZE; j++) {
-        const robotsHere = state.robots.filter(robot => 
-          robot.pos[0] === i && robot.pos[1] === j
-        );
-        
-        const pathRobots = state.robots.filter(robot =>
-          robot.path.some(([x, y]) => x === i && y === j)
-        );
-
-        cells.push(
-          <div
-            key={`${i}-${j}`}
-            className="absolute border border-gray-200 flex items-center justify-center"
-            style={{
-              width: CELL_SIZE,
-              height: CELL_SIZE,
-              left: j * CELL_SIZE,
-              top: i * CELL_SIZE,
-              transition: 'all 0.3s ease-in-out',
-              backgroundColor: robotsHere.length 
-                ? robotsHere[0].color 
-                : pathRobots.length 
-                  ? `${pathRobots[0].color}33`
-                  : 'white'
-            }}
+  const generateGrid = () => {
+    const grid = [];
+    for (let i = -2; i <= 2; i++) {
+      for (let j = -2; j <= 2; j++) {
+        const isRobot = i === currentPosition[0] && j === currentPosition[1];
+        grid.push(
+          <motion.div
+            key={`${i},${j}`}
+            className={`w-12 h-12 border flex items-center justify-center
+              ${isRobot ? 'bg-blue-500 text-white' : 'bg-gray-100'}`}
+            initial={{ scale: 0 }}
+            animate={{ scale: 1 }}
+            transition={{ type: 'spring', stiffness: 300 }}
           >
-            {robotsHere.map(robot => (
-              <div key={robot.id} className="absolute">
-                <DirectionArrow dir={robot.dir} color="white" />
-              </div>
-            ))}
-          </div>
+            {isRobot ? '🤖' : `${i},${j}`}
+          </motion.div>
         );
       }
     }
-    return cells;
+    return grid;
   };
 
   return (
-    <div className="w-full space-y-4">
-      <Card className="p-4">
-        <div className="flex justify-between items-center mb-4">
-          <h3 className="text-lg font-semibold">Multi-Robot Grid Movement</h3>
-          <div className="flex space-x-2">
-            <Button
-              variant="outline"
-              size="icon"
-              onClick={onPrev}
-              disabled={activeStep === 0}
-            >
-              <ArrowLeft className="h-4 w-4" />
-            </Button>
-            <Button
-              variant="outline"
-              size="icon"
-              onClick={onPlay}
-            >
-              <Play className="h-4 w-4" />
-            </Button>
-            <Button
-              variant="outline"
-              size="icon"
-              onClick={onReplay}
-            >
-              <RotateCcw className="h-4 w-4" />
-            </Button>
-            <Button
-              variant="outline"
-              size="icon"
-              onClick={onNext}
-              disabled={!data || activeStep === data.length - 1}
-            >
-              <ArrowRight className="h-4 w-4" />
-            </Button>
-          </div>
-        </div>
-
-        <div className="space-y-4">
-          <div 
-            className="relative bg-gray-50 p-4 rounded-lg"
-            style={{ 
-              width: GRID_SIZE * CELL_SIZE + 32, 
-              height: GRID_SIZE * CELL_SIZE + 32 
-            }}
+    <div className="p-6 bg-gray-50">
+      {/* Pattern Selection */}
+      <div className="grid grid-cols-2 gap-4 mb-6">
+        {Object.entries(gridPatterns).map(([key, { title, desc, color }]) => (
+          <motion.button
+            key={key}
+            onClick={() => { setActivePattern(key); setStep(0); }}
+            className={`p-4 rounded-xl ${activePattern === key ? 'bg-white shadow-lg' : 'bg-gray-100'}`}
+            whileHover={{ scale: 1.02 }}
           >
-            {renderGrid()}
-          </div>
+            <div style={{ color }} className="text-lg font-semibold">{title}</div>
+            <div className="text-sm text-gray-600">{desc}</div>
+          </motion.button>
+        ))}
+      </div>
 
-          <div className="flex space-x-4">
-            {state.robots.map(robot => (
-              <div
-                key={robot.id}
-                className="bg-gray-50 p-2 rounded-lg flex items-center space-x-2"
-              >
-                <div 
-                  className="w-4 h-4 rounded-full"
-                  style={{ backgroundColor: robot.color }}
-                />
-                <span>Robot {robot.id + 1}</span>
-              </div>
-            ))}
-          </div>
+      {/* Grid Display */}
+      <div className="grid grid-cols-5 gap-1 mb-6">
+        {generateGrid()}
+      </div>
 
-          <div className="mt-4">
-            <pre className="bg-gray-50 p-4 rounded-lg overflow-x-auto">
-              <code>{phase?.code || '// Initial state'}</code>
-            </pre>
-          </div>
-        </div>
-      </Card>
+      {/* Direction Indicator */}
+      <motion.div 
+        className="w-16 h-16 bg-white rounded-full shadow-lg flex items-center justify-center mx-auto mb-6"
+        animate={{ rotate: currentDirection * 90 }}
+        transition={{ type: 'spring' }}
+      >
+        <div className="text-2xl">↑</div>
+      </motion.div>
+
+      {/* Controls */}
+      <div className="flex justify-center gap-4">
+        <motion.button
+          onClick={() => setIsPlaying(!isPlaying)}
+          className="w-12 h-12 rounded-full bg-blue-500 flex items-center justify-center text-white"
+          whileHover={{ scale: 1.1 }}
+        >
+          {isPlaying ? <Pause /> : <Play />}
+        </motion.button>
+        <motion.button
+          onClick={() => setStep(0)}
+          className="w-12 h-12 rounded-full bg-gray-200 flex items-center justify-center"
+          whileHover={{ scale: 1.1 }}
+        >
+          <RotateCcw />
+        </motion.button>
+      </div>
     </div>
   );
 };
 
 export default GridMovementVisualizer;
-
