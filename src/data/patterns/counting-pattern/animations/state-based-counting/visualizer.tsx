@@ -58,10 +58,24 @@ const StateBasedCountingVisualizer = () => {
     }
   };
 
+  const barVariants = {
+    hidden: { scaleY: 0, opacity: 0 },
+    visible: (height: number) => ({ 
+      scaleY: 1, 
+      opacity: 1,
+      height: `${height * 20}px`,
+      transition: {
+        type: "spring",
+        stiffness: 200,
+        damping: 20
+      }
+    })
+  };
+
   return (
     <div className="p-6 bg-gradient-to-br from-blue-50/30 to-purple-50/30 min-h-screen">
       <LayoutGroup>
-        {/* Updated Pattern Selection Tabs */}
+        {/* Pattern Selection Tabs */}
         <motion.div 
           className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6"
           layout
@@ -138,27 +152,30 @@ const StateBasedCountingVisualizer = () => {
           </div>
         </motion.div>
 
-        {/* Counter Visualization */}
+        {/* 3D Bar Chart Visualization */}
         <motion.div 
           variants={containerVariants}
           initial="hidden"
           animate="visible"
           className="backdrop-blur-lg bg-white/30 p-5 rounded-xl shadow-lg border border-white/50 mb-4 relative overflow-hidden"
         >
-          <h3 className="text-lg font-semibold mb-3 relative">State Counter</h3>
-          <div className="flex flex-wrap gap-2 relative">
+          <h3 className="text-lg font-semibold mb-3 relative">State Count Visualization</h3>
+          <div className="flex items-end gap-4 h-48 relative">
             <AnimatePresence mode="wait">
               {Object.entries(getCounter()).map(([key, value]) => (
                 <motion.div
-                  key={`counter-${key}`}
-                  variants={itemVariants}
-                  className="min-w-[3rem] px-3 h-12 flex items-center justify-center rounded-lg bg-green-500/80 text-white font-mono text-lg shadow-lg"
+                  key={`bar-${key}`}
+                  variants={barVariants}
+                  custom={value}
+                  className="w-12 bg-blue-500/80 rounded-t-lg relative"
                   whileHover={{
-                    scale: 1.1,
+                    scaleY: 1.1,
                     transition: { type: "spring", stiffness: 400 }
                   }}
                 >
-                  {key}: {value}
+                  <div className="absolute bottom-0 left-0 right-0 text-center text-white font-mono text-sm">
+                    {key}: {value}
+                  </div>
                 </motion.div>
               ))}
             </AnimatePresence>
