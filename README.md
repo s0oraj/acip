@@ -30,7 +30,7 @@
 
 ## 1. Architecture Overview
 
-The Advanced Coding Interview Patterns Platform is built on a modern, scalable architecture designed to provide a seamless and interactive learning experience. The application is primarily client-side rendered, leveraging the power of React and Next.js for optimal performance and SEO benefits.
+The Advanced Coding Interview Patterns Platform is built on a modern, scalable architecture designed to provide a seamless and interactive learning experience. The application is primarily client-side rendered, leveraging the power of React and Next.js for optimal performance and SEO benefits. 
 
 ### Key Architectural Decisions:
 
